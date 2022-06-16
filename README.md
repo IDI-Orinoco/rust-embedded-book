@@ -1,46 +1,44 @@
-# The Embedded Rust Book
+# El libro de Rust embebido
 
-> Documentation on how to use the Rust Programming Language to develop firmware for bare metal (microcontroller) devices
+> Documentación sobre cómo utilizar el lenguaje de programación Rust para desarrollar firmware para dispositivos bare metal (microcontroladores)
 
-This project is developed and maintained by the [Resources team][team].
+Este proyecto es desarrollado y mantenido por el [equipo de Recursos][team].
 
-See [the issue tracker] for more details. This book is a living document, and is updated continuously.
+Consulte [el rastreador de problemas] para obtener más detalles. Este libro es un documento vivo, y se actualiza continuamente.
 
-[the issue tracker]: https://github.com/rust-embedded/book/issues
+[el rastreador de problemas]: https://github.com/rust-embedded/book/issues
 
-## Online Copies of this Book
+## Copias en línea de este libro
 
-This book is located at https://docs.rust-embedded.org/book/
+Este libro se encuentra en https://docs.rust-embedded.org/book/
 
-## License
+## Licencia
 
-The Embedded Rust Book (this project) is distributed under the following licenses:
+El libro de Rust embebido (este proyecto) se distribuye bajo las siguientes licencias:
 
-* The code samples and free-standing Cargo projects contained within this book are licensed under the terms of both the [MIT License] and the [Apache License v2.0].
-* The written prose contained within this book is licensed under the terms of the Creative Commons [CC-BY-SA v4.0] license.
+* Los ejemplos de código y los proyectos Cargo independientes contenidos en este libro están licenciados bajo los términos de la [Licencia MIT] y la [Licencia Apache v2.0].
+* La prosa escrita contenida en este libro está autorizada bajo los términos de la licencia Creative Commons [CC-BY-SA v4.0].
 
-Copies of the licenses used by this project may also be found here:
+También se pueden encontrar copias de las licencias utilizadas por este proyecto aquí:
 
-* [MIT License Hosted]
-* [Apache License v2.0 Hosted]
-* [CC-BY-SA v4.0 Hosted]
+* [Ubicación Licencia MIT]
+* [Ubicación Licencia Apache v2.0]
+* [Ubicación Licencia Apache v2.0]
 
-[MIT License]: ./LICENSE-MIT
-[Apache License v2.0]: ./LICENSE-APACHE
+[Licencia MIT]: ./LICENSE-MIT
+[Licencia Apache v2.0]: ./LICENSE-APACHE
 [CC-BY-SA v4.0]: ./LICENSE-CC-BY-SA
-[MIT License Hosted]: https://opensource.org/licenses/MIT
-[Apache License v2.0 Hosted]: http://www.apache.org/licenses/LICENSE-2.0
+[Ubicación Licencia MIT]: https://opensource.org/licenses/MIT
+[Ubicación Licencia Apache v2.0]: http://www.apache.org/licenses/LICENSE-2.0
 [CC-BY-SA v4.0 Hosted]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
 
-### Contribution
+### Contribución
 
-Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be licensed as above, without any additional terms or conditions.
+A menos que usted declare explícitamente lo contrario, cualquier contribución enviada intencionadamente para su inclusión en el trabajo por usted, tal y como se define en la licencia Apache-2.0, se licenciará como se indica más arriba, sin ningún término o condición adicional.
 
-## Code of Conduct
+## Código de conducta
 
-Contribution to this crate is organized under the terms of the [Rust Code of
-Conduct][CoC], the maintainer of this crate, the [Resources team][team], promises
-to intervene to uphold that code of conduct.
+Las contribuciones a esta crate están organizadas bajo los términos del [Código de Conducta de Rust][CoC], el mantenedor de esta crate, el [equipo de Recursos][team], se compromete a intervenir para mantener ese código de conducta.
 
 [CoC]: CODE_OF_CONDUCT.md
 [team]: https://github.com/rust-embedded/wg#the-resources-team
