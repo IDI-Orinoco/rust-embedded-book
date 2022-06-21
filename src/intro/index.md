@@ -35,81 +35,73 @@ Este libro está dirigido a personas con algún tipo de experiencia en sistemas 
     * Interrupciones
     * Interfaces comunes como I2C, SPI, Serial, etc.
 
-### Other Resources
-If you are unfamiliar with anything mentioned above or if you want more information about a specific topic mentioned in this book you might find some of these resources helpful.
+### Otros recursos
 
-| Topic        | Resource | Description |
+Si no estás familiarizado con nada de lo mencionado anteriormente o si quieres más información sobre un tema específico mencionado en este libro, puede que algunos de estos recursos te resulten útiles.
+
+| Tema         | Recurso  | Descripción |
 |--------------|----------|-------------|
-| Rust         | [Rust Book](https://doc.rust-lang.org/book/) | If you are not yet comfortable with Rust, we highly suggest reading this book. |
-| Rust, Embedded | [Discovery Book](https://docs.rust-embedded.org/discovery/) | If you have never done any embedded programming, this book might be a better start |
-| Rust, Embedded | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | Here you can find several other resources provided by Rust's Embedded Working Group. |
-| Rust, Embedded | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | The nitty gritty details when doing embedded programming in Rust. |
-| Rust, Embedded | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | Frequently asked questions about Rust in an embedded context. |
-| Interrupts | [Interrupt](https://en.wikipedia.org/wiki/Interrupt) | - |
-| Memory-mapped IO/Peripherals | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
+| Rust         | [Rust Book](https://doc.rust-lang.org/book/) | Si aún no te sientes cómodo con Rust, te sugerimos que leas este libro. |
+| Rust, Embebido | [Discovery Book](https://docs.rust-embedded.org/discovery/) | Si nunca has hecho nada de programación embebida, este libro podría ser un mejor comienzo. |
+| Rust, Embebido | [Embedded Rust Bookshelf](https://docs.rust-embedded.org) | Aquí puedes encontrar otros recursos proporcionados por el Grupo de Trabajo de Rust Embebido. |
+| Rust, Embebido | [Embedonomicon](https://docs.rust-embedded.org/embedonomicon/) | Los detalles más importantes de la programación embebida en Rust. |
+| Rust, Embebido | [embedded FAQ](https://docs.rust-embedded.org/faq.html) | Preguntas frecuentes sobre Rust en un contexto embebido. |
+| Interrupciones | [Interrupt](https://en.wikipedia.org/wiki/Interrupt) | - |
+| IO/Periféricos mapeados en memoria | [Memory-mapped I/O](https://en.wikipedia.org/wiki/Memory-mapped_I/O) | - |
 | SPI, UART, RS232, USB, I2C, TTL | [Stack Exchange about SPI, UART, and other interfaces](https://electronics.stackexchange.com/questions/37814/usart-uart-rs232-usb-spi-i2c-ttl-etc-what-are-all-of-these-and-how-do-th) | - |
 
-### Translations
+### Traducciones
 
-This book has been translated by generous volunteers. If you would like your
-translation listed here, please open a PR to add it.
+Este libro ha sido traducido por generosos voluntarios. Si quieres que tu traducción aparezca aquí, por favor abre una PR para añadirla.
 
-* [Japanese](https://tomoyuki-nakabayashi.github.io/book/)
-  ([repository](https://github.com/tomoyuki-nakabayashi/book))
+* [Japonés](https://tomoyuki-nakabayashi.github.io/book/)
+  ([repositorio](https://github.com/tomoyuki-nakabayashi/book))
 
-* [Chinese](https://xxchang.github.io/book/)
-  ([repository](https://github.com/XxChang/book))
+* [Chino](https://xxchang.github.io/book/)
+  ([repositorio](https://github.com/XxChang/book))
 
-## How to Use This Book
 
-This book generally assumes that you’re reading it front-to-back. Later
-chapters build on concepts in earlier chapters, and earlier chapters may
-not dig into details on a topic, revisiting the topic in a later chapter.
+## Cómo utilizar este libro
 
-This book will be using the [STM32F3DISCOVERY] development board from
-STMicroelectronics for the majority of the examples contained within. This board
-is based on the ARM Cortex-M architecture, and while basic functionality is
-the same across most CPUs based on this architecture, peripherals and other
-implementation details of Microcontrollers are different between different
-vendors, and often even different between Microcontroller families from the same
-vendor.
+En general, este libro supone que se lee de principio a fin. Los capítulos posteriores se basan en los conceptos de los capítulos anteriores, y es posible que los capítulos anteriores no profundicen en los detalles de un tema, sino que vuelvan a tratar el tema en un capítulo posterior.
 
-For this reason, we suggest purchasing the [STM32F3DISCOVERY] development board
-for the purpose of following the examples in this book.
+Este libro utilizará la placa de desarrollo [STM32F3DISCOVERY] de STMicroelectronics para la mayoría de los ejemplos que contiene. Esta placa está basada en la arquitectura ARM Cortex-M, y aunque la funcionalidad básica es la misma en la mayoría de las CPUs basadas en esta arquitectura, los periféricos y otros detalles de implementación de los microcontroladores son diferentes entre los distintos proveedores, y a menudo incluso diferentes entre las familias de microcontroladores del mismo proveedor.
+
+Por esta razón, sugerimos adquirir la placa de desarrollo [STM32F3DISCOVERY] para seguir los ejemplos de este libro.
 
 [STM32F3DISCOVERY]: http://www.st.com/en/evaluation-tools/stm32f3discovery.html
 
-## Contributing to This Book
+## Contribución a este libro
 
-The work on this book is coordinated in [this repository] and is mainly
-developed by the [resources team].
+El trabajo de este libro está coordinado en [este repositorio] y es desarrollado principalmente por el [equipo de recursos].
 
-[this repository]: https://github.com/rust-embedded/book
-[resources team]: https://github.com/rust-embedded/wg#the-resources-team
+[este repositorio]: https://github.com/rust-embedded/book
+[equipo de recursos]: https://github.com/rust-embedded/wg#the-resources-team
 
-If you have trouble following the instructions in this book or find that some
-section of the book is not clear enough or hard to follow then that's a bug and
-it should be reported in [the issue tracker] of this book.
+Si tienes problemas para seguir las instrucciones de este libro o encuentras que alguna sección del libro no es lo suficientemente clara o difícil de seguir, entonces eso es un error y debe ser reportado en el [rastreador de problemas] de este libro.
 
-[the issue tracker]: https://github.com/rust-embedded/book/issues/
+[rastreador de problemas]: https://github.com/rust-embedded/book/issues/
 
-Pull requests fixing typos and adding new content are very welcome!
+Las PR para corregir errores tipográficos y añadir nuevos contenidos son muy bienvenidas.
 
-## Re-using this material
+## Reutilización de este material
 
-This book is distributed under the following licenses:
+Este libro se distribuye bajo las siguientes licencias:
 
-* The code samples and free-standing Cargo projects contained within this book are licensed under the terms of both the [MIT License] and the [Apache License v2.0].
-* The written prose, pictures and diagrams contained within this book are licensed under the terms of the Creative Commons [CC-BY-SA v4.0] license.
+* Los ejemplos de código y los proyectos independientes de Cargo contenidos en este libro están licenciados bajo los términos de la [Licencia MIT] y la [Licencia Apache v2.0].
+* La prosa escrita, las imágenes y los diagramas contenidos en este libro están bajo los términos de la licencia Creative Commons [CC-BY-SA v4.0].
 
-[MIT License]: https://opensource.org/licenses/MIT
-[Apache License v2.0]: http://www.apache.org/licenses/LICENSE-2.0
+[Licencia MIT]: https://opensource.org/licenses/MIT
+[Licencia Apache v2.0]: http://www.apache.org/licenses/LICENSE-2.0
 [CC-BY-SA v4.0]: https://creativecommons.org/licenses/by-sa/4.0/legalcode
 
-TL;DR: If you want to use our text or images in your work, you need to:
+TL;DR: Si quieres utilizar nuestro texto o imágenes en tu trabajo, tienes que:
 
+* Dar el crédito apropiado (es decir, mencionar este libro en su diapositiva, y proporcionar un enlace a la página correspondiente)
+* Proporcionar un enlace a la licencia [CC-BY-SA v4.0]
+* Indicar si ha modificado el material de alguna manera, y hacer que cualquier cambio en nuestro material esté disponible bajo la misma licencia
 * Give the appropriate credit (i.e. mention this book on your slide, and provide a link to the relevant page)
 * Provide a link to the [CC-BY-SA v4.0] licence
 * Indicate if you have changed the material in any way, and make any changes to our material available under the same licence
 
-Also, please do let us know if you find this book useful!
+Además, por favor, haznos saber si este libro te resulta útil.
