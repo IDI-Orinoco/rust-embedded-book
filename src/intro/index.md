@@ -100,8 +100,5 @@ TL;DR: Si quieres utilizar nuestro texto o imágenes en tu trabajo, tienes que:
 * Dar el crédito apropiado (es decir, mencionar este libro en su diapositiva, y proporcionar un enlace a la página correspondiente)
 * Proporcionar un enlace a la licencia [CC-BY-SA v4.0]
 * Indicar si ha modificado el material de alguna manera, y hacer que cualquier cambio en nuestro material esté disponible bajo la misma licencia
-* Give the appropriate credit (i.e. mention this book on your slide, and provide a link to the relevant page)
-* Provide a link to the [CC-BY-SA v4.0] licence
-* Indicate if you have changed the material in any way, and make any changes to our material available under the same licence
 
 Además, por favor, haznos saber si este libro te resulta útil.
