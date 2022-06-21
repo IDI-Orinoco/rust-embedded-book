@@ -1,54 +1,39 @@
-# Introduction
+# Introducción
 
-Welcome to The Embedded Rust Book: An introductory book about using the Rust
-Programming Language on "Bare Metal" embedded systems, such as Microcontrollers.
+Bienvenido al Libro de Rust Embebido: Un libro introductorio sobre el uso del lenguaje de programación Rust en sistemas embebidos "Bare Metal", como los microcontroladores.
 
-## Who Embedded Rust is For
-Embedded Rust is for everyone who wants to do embedded programming while taking advantage of the higher-level concepts and safety guarantees the Rust language provides.
-(See also [Who Rust Is For](https://doc.rust-lang.org/book/ch00-00-introduction.html))
+## A quién va dirigido Rust Embebido
 
-## Scope
+Rust Embebido es para todos aquellos que quieran hacer programación embebida aprovechando los conceptos de alto nivel y las garantías de seguridad que ofrece el lenguaje Rust. 
+(Ver también [Para quién es Rust](https://doc.rust-lang.org/book/ch00-00-introduction.html))
 
-The goals of this book are:
+## Alcance
 
-* Get developers up to speed with embedded Rust development. i.e. How to set
-  up a development environment.
+Los objetivos de este libro son:
 
-* Share *current* best practices about using Rust for embedded development. i.e.
-  How to best use Rust language features to write more correct embedded
-  software.
+* Poner a los desarrolladores al día con el desarrollo de Rust embebido, es decir, cómo configurar un entorno de desarrollo.
 
-* Serve as a cookbook in some cases. e.g. How do I mix C and Rust in a single
-  project?
+* Compartir las mejores prácticas *actuales* sobre el uso de Rust para el desarrollo embebido, es decir, cómo utilizar mejor las características del lenguaje Rust para escribir un software embebido más correcto.
 
-This book tries to be as general as possible but to make things easier for both
-the readers and the writers it uses the ARM Cortex-M architecture in all its
-examples. However, the book doesn't assume that the reader is familiar with this
-particular architecture and explains details particular to this architecture
-where required.
+* Servir como un recetario en algunos casos. Por ejemplo, ¿Cómo puedo mezclar C y Rust en un solo proyecto?
 
-## Who This Book is For
-This book caters towards people with either some embedded background or some Rust background, however we believe
-everybody curious about embedded Rust programming can get something out of this book. For those without any prior knowledge
-we suggest you read the "Assumptions and Prerequisites" section and catch up on missing knowledge to get more out of the book
-and improve your reading experience. You can check out the "Other Resources" section to find resources on topics
-you might want to catch up on.
+Este libro intenta ser lo más general posible, pero para facilitar las cosas tanto a los lectores como a los escritores, utiliza la arquitectura ARM Cortex-M en todos sus ejemplos. Sin embargo, el libro no asume que el lector esté familiarizado con esta arquitectura en particular y explica detalles particulares de esta arquitectura cuando es necesario.
 
-### Assumptions and Prerequisites
+## A quién va dirigido este libro
 
-* You are comfortable using the Rust Programming Language, and have written,
-  run, and debugged Rust applications on a desktop environment. You should also
-  be familiar with the idioms of the [2018 edition] as this book targets
-  Rust 2018.
+Este libro está dirigido a personas con algún tipo de experiencia en sistemas embebidos o con algún tipo de experiencia en Rust, sin embargo creemos que todos los curiosos de la programación en Rust embebido pueden obtener algo de este libro. Para aquellos que no tengan ningún conocimiento previo, les sugerimos que lean la sección "Supuestos y Prerrequisitos" y se pongan al día con los conocimientos que les faltan para sacar más provecho del libro y mejorar su experiencia de lectura. Puedes consultar la sección "Otros recursos" para encontrar recursos sobre temas en los que quieras ponerte al día.
 
-[2018 edition]: https://doc.rust-lang.org/edition-guide/
+### Supuestos y prerrequisitos
 
-* You are comfortable developing and debugging embedded systems in another
-  language such as C, C++, or Ada, and are familiar with concepts such as:
-    * Cross Compilation
-    * Memory Mapped Peripherals
-    * Interrupts
-    * Common interfaces such as I2C, SPI, Serial, etc.
+* Te sientes cómodo usando el lenguaje de programación Rust, y has escrito, ejecutado y depurado aplicaciones Rust en un entorno de escritorio. También debes estar familiarizado con los modismos de la [edición 2018], ya que este libro está dirigido a Rust 2018.
+
+[edición 2018]: https://doc.rust-lang.org/edition-guide/
+
+* Te sientes cómodo desarrollando y depurando sistemas embebidos en otro lenguaje como C, C++ o Ada, y estás familiarizado con conceptos como:
+    * Compilación cruzada
+    * Periféricos mapeados en memoria
+    * Interrupciones
+    * Interfaces comunes como I2C, SPI, Serial, etc.
 
 ### Other Resources
 If you are unfamiliar with anything mentioned above or if you want more information about a specific topic mentioned in this book you might find some of these resources helpful.
