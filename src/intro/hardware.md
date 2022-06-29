@@ -13,7 +13,7 @@ Vamos a familiarizarnos con el hardware con el que vamos a trabajar.
 - Un microcontrolador [STM32F303VCT6](https://www.st.com/en/microcontrollers/stm32f303vc.html). Este microcontrolador tiene
   - Un procesador ARM Cortex-M4F de un solo núcleo con soporte de hardware para operaciones de punto flotante de precisión única y una frecuencia de reloj máxima de 72 MHz.
 
-  - 256 KiB de memoria "Flash". (1 KiB = 1024 bytes)
+  - 256 KiB de memoria "Flash". (1 KiB = 10**24** bytes)
 
   - 48 KiB de memoria RAM.
 
