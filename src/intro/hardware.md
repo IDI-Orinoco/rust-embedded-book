@@ -1,39 +1,39 @@
-# Meet Your Hardware
+# Conoce tu hardware
 
-Let's get familiar with the hardware we'll be working with.
+Vamos a familiarizarnos con el hardware con el que vamos a trabajar.
 
-## STM32F3DISCOVERY (the "F3")
+## STM32F3DISCOVERY (El "F3")
 
 <p align="center">
 <img title="F3" src="../assets/f3.jpg">
 </p>
 
-What does this board contain?
+¿Qué contiene esta placa?
 
-- A [STM32F303VCT6](https://www.st.com/en/microcontrollers/stm32f303vc.html) microcontroller. This microcontroller has
-  - A single-core ARM Cortex-M4F processor with hardware support for single-precision floating point
-    operations and a maximum clock frequency of 72 MHz.
+- Un microcontrolador [STM32F303VCT6](https://www.st.com/en/microcontrollers/stm32f303vc.html). Este microcontrolador tiene
+  - Un procesador ARM Cortex-M4F de un solo núcleo con soporte de hardware para operaciones de punto flotante de precisión única y una frecuencia de reloj máxima de 72 MHz.
 
-  - 256 KiB of "Flash" memory. (1 KiB = 10**24** bytes)
+  - 256 KiB de memoria "Flash". (1 KiB = 10**24** bytes)
 
-  - 48 KiB of RAM.
+  - 48 KiB de memoria RAM.
 
-  - A variety of integrated peripherals such as timers, I2C, SPI and USART.
+  - Una variedad de periféricos integrados como temporizadores, I2C, SPI y USART.
 
-  - General purpose Input Output (GPIO) and other types of pins accessible through the two rows of headers along side the board.
-  
-  - A USB interface accessible through the USB port labeled "USB USER".
+  - Entradas y salidas de propósito general (GPIO) y otros tipos de pines accesibles a través de las dos filas de cabeceras a lo largo de la placa.
+    
+  - Una interfaz USB accesible a través del puerto USB etiquetado como "USB USER".
 
-- An [accelerometer](https://en.wikipedia.org/wiki/Accelerometer) as part of the [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html) chip.
+- Un [acelerómetro](https://es.wikipedia.org/wiki/Aceler%C3%B3metro) como parte del chip [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html).
 
-- A [magnetometer](https://en.wikipedia.org/wiki/Magnetometer) as part of the [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html) chip.
+- Un [magnetómetro](https://es.wikipedia.org/wiki/Magnet%C3%B3metro) como parte del chip [LSM303DLHC](https://www.st.com/en/mems-and-sensors/lsm303dlhc.html). 
 
-- A [gyroscope](https://en.wikipedia.org/wiki/Gyroscope) as part of the [L3GD20](https://www.pololu.com/file/0J563/L3GD20.pdf) chip.
+- Un [giroscopio](https://es.wikipedia.org/wiki/Gir%C3%B3scopo) como parte del chip [L3GD20](https://www.pololu.com/file/0J563/L3GD20.pdf).
 
-- 8 user LEDs arranged in the shape of a compass.
+- 8 LEDs de usuario dispuestos en forma de brújula.
 
-- A second microcontroller: a [STM32F103](https://www.st.com/en/microcontrollers/stm32f103cb.html). This microcontroller is actually part of an on-board programmer / debugger and is connected to the USB port named "USB ST-LINK".
+- Un segundo microcontrolador: un [STM32F103](https://www.st.com/en/microcontrollers/stm32f103cb.html). Este microcontrolador es en realidad parte de un programador / depurador a bordo y está conectado al puerto USB llamado "USB ST-LINK".
 
-For a more detailed list of features and further specifications of the board take a look at the [STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html) website.
 
-A word of caution: be careful if you want to apply external signals to the board. The microcontroller STM32F303VCT6 pins take a nominal voltage of 3.3 volts. For further information consult the [6.2 Absolute maximum ratings section in the manual](https://www.st.com/resource/en/datasheet/stm32f303vc.pdf)
+Para obtener una lista más detallada de las características y otras especificaciones de la placa, consulta el sitio web de [STMicroelectronics](https://www.st.com/en/evaluation-tools/stm32f3discovery.html).
+
+Una advertencia: ten cuidado si quieres aplicar señales externas a la placa. Los pines del microcontrolador STM32F303VCT6 reciben una tensión nominal de 3,3 voltios. Para más información, consulta la sección [6.2 Valores máximos absolutos del manual](https://www.st.com/resource/en/datasheet/stm32f303vc.pdf)
