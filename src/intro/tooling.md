@@ -1,84 +1,49 @@
-# Tooling
+# Herramientas
 
-Dealing with microcontrollers involves using several different tools as we'll be
-dealing with an architecture different than your laptop's and we'll have to run
-and debug programs on a *remote* device.
+Tratar con microcontroladores implica el uso de varias herramientas diferentes ya que estaremos con una arquitectura diferente a la de tu portátil y tendremos que ejecutar y depurar programas en un dispositivo *remoto*.
 
-We'll use all the tools listed below. Any recent version should work when a
-minimum version is not specified, but we have listed the versions we have
-tested.
+Utilizaremos todas las herramientas listadas a continuación. Cualquier versión reciente debería funcionar no se especifica una versión mínima, pero hemos enumerado las versiones que hemos probado.
 
-- Rust 1.31, 1.31-beta, or a newer toolchain PLUS ARM Cortex-M compilation
-  support.
+- Rust 1.31, 1.31-beta, o un toolchain más reciente MÁS soporte de compilación ARM Cortex-M. soporte.
 - [`cargo-binutils`](https://github.com/rust-embedded/cargo-binutils) ~0.1.4
-- [`qemu-system-arm`](https://www.qemu.org/). Tested versions: 3.0.0
-- OpenOCD >=0.8. Tested versions: v0.9.0 and v0.10.0
-- GDB with ARM support. Version 7.12 or newer highly recommended. Tested
-  versions: 7.10, 7.11, 7.12 and 8.1
-- [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) or `git`.
-  These tools are optional but will make it easier to follow along with the book.
+- [`qemu-system-arm`](https://www.qemu.org/). Versiones probadas: 3.0.0
+- OpenOCD >=0.8. Versiones probadas: v0.9.0 y v0.10.0
+- GDB con soporte ARM. Versión 7.12 o más reciente muy recomendable. Versiones probadas de probadas: 7.10, 7.11, 7.12 y 8.1
+- [`cargo-generate`](https://github.com/ashleygwilliams/cargo-generate) o `git`. Estas herramientas son opcionales pero facilitarán el seguimiento del libro.
 
-The text below explains why we are using these tools. Installation instructions
-can be found on the next page.
+El siguiente texto explica por qué utilizamos estas herramientas. Las instrucciones de instalación se encuentran en la página siguiente.
 
-## `cargo-generate` OR `git`
+## `cargo-generate` O `git`
 
-Bare metal programs are non-standard (`no_std`) Rust programs that require some
-adjustments to the linking process in order to get the memory layout of the program
-right. This requires some additional files (like linker scripts) and 
-settings (like linker flags). We have packaged those for you in a template
-such that you only need to fill in the missing information (such as the project name and the
-characteristics of your target hardware).
+Los programas "bare metal" son programas Rust no estándar (`no_std`) que requieren algunos ajustes en el proceso de enlazado para poder obtener la disposición de memoria del programa. Esto requiere algunos archivos (como scripts del enlazador) y ajustes (como las banderas del enlazador) adicionales. Los hemos empaquetado en una plantilla para que sólo tengas que rellenar la información que falta (como el nombre del proyecto y las características de tu hardware de destino).
 
-Our template is compatible with `cargo-generate`: a Cargo subcommand for
-creating new Cargo projects from templates. You can also download the
-template using `git`, `curl`, `wget`, or your web browser.
+Nuestra plantilla es compatible con `cargo-generate`: un subcomando de Cargo para crear nuevos proyectos Cargo a partir de plantillas. También puedes descargarla usando `git`, `curl`, `wget`, o tu navegador web.
 
 ## `cargo-binutils`
 
-`cargo-binutils` is a collection of Cargo subcommands that make it easy to use
-the LLVM tools that are shipped with the Rust toolchain. These tools include the
-LLVM versions of `objdump`, `nm` and `size` and are used for inspecting
-binaries.
+`cargo-binutils` es una colección de subcomandos de Cargo que facilitan el uso de las herramientas LLVM que vienen con la cadena de herramientas de Rust. Estas herramientas incluyen las versiones LLVM de `objdump`, `nm` y `size` y se utilizan para inspeccionar binarios.
 
-The advantage of using these tools over GNU binutils is that (a) installing the
-LLVM tools is the same one-command installation (`rustup component add
-llvm-tools-preview`) regardless of your OS and (b) tools like `objdump` support
-all the architectures that `rustc` supports -- from ARM to x86_64 -- because
-they both share the same LLVM backend.
+La ventaja de usar estas herramientas sobre las GNU binutils es que (a) instalar las herramientas de LLVM es la misma instalación con un solo comando (`rustup component add llvm-tools-preview`) independientemente de tu sistema operativo y (b) herramientas como `objdump` soportan todas las arquitecturas que `rustc` soporta -- desde ARM hasta x86_64 -- porque ambas comparten el mismo LLVM backend.
 
 ## `qemu-system-arm`
 
-QEMU is an emulator. In this case we use the variant that can fully emulate ARM
-systems. We use QEMU to run embedded programs on the host. Thanks to this you
-can follow some parts of this book even if you don't have any hardware with you!
+QEMU es un emulador. En este caso usamos la variante que puede emular completamente sistemas ARM. Usamos QEMU para ejecutar programas embebidos en el host. Gracias a esto puedes ¡puedes seguir algunas partes de este libro incluso si no tienes ningún hardware contigo!
 
 ## GDB
 
-A debugger is a very important component of embedded development as you may not
-always have the luxury to log stuff to the host console. In some cases, you may
-not even have LEDs to blink on your hardware!
+Un depurador es un componente muy importante del desarrollo embebido, ya que no siempre puedes permitirte el lujo de registrar cosas en la consola del host. En algunos casos, ¡puede que ni siquiera tengas LEDs parpadeando en tu hardware!
 
-In general, LLDB works as well as GDB when it comes to debugging but we haven't
-found an LLDB counterpart to GDB's `load` command, which uploads the program to
-the target hardware, so currently we recommend that you use GDB.
+En general, LLDB funciona tan bien como GDB cuando se trata de depuración, pero no hemos encontrado una contraparte de LLDB al comando `load` de GDB, que carga el programa en el hardware de destino, por lo que actualmente recomendamos que utilices GDB.
 
 ## OpenOCD
 
-GDB isn't able to communicate directly with the ST-Link debugging hardware on
-your STM32F3DISCOVERY development board. It needs a translator and the Open
-On-Chip Debugger, OpenOCD, is that translator. OpenOCD is a program that runs
-on your laptop/PC and translates between GDB's TCP/IP based remote debug
-protocol and ST-Link's USB based protocol.
+GDB no es capaz de comunicarse directamente con el hardware de depuración ST-Link en tu tarjeta de desarrollo STM32F3DISCOVERY. Necesita un traductor y el Open On-Chip Debugger, OpenOCD, es ese traductor. OpenOCD es un programa que se ejecuta en tu laptop/PC y traduce entre el protocolo de depuración remota basado en TCP/IP de GDB y el protocolo USB de ST-Link. de GDB y el protocolo basado en USB de ST-Link.
 
-OpenOCD also performs other important work as part of its translation for the
-debugging of the ARM Cortex-M based microcontroller on your STM32F3DISCOVERY
-development board:
-* It knows how to interact with the memory mapped registers used by the ARM
-  CoreSight debug peripheral. It is these CoreSight registers that allow for:
-  * Breakpoint/Watchpoint manipulation
-  * Reading and writing of the CPU registers
-  * Detecting when the CPU has been halted for a debug event
-  * Continuing CPU execution after a debug event has been encountered
+OpenOCD también realiza otros trabajos importantes como parte de la traducción para la depuración del microcontrolador ARM Cortex-M basado en la tarjeta de desarrollo STM32F3DISCOVERY:
+* Sabe cómo interactuar con los registros mapeados en memoria utilizados por el periférico de depuración ARM CoreSight. Son estos registros CoreSight los que permiten:
+  * Manipulación de Breakpoint/Watchpoint
+  * Lectura y escritura de los registros de la CPU
+  * Detectar cuando la CPU ha sido detenida por un evento de depuración
+  * Continuar la ejecución de la CPU después de un evento de depuración
   * etc.
-* It also knows how to erase and write to the microcontroller's FLASH
+* También sabe cómo borrar y escribir en la FLASH del microcontrolador.
