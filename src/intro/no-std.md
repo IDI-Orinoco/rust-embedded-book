@@ -20,18 +20,19 @@ Como se mencionó antes, el uso de [libstd](https://doc.rust-lang.org/std/) requ
 
 | característica                                            | no\_std | std |
 |-----------------------------------------------------------|--------|-----|
-| pila (memoria dinámica)                                   |   *    |  ✓  |
-| colecciones (Vec, HashMap, etc)                           |  **    |  ✓  |
-| protección contra desbordamiento de pila                  |   ✘    |  ✓  |
-| ejecuta el código init antes del main                     |   ✘    |  ✓  |
-| libstd disponible                                         |   ✘    |  ✓  |
-| libcore disponible                                        |   ✓    |  ✓  |
-| escribir el código de firmware, kernel o bootloader       |   ✓    |  ✘  |
+| heap (dynamic memory)                                     |   *    |  ✓  |
+| collections (Vec, BTreeMap, etc)                          |  **    |  ✓  |
+| stack overflow protection                                 |   ✘    |  ✓  |
+| runs init code before main                                |   ✘    |  ✓  |
+| libstd available                                          |   ✘    |  ✓  |
+| libcore available                                         |   ✓    |  ✓  |
+| writing firmware, kernel, or bootloader code              |   ✓    |  ✘  |
 
 \* Sólo si usas el crate `alloc` y utilizas un asignador adecuado como [alloc-cortex-m].
 
-\** Sólo si usas el crate `collections` y configuras un asignador global por defecto.
+\** Only if you use the `collections` crate and configure a global default allocator.
 
+\** HashMap y HashSet no están disponibles debido a la falta de un generador de números aleatorios seguro.
 [alloc-cortex-m]: https://github.com/rust-embedded/alloc-cortex-m
 
 ## Ver también
