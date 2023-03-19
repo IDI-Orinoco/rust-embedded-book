@@ -3,12 +3,9 @@
 <a id="c-zst-pin"></a>
 ## Pin types are zero-sized by default (C-ZST-PIN)
 
-GPIO Interfaces exposed by the HAL should provide dedicated zero-sized types for
-each pin on every interface or port, resulting in a zero-cost GPIO abstraction
-when all pin assignments are statically known.
+GPIO Interfaces exposed by the HAL should provide dedicated zero-sized types for each pin on every interface or port, resulting in a zero-cost GPIO abstraction when all pin assignments are statically known.
 
-Each GPIO Interface or Port should implement a `split` method returning a
-struct with every pin.
+Each GPIO Interface or Port should implement a `split` method returning a struct with every pin.
 
 Example:
 
@@ -39,8 +36,7 @@ pub struct PortAPins {
 <a id="c-erased-pin"></a>
 ## Pin types provide methods to erase pin and port (C-ERASED-PIN)
 
-Pins should provide type erasure methods that move their properties from
-compile time to runtime, and allow more flexibility in applications.
+Pins should provide type erasure methods that move their properties from compile time to runtime, and allow more flexibility in applications.
 
 Example:
 
@@ -86,21 +82,15 @@ enum Port {
 <a id="c-pin-state"></a>
 ## Pin state should be encoded as type parameters (C-PIN-STATE)
 
-Pins may be configured as input or output with different characteristics
-depending on the chip or family. This state should be encoded in the type system
-to prevent use of pins in incorrect states.
+Pins may be configured as input or output with different characteristics depending on the chip or family. This state should be encoded in the type system to prevent use of pins in incorrect states.
 
-Additional, chip-specific state (eg. drive strength) may also be encoded in this
-way, using additional type parameters.
+Additional, chip-specific state (eg. drive strength) may also be encoded in this way, using additional type parameters.
 
-Methods for changing the pin state should be provided as `into_input` and
-`into_output` methods.
+Methods for changing the pin state should be provided as `into_input` and `into_output` methods.
 
-Additionally, `with_{input,output}_state` methods should be provided that
-temporarily reconfigure a pin in a different state without moving it.
+Additionally, `with_{input,output}_state` methods should be provided that temporarily reconfigure a pin in a different state without moving it.
 
-The following methods should be provided for every pin type (that is, both
-erased and non-erased pin types should provide the same API):
+The following methods should be provided for every pin type (that is, both erased and non-erased pin types should provide the same API):
 
 * `pub fn into_input<N: InputState>(self, input: N) -> Pin<N>`
 * `pub fn into_output<N: OutputState>(self, output: N) -> Pin<N>`
@@ -120,9 +110,7 @@ erased and non-erased pin types should provide the same API):
   ```
 
 
-Pin state should be bounded by sealed traits. Users of the HAL should have no
-need to add their own state. The traits can provide HAL-specific methods
-required to implement the pin state API.
+Pin state should be bounded by sealed traits. Users of the HAL should have no need to add their own state. The traits can provide HAL-specific methods required to implement the pin state API.
 
 Example:
 

@@ -1,42 +1,32 @@
 # Hardware
 
-By now you should be somewhat familiar with the tooling and the development
-process. In this section we'll switch to real hardware; the process will remain
-largely the same. Let's dive in.
+By now you should be somewhat familiar with the tooling and the development process. In this section we'll switch to real hardware; the process will remain largely the same. Let's dive in.
 
 ## Know your hardware
 
-Before we begin you need to identify some characteristics of the target device
-as these will be used to configure the project:
+Before we begin you need to identify some characteristics of the target device as these will be used to configure the project:
 
 - The ARM core. e.g. Cortex-M3.
 
 - Does the ARM core include an FPU? Cortex-M4**F** and Cortex-M7**F** cores do.
 
-- How much Flash memory and RAM does the target device have? e.g. 256 KiB of
-  Flash and 32 KiB of RAM.
+- How much Flash memory and RAM does the target device have? e.g. 256 KiB of   Flash and 32 KiB of RAM.
 
-- Where are Flash memory and RAM mapped in the address space? e.g. RAM is
-  commonly located at address `0x2000_0000`.
+- Where are Flash memory and RAM mapped in the address space? e.g. RAM is   commonly located at address `0x2000_0000`.
 
-You can find this information in the data sheet or the reference manual of your
-device.
+You can find this information in the data sheet or the reference manual of your device.
 
-In this section we'll be using our reference hardware, the STM32F3DISCOVERY.
-This board contains an STM32F303VCT6 microcontroller. This microcontroller has:
+In this section we'll be using our reference hardware, the STM32F3DISCOVERY. This board contains an STM32F303VCT6 microcontroller. This microcontroller has:
 
 - A Cortex-M4F core that includes a single precision FPU
 
 - 256 KiB of Flash located at address 0x0800_0000.
 
-- 40 KiB of RAM located at address 0x2000_0000. (There's another RAM region but
-  for simplicity we'll ignore it).
+- 40 KiB of RAM located at address 0x2000_0000. (There's another RAM region but   for simplicity we'll ignore it).
 
 ## Configuring
 
-We'll start from scratch with a fresh template instance. Refer to the
-[previous section on QEMU] for a refresher on how to do this without
-`cargo-generate`.
+We'll start from scratch with a fresh template instance. Refer to the [previous section on QEMU] for a refresher on how to do this without `cargo-generate`.
 
 [previous section on QEMU]: qemu.md
 
@@ -65,8 +55,7 @@ target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 
 We'll use `thumbv7em-none-eabihf` as that covers the Cortex-M4F core.
 
-The second step is to enter the memory region information into the `memory.x`
-file.
+The second step is to enter the memory region information into the `memory.x` file.
 
 ``` text
 $ cat memory.x
@@ -82,11 +71,9 @@ MEMORY
 > the first build of a specific build target, then do `cargo clean` before
 > `cargo build`, because `cargo build` may not track updates of `memory.x`.
 
-We'll start with the hello example again, but first we have to make a small
-change.
+We'll start with the hello example again, but first we have to make a small change.
 
-In `examples/hello.rs`, make sure the `debug::exit()` call is commented out or
-removed. It is used only for running in QEMU.
+In `examples/hello.rs`, make sure the `debug::exit()` call is commented out or removed. It is used only for running in QEMU.
 
 ```rust,ignore
 #[entry]
@@ -101,10 +88,7 @@ fn main() -> ! {
 }
 ```
 
-You can now cross compile programs using `cargo build`
-and inspect the binaries using `cargo-binutils` as you did before. The
-`cortex-m-rt` crate handles all the magic required to get your chip running,
-as helpfully, pretty much all Cortex-M CPUs boot in the same fashion.
+You can now cross compile programs using `cargo build` and inspect the binaries using `cargo-binutils` as you did before. The `cortex-m-rt` crate handles all the magic required to get your chip running, as helpfully, pretty much all Cortex-M CPUs boot in the same fashion.
 
 ``` console
 cargo build --example hello
@@ -112,23 +96,15 @@ cargo build --example hello
 
 ## Debugging
 
-Debugging will look a bit different. In fact, the first steps can look different
-depending on the target device. In this section we'll show the steps required to
-debug a program running on the STM32F3DISCOVERY. This is meant to serve as a
-reference; for device specific information about debugging check out [the
-Debugonomicon](https://github.com/rust-embedded/debugonomicon).
+Debugging will look a bit different. In fact, the first steps can look different depending on the target device. In this section we'll show the steps required to debug a program running on the STM32F3DISCOVERY. This is meant to serve as a reference; for device specific information about debugging check out [the Debugonomicon](https://github.com/rust-embedded/debugonomicon).
 
-As before we'll do remote debugging and the client will be a GDB process. This
-time, however, the server will be OpenOCD.
+As before we'll do remote debugging and the client will be a GDB process. This time, however, the server will be OpenOCD.
 
-As done during the [verify] section connect the discovery board to your laptop /
-PC and check that the ST-LINK header is populated.
+As done during the [verify] section connect the discovery board to your laptop / PC and check that the ST-LINK header is populated.
 
 [verify]: ../intro/install/verify.md
 
-On a terminal run `openocd` to connect to the ST-LINK on the discovery board.
-Run this command from the root of the template; `openocd` will pick up the
-`openocd.cfg` file which indicates which interface file and target file to use.
+On a terminal run `openocd` to connect to the ST-LINK on the discovery board. Run this command from the root of the template; `openocd` will pick up the `openocd.cfg` file which indicates which interface file and target file to use.
 
 ``` console
 cat openocd.cfg
@@ -179,9 +155,7 @@ On another terminal run GDB, also from the root of the template.
 gdb-multiarch -q target/thumbv7em-none-eabihf/debug/examples/hello
 ```
 
-**NOTE**: like before you might need another version of gdb instead of `gdb-multiarch` depending
-on which one you installed in the installation chapter. This could also be
-`arm-none-eabi-gdb` or just `gdb`.
+**NOTE**: like before you might need another version of gdb instead of `gdb-multiarch` depending on which one you installed in the installation chapter. This could also be `arm-none-eabi-gdb` or just `gdb`.
 
 Next connect GDB to OpenOCD, which is waiting for a TCP connection on port 3333.
 
@@ -191,8 +165,7 @@ Remote debugging using :3333
 0x00000000 in ?? ()
 ```
 
-Now proceed to *flash* (load) the program onto the microcontroller using the
-`load` command.
+Now proceed to *flash* (load) the program onto the microcontroller using the `load` command.
 
 ``` console
 (gdb) load
@@ -203,9 +176,7 @@ Start address 0x08000400, load size 7468
 Transfer rate: 13 KB/sec, 2489 bytes/write.
 ```
 
-The program is now loaded. This program uses semihosting so before we do any
-semihosting call we have to tell OpenOCD to enable semihosting. You can send
-commands to OpenOCD using the `monitor` command.
+The program is now loaded. This program uses semihosting so before we do any semihosting call we have to tell OpenOCD to enable semihosting. You can send commands to OpenOCD using the `monitor` command.
 
 ``` console
 (gdb) monitor arm semihosting enable
@@ -214,8 +185,7 @@ semihosting is enabled
 
 > You can see all the OpenOCD commands by invoking the `monitor help` command.
 
-Like before we can skip all the way to `main` using a breakpoint and the
-`continue` command.
+Like before we can skip all the way to `main` using a breakpoint and the `continue` command.
 
 ``` console
 (gdb) break main
@@ -243,8 +213,7 @@ hello::__cortex_m_rt_main () at examples/hello.rs:13
 13          hprintln!("Hello, world!").unwrap();
 ```
 
-After advancing the program with `next` you should see "Hello, world!" printed on the OpenOCD console,
-among other stuff.
+After advancing the program with `next` you should see "Hello, world!" printed on the OpenOCD console, among other stuff.
 
 ``` console
 $ openocd
@@ -271,8 +240,7 @@ A debugging session is active.
 Quit anyway? (y or n)
 ```
 
-Debugging now requires a few more steps so we have packed all those steps into a
-single GDB script named `openocd.gdb`. The file was created during the `cargo generate` step, and should work without any modifications. Let's have a peek:
+Debugging now requires a few more steps so we have packed all those steps into a single GDB script named `openocd.gdb`. The file was created during the `cargo generate` step, and should work without any modifications. Let's have a peek:
 
 ``` console
 cat openocd.gdb
@@ -297,12 +265,9 @@ load
 stepi
 ```
 
-Now running `<gdb> -x openocd.gdb target/thumbv7em-none-eabihf/debug/examples/hello` will immediately connect GDB to
-OpenOCD, enable semihosting, load the program and start the process.
+Now running `<gdb> -x openocd.gdb target/thumbv7em-none-eabihf/debug/examples/hello` will immediately connect GDB to OpenOCD, enable semihosting, load the program and start the process.
 
-Alternatively, you can turn `<gdb> -x openocd.gdb` into a custom runner to make
-`cargo run` build a program *and* start a GDB session. This runner is included
-in `.cargo/config.toml` but it's commented out.
+Alternatively, you can turn `<gdb> -x openocd.gdb` into a custom runner to make `cargo run` build a program *and* start a GDB session. This runner is included in `.cargo/config.toml` but it's commented out.
 
 ``` console
 head -n10 .cargo/config.toml

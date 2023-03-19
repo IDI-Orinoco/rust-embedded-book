@@ -1,14 +1,10 @@
 # Verify Installation
 
-In this section we check that some of the required tools / drivers have been
-correctly installed and configured.
+In this section we check that some of the required tools / drivers have been correctly installed and configured.
 
-Connect your laptop / PC to the discovery board using a micro USB cable. The
-discovery board has two USB connectors; use the one labeled "USB ST-LINK" that
-sits on the center of the edge of the board.
+Connect your laptop / PC to the discovery board using a micro USB cable. The discovery board has two USB connectors; use the one labeled "USB ST-LINK" that sits on the center of the edge of the board.
 
-Also check that the ST-LINK header is populated. See the picture below; the
-ST-LINK header is highlighted.
+Also check that the ST-LINK header is populated. See the picture below; the ST-LINK header is highlighted.
 
 <p align="center">
 <img title="Connected discovery board" src="../../assets/verify.jpeg">
@@ -45,9 +41,7 @@ Info : Target voltage: 2.919881
 Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 ```
 
-The contents may not match exactly but you should get the last line about
-breakpoints and watchpoints. If you got it then terminate the OpenOCD process
-and move to the [next section].
+The contents may not match exactly but you should get the last line about breakpoints and watchpoints. If you got it then terminate the OpenOCD process and move to the [next section].
 
 [next section]: ../../start/index.md
 
@@ -61,18 +55,12 @@ openocd -f interface/stlink-v2.cfg -f target/stm32f3x.cfg
 openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
 ```
 
-If one of those commands works it means you got an old hardware revision of the
-discovery board. That won't be a problem but commit that fact to memory as
-you'll need to configure things a bit differently later on. You can move to the
-[next section].
+If one of those commands works it means you got an old hardware revision of the discovery board. That won't be a problem but commit that fact to memory as you'll need to configure things a bit differently later on. You can move to the [next section].
 
-If none of the commands work as a normal user then try to run them with root
-permission (e.g. `sudo openocd ..`). If the commands do work with root
-permission then check that the [udev rules] have been correctly set.
+If none of the commands work as a normal user then try to run them with root permission (e.g. `sudo openocd ..`). If the commands do work with root permission then check that the [udev rules] have been correctly set.
 
 [udev rules]: linux.md#udev-rules
 
-If you have reached this point and OpenOCD is not working please open [an issue]
-and we'll help you out!
+If you have reached this point and OpenOCD is not working please open [an issue] and we'll help you out!
 
 [an issue]: https://github.com/rust-embedded/book/issues

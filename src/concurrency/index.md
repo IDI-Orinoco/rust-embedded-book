@@ -1,26 +1,16 @@
 # Concurrency
 
-Concurrency happens whenever different parts of your program might execute
-at different times or out of order. In an embedded context, this includes:
+Concurrency happens whenever different parts of your program might execute at different times or out of order. In an embedded context, this includes:
 
 * interrupt handlers, which run whenever the associated interrupt happens,
-* various forms of multithreading, where your microprocessor regularly swaps
-  between parts of your program,
-* and in some systems, multiple-core microprocessors, where each core can be
-  independently running a different part of your program at the same time.
+* various forms of multithreading, where your microprocessor regularly swaps between parts of your program,
+* and in some systems, multiple-core microprocessors, where each core can be independently running a different part of your program at the same time.
 
-Since many embedded programs need to deal with interrupts, concurrency will
-usually come up sooner or later, and it's also where many subtle and difficult
-bugs can occur. Luckily, Rust provides a number of abstractions and safety
-guarantees to help us write correct code.
+Since many embedded programs need to deal with interrupts, concurrency will usually come up sooner or later, and it's also where many subtle and difficult bugs can occur. Luckily, Rust provides a number of abstractions and safety guarantees to help us write correct code.
 
 ## No Concurrency
 
-The simplest concurrency for an embedded program is no concurrency: your
-software consists of a single main loop which just keeps running, and there
-are no interrupts at all. Sometimes this is perfectly suited to the problem
-at hand! Typically your loop will read some inputs, perform some processing,
-and write some outputs.
+The simplest concurrency for an embedded program is no concurrency: your software consists of a single main loop which just keeps running, and there are no interrupts at all. Sometimes this is perfectly suited to the problem at hand! Typically your loop will read some inputs, perform some processing, and write some outputs.
 
 ```rust,ignore
 #[entry]
@@ -34,29 +24,17 @@ fn main() {
 }
 ```
 
-Since there's no concurrency, there's no need to worry about sharing data
-between parts of your program or synchronising access to peripherals. If
-you can get away with such a simple approach this can be a great solution.
+Since there's no concurrency, there's no need to worry about sharing data between parts of your program or synchronising access to peripherals. If you can get away with such a simple approach this can be a great solution.
 
 ## Global Mutable Data
 
-Unlike non-embedded Rust, we will not usually have the luxury of creating
-heap allocations and passing references to that data into a newly-created
-thread. Instead, our interrupt handlers might be called at any time and must
-know how to access whatever shared memory we are using. At the lowest level,
-this means we must have _statically allocated_ mutable memory, which
-both the interrupt handler and the main code can refer to.
+Unlike non-embedded Rust, we will not usually have the luxury of creating heap allocations and passing references to that data into a newly-created thread. Instead, our interrupt handlers might be called at any time and must know how to access whatever shared memory we are using. At the lowest level, this means we must have _statically allocated_ mutable memory, which both the interrupt handler and the main code can refer to.
 
-In Rust, such [`static mut`] variables are always unsafe to read or write,
-because without taking special care, you might trigger a race condition,
-where your access to the variable is interrupted halfway through by an
-interrupt which also accesses that variable.
+In Rust, such [`static mut`] variables are always unsafe to read or write, because without taking special care, you might trigger a race condition, where your access to the variable is interrupted halfway through by an interrupt which also accesses that variable.
 
 [`static mut`]: https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#accessing-or-modifying-a-mutable-static-variable
 
-For an example of how this behaviour can cause subtle errors in your code,
-consider an embedded program which counts rising edges of some input signal
-in each one-second period (a frequency counter):
+For an example of how this behaviour can cause subtle errors in your code, consider an embedded program which counts rising edges of some input signal in each one-second period (a frequency counter):
 
 ```rust,ignore
 static mut COUNTER: u32 = 0;
@@ -81,23 +59,11 @@ fn timer() {
 }
 ```
 
-Each second, the timer interrupt sets the counter back to 0. Meanwhile, the
-main loop continually measures the signal, and incremements the counter when
-it sees a change from low to high. We've had to use `unsafe` to access
-`COUNTER`, as it's `static mut`, and that means we're promising the compiler
-we won't cause any undefined behaviour. Can you spot the race condition? The
-increment on `COUNTER` is _not_ guaranteed to be atomic — in fact, on most
-embedded platforms, it will be split into a load, then the increment, then
-a store. If the interrupt fired after the load but before the store, the
-reset back to 0 would be ignored after the interrupt returns — and we would
-count twice as many transitions for that period.
+Each second, the timer interrupt sets the counter back to 0. Meanwhile, the main loop continually measures the signal, and incremements the counter when it sees a change from low to high. We've had to use `unsafe` to access `COUNTER`, as it's `static mut`, and that means we're promising the compiler we won't cause any undefined behaviour. Can you spot the race condition? The increment on `COUNTER` is _not_ guaranteed to be atomic — in fact, on most embedded platforms, it will be split into a load, then the increment, then a store. If the interrupt fired after the load but before the store, the reset back to 0 would be ignored after the interrupt returns — and we would count twice as many transitions for that period.
 
 ## Critical Sections
 
-So, what can we do about data races? A simple approach is to use _critical
-sections_, a context where interrupts are disabled. By wrapping the access to
-`COUNTER` in `main` in a critical section, we can be sure the timer interrupt
-will not fire until we're finished incrementing `COUNTER`:
+So, what can we do about data races? A simple approach is to use _critical sections_, a context where interrupts are disabled. By wrapping the access to `COUNTER` in `main` in a critical section, we can be sure the timer interrupt will not fire until we're finished incrementing `COUNTER`:
 
 ```rust,ignore
 static mut COUNTER: u32 = 0;
@@ -124,39 +90,22 @@ fn timer() {
 }
 ```
 
-In this example, we use `cortex_m::interrupt::free`, but other platforms will
-have similar mechanisms for executing code in a critical section. This is also
-the same as disabling interrupts, running some code, and then re-enabling
-interrupts.
+In this example, we use `cortex_m::interrupt::free`, but other platforms will have similar mechanisms for executing code in a critical section. This is also the same as disabling interrupts, running some code, and then re-enabling interrupts.
 
-Note we didn't need to put a critical section inside the timer interrupt,
-for two reasons:
+Note we didn't need to put a critical section inside the timer interrupt, for two reasons:
 
   * Writing 0 to `COUNTER` can't be affected by a race since we don't read it
   * It will never be interrupted by the `main` thread anyway
 
-If `COUNTER` was being shared by multiple interrupt handlers that might
-_preempt_ each other, then each one might require a critical section as well.
+If `COUNTER` was being shared by multiple interrupt handlers that might _preempt_ each other, then each one might require a critical section as well.
 
 This solves our immediate problem, but we're still left writing a lot of unsafe code which we need to carefully reason about, and we might be using critical sections needlessly. Since each critical section temporarily pauses interrupt processing, there is an associated cost of some extra code size and higher interrupt latency and jitter (interrupts may take longer to be processed, and the time until they are processed will be more variable). Whether this is a problem depends on your system, but in general, we'd like to avoid it.
 
-It's worth noting that while a critical section guarantees no interrupts will
-fire, it does not provide an exclusivity guarantee on multi-core systems!  The
-other core could be happily accessing the same memory as your core, even
-without interrupts. You will need stronger synchronisation primitives if you
-are using multiple cores.
+It's worth noting that while a critical section guarantees no interrupts will fire, it does not provide an exclusivity guarantee on multi-core systems!  The other core could be happily accessing the same memory as your core, even without interrupts. You will need stronger synchronisation primitives if you are using multiple cores.
 
 ## Atomic Access
 
-On some platforms, special atomic instructions are available, which provide
-guarantees about read-modify-write operations. Specifically for Cortex-M: `thumbv6`
-(Cortex-M0, Cortex-M0+) only provide atomic load and store instructions,
-while `thumbv7` (Cortex-M3 and above) provide full Compare and Swap (CAS)
-instructions. These CAS instructions give an alternative to the heavy-handed
-disabling of all interrupts: we can attempt the increment, it will succeed most
-of the time, but if it was interrupted it will automatically retry the entire
-increment operation. These atomic operations are safe even across multiple
-cores.
+On some platforms, special atomic instructions are available, which provide guarantees about read-modify-write operations. Specifically for Cortex-M: `thumbv6` (Cortex-M0, Cortex-M0+) only provide atomic load and store instructions, while `thumbv7` (Cortex-M3 and above) provide full Compare and Swap (CAS) instructions. These CAS instructions give an alternative to the heavy-handed disabling of all interrupts: we can attempt the increment, it will succeed most of the time, but if it was interrupted it will automatically retry the entire increment operation. These atomic operations are safe even across multiple cores.
 
 ```rust,ignore
 use core::sync::atomic::{AtomicUsize, Ordering};
@@ -184,18 +133,9 @@ fn timer() {
 }
 ```
 
-This time `COUNTER` is a safe `static` variable. Thanks to the `AtomicUsize`
-type `COUNTER` can be safely modified from both the interrupt handler and the
-main thread without disabling interrupts. When possible, this is a better
-solution — but it may not be supported on your platform.
+This time `COUNTER` is a safe `static` variable. Thanks to the `AtomicUsize` type `COUNTER` can be safely modified from both the interrupt handler and the main thread without disabling interrupts. When possible, this is a better solution — but it may not be supported on your platform.
 
-A note on [`Ordering`]: this affects how the compiler and hardware may reorder
-instructions, and also has consequences on cache visibility. Assuming that the
-target is a single core platform `Relaxed` is sufficient and the most efficient
-choice in this particular case. Stricter ordering will cause the compiler to
-emit memory barriers around the atomic operations; depending on what you're
-using atomics for you may or may not need this! The precise details of the
-atomic model are complicated and best described elsewhere.
+A note on [`Ordering`]: this affects how the compiler and hardware may reorder instructions, and also has consequences on cache visibility. Assuming that the target is a single core platform `Relaxed` is sufficient and the most efficient choice in this particular case. Stricter ordering will cause the compiler to emit memory barriers around the atomic operations; depending on what you're using atomics for you may or may not need this! The precise details of the atomic model are complicated and best described elsewhere.
 
 For more details on atomics and ordering, see the [nomicon].
 
@@ -205,13 +145,9 @@ For more details on atomics and ordering, see the [nomicon].
 
 ## Abstractions, Send, and Sync
 
-None of the above solutions are especially satisfactory. They require `unsafe`
-blocks which must be very carefully checked and are not ergonomic. Surely we
-can do better in Rust!
+None of the above solutions are especially satisfactory. They require `unsafe` blocks which must be very carefully checked and are not ergonomic. Surely we can do better in Rust!
 
-We can abstract our counter into a safe interface which can be safely used
-anywhere else in our code. For this example, we'll use the critical-section
-counter, but you could do something very similar with atomics.
+We can abstract our counter into a safe interface which can be safely used anywhere else in our code. For this example, we'll use the critical-section counter, but you could do something very similar with atomics.
 
 ```rust,ignore
 use core::cell::UnsafeCell;
@@ -272,71 +208,33 @@ fn timer() {
 }
 ```
 
-We've moved our `unsafe` code to inside our carefully-planned abstraction,
-and now our application code does not contain any `unsafe` blocks.
+We've moved our `unsafe` code to inside our carefully-planned abstraction, and now our application code does not contain any `unsafe` blocks.
 
-This design requires that the application pass a `CriticalSection` token in:
-these tokens are only safely generated by `interrupt::free`, so by requiring
-one be passed in, we ensure we are operating inside a critical section, without
-having to actually do the lock ourselves. This guarantee is provided statically
-by the compiler: there won't be any runtime overhead associated with `cs`.
-If we had multiple counters, they could all be given the same `cs`, without
-requiring multiple nested critical sections.
+This design requires that the application pass a `CriticalSection` token in: these tokens are only safely generated by `interrupt::free`, so by requiring one be passed in, we ensure we are operating inside a critical section, without having to actually do the lock ourselves. This guarantee is provided statically by the compiler: there won't be any runtime overhead associated with `cs`. If we had multiple counters, they could all be given the same `cs`, without requiring multiple nested critical sections.
 
-This also brings up an important topic for concurrency in Rust: the
-[`Send` and `Sync`] traits. To summarise the Rust book, a type is Send
-when it can safely be moved to another thread, while it is Sync when
-it can be safely shared between multiple threads. In an embedded context,
-we consider interrupts to be executing in a separate thread to the application
-code, so variables accessed by both an interrupt and the main code must be
-Sync.
+This also brings up an important topic for concurrency in Rust: the [`Send` and `Sync`] traits. To summarise the Rust book, a type is Send when it can safely be moved to another thread, while it is Sync when it can be safely shared between multiple threads. In an embedded context, we consider interrupts to be executing in a separate thread to the application code, so variables accessed by both an interrupt and the main code must be Sync.
 
 [`Send` and `Sync`]: https://doc.rust-lang.org/nomicon/send-and-sync.html
 
-For most types in Rust, both of these traits are automatically derived for you
-by the compiler. However, because `CSCounter` contains an [`UnsafeCell`], it is
-not Sync, and therefore we could not make a `static CSCounter`: `static`
-variables _must_ be Sync, since they can be accessed by multiple threads.
+For most types in Rust, both of these traits are automatically derived for you by the compiler. However, because `CSCounter` contains an [`UnsafeCell`], it is not Sync, and therefore we could not make a `static CSCounter`: `static` variables _must_ be Sync, since they can be accessed by multiple threads.
 
 [`UnsafeCell`]: https://doc.rust-lang.org/core/cell/struct.UnsafeCell.html
 
-To tell the compiler we have taken care that the `CSCounter` is in fact safe
-to share between threads, we implement the Sync trait explicitly. As with the
-previous use of critical sections, this is only safe on single-core platforms:
-with multiple cores, you would need to go to greater lengths to ensure safety.
+To tell the compiler we have taken care that the `CSCounter` is in fact safe to share between threads, we implement the Sync trait explicitly. As with the previous use of critical sections, this is only safe on single-core platforms: with multiple cores, you would need to go to greater lengths to ensure safety.
 
 ## Mutexes
 
-We've created a useful abstraction specific to our counter problem, but
-there are many common abstractions used for concurrency.
+We've created a useful abstraction specific to our counter problem, but there are many common abstractions used for concurrency.
 
-One such _synchronisation primitive_ is a mutex, short for mutual exclusion.
-These constructs ensure exclusive access to a variable, such as our counter. A
-thread can attempt to _lock_ (or _acquire_) the mutex, and either succeeds
-immediately, or blocks waiting for the lock to be acquired, or returns an error
-that the mutex could not be locked. While that thread holds the lock, it is
-granted access to the protected data. When the thread is done, it _unlocks_ (or
-_releases_) the mutex, allowing another thread to lock it. In Rust, we would
-usually implement the unlock using the [`Drop`] trait to ensure it is always
-released when the mutex goes out of scope.
+One such _synchronisation primitive_ is a mutex, short for mutual exclusion. These constructs ensure exclusive access to a variable, such as our counter. A thread can attempt to _lock_ (or _acquire_) the mutex, and either succeeds immediately, or blocks waiting for the lock to be acquired, or returns an error that the mutex could not be locked. While that thread holds the lock, it is granted access to the protected data. When the thread is done, it _unlocks_ (or _releases_) the mutex, allowing another thread to lock it. In Rust, we would usually implement the unlock using the [`Drop`] trait to ensure it is always released when the mutex goes out of scope.
 
 [`Drop`]: https://doc.rust-lang.org/core/ops/trait.Drop.html
 
-Using a mutex with interrupt handlers can be tricky: it is not normally
-acceptable for the interrupt handler to block, and it would be especially
-disastrous for it to block waiting for the main thread to release a lock,
-since we would then _deadlock_ (the main thread will never release the lock
-because execution stays in the interrupt handler). Deadlocking is not
-considered unsafe: it is possible even in safe Rust.
+Using a mutex with interrupt handlers can be tricky: it is not normally acceptable for the interrupt handler to block, and it would be especially disastrous for it to block waiting for the main thread to release a lock, since we would then _deadlock_ (the main thread will never release the lock because execution stays in the interrupt handler). Deadlocking is not considered unsafe: it is possible even in safe Rust.
 
-To avoid this behaviour entirely, we could implement a mutex which requires
-a critical section to lock, just like our counter example. So long as the
-critical section must last as long as the lock, we can be sure we have
-exclusive access to the wrapped variable without even needing to track
-the lock/unlock state of the mutex.
+To avoid this behaviour entirely, we could implement a mutex which requires a critical section to lock, just like our counter example. So long as the critical section must last as long as the lock, we can be sure we have exclusive access to the wrapped variable without even needing to track the lock/unlock state of the mutex.
 
-This is in fact done for us in the `cortex_m` crate! We could have written
-our counter using it:
+This is in fact done for us in the `cortex_m` crate! We could have written our counter using it:
 
 ```rust,ignore
 use core::cell::Cell;
@@ -365,48 +263,23 @@ fn timer() {
 }
 ```
 
-We're now using [`Cell`], which along with its sibling `RefCell` is used to
-provide safe interior mutability. We've already seen `UnsafeCell` which is
-the bottom layer of interior mutability in Rust: it allows you to obtain
-multiple mutable references to its value, but only with unsafe code. A `Cell`
-is like an `UnsafeCell` but it provides a safe interface: it only permits
-taking a copy of the current value or replacing it, not taking a reference,
-and since it is not Sync, it cannot be shared between threads. These
-constraints mean it's safe to use, but we couldn't use it directly in a
-`static` variable as a `static` must be Sync.
+We're now using [`Cell`], which along with its sibling `RefCell` is used to provide safe interior mutability. We've already seen `UnsafeCell` which is the bottom layer of interior mutability in Rust: it allows you to obtain multiple mutable references to its value, but only with unsafe code. A `Cell` is like an `UnsafeCell` but it provides a safe interface: it only permits taking a copy of the current value or replacing it, not taking a reference, and since it is not Sync, it cannot be shared between threads. These constraints mean it's safe to use, but we couldn't use it directly in a `static` variable as a `static` must be Sync.
 
 [`Cell`]: https://doc.rust-lang.org/core/cell/struct.Cell.html
 
-So why does the example above work? The `Mutex<T>` implements Sync for any
-`T` which is Send — such as a `Cell`. It can do this safely because it only
-gives access to its contents during a critical section. We're therefore able
-to get a safe counter with no unsafe code at all!
+So why does the example above work? The `Mutex<T>` implements Sync for any `T` which is Send — such as a `Cell`. It can do this safely because it only gives access to its contents during a critical section. We're therefore able to get a safe counter with no unsafe code at all!
 
-This is great for simple types like the `u32` of our counter, but what about
-more complex types which are not Copy? An extremely common example in an
-embedded context is a peripheral struct, which generally is not Copy.
-For that, we can turn to `RefCell`.
+This is great for simple types like the `u32` of our counter, but what about more complex types which are not Copy? An extremely common example in an embedded context is a peripheral struct, which generally is not Copy. For that, we can turn to `RefCell`.
 
 ## Sharing Peripherals
 
-Device crates generated using `svd2rust` and similar abstractions provide
-safe access to peripherals by enforcing that only one instance of the
-peripheral struct can exist at a time. This ensures safety, but makes it
-difficult to access a peripheral from both the main thread and an interrupt
-handler.
+Device crates generated using `svd2rust` and similar abstractions provide safe access to peripherals by enforcing that only one instance of the peripheral struct can exist at a time. This ensures safety, but makes it difficult to access a peripheral from both the main thread and an interrupt handler.
 
-To safely share peripheral access, we can use the `Mutex` we saw before. We'll
-also need to use [`RefCell`], which uses a runtime check to ensure only one
-reference to a peripheral is given out at a time. This has more overhead than
-the plain `Cell`, but since we are giving out references rather than copies,
-we must be sure only one exists at a time.
+To safely share peripheral access, we can use the `Mutex` we saw before. We'll also need to use [`RefCell`], which uses a runtime check to ensure only one reference to a peripheral is given out at a time. This has more overhead than the plain `Cell`, but since we are giving out references rather than copies, we must be sure only one exists at a time.
 
 [`RefCell`]: https://doc.rust-lang.org/core/cell/struct.RefCell.html
 
-Finally, we'll also have to account for somehow moving the peripheral into
-the shared variable after it has been initialised in the main code. To do
-this we can use the `Option` type, initialised to `None` and later set to
-the instance of the peripheral.
+Finally, we'll also have to account for somehow moving the peripheral into the shared variable after it has been initialised in the main code. To do this we can use the `Option` type, initialised to `None` and later set to the instance of the peripheral.
 
 ```rust,ignore
 use core::cell::RefCell;
@@ -476,22 +349,13 @@ static MY_GPIO: Mutex<RefCell<Option<stm32f405::GPIOA>>> =
     Mutex::new(RefCell::new(None));
 ```
 
-Our shared variable is now a `Mutex` around a `RefCell` which contains an
-`Option`. The `Mutex` ensures we only have access during a critical section,
-and therefore makes the variable Sync, even though a plain `RefCell` would not
-be Sync. The `RefCell` gives us interior mutability with references, which
-we'll need to use our `GPIOA`. The `Option` lets us initialise this variable
-to something empty, and only later actually move the variable in. We cannot
-access the peripheral singleton statically, only at runtime, so this is
-required.
+Our shared variable is now a `Mutex` around a `RefCell` which contains an `Option`. The `Mutex` ensures we only have access during a critical section, and therefore makes the variable Sync, even though a plain `RefCell` would not be Sync. The `RefCell` gives us interior mutability with references, which we'll need to use our `GPIOA`. The `Option` lets us initialise this variable to something empty, and only later actually move the variable in. We cannot access the peripheral singleton statically, only at runtime, so this is required.
 
 ```rust,ignore
 interrupt::free(|cs| MY_GPIO.borrow(cs).replace(Some(dp.GPIOA)));
 ```
 
-Inside a critical section we can call `borrow()` on the mutex, which gives us
-a reference to the `RefCell`. We then call `replace()` to move our new value
-into the `RefCell`.
+Inside a critical section we can call `borrow()` on the mutex, which gives us a reference to the `RefCell`. We then call `replace()` to move our new value into the `RefCell`.
 
 ```rust,ignore
 interrupt::free(|cs| {
@@ -500,18 +364,11 @@ interrupt::free(|cs| {
 });
 ```
 
-Finally, we use `MY_GPIO` in a safe and concurrent fashion. The critical section
-prevents the interrupt firing as usual, and lets us borrow the mutex.  The
-`RefCell` then gives us an `&Option<GPIOA>`, and tracks how long it remains
-borrowed - once that reference goes out of scope, the `RefCell` will be updated
-to indicate it is no longer borrowed.
+Finally, we use `MY_GPIO` in a safe and concurrent fashion. The critical section prevents the interrupt firing as usual, and lets us borrow the mutex. The `RefCell` then gives us an `&Option<GPIOA>`, and tracks how long it remains borrowed - once that reference goes out of scope, the `RefCell` will be updated to indicate it is no longer borrowed.
 
-Since we can't move the `GPIOA` out of the `&Option`, we need to convert it to
-an `&Option<&GPIOA>` with `as_ref()`, which we can finally `unwrap()` to obtain
-the `&GPIOA` which lets us modify the peripheral.
+Since we can't move the `GPIOA` out of the `&Option`, we need to convert it to an `&Option<&GPIOA>` with `as_ref()`, which we can finally `unwrap()` to obtain the `&GPIOA` which lets us modify the peripheral.
 
-If we need a mutable reference to a shared resource, then `borrow_mut` and `deref_mut`
-should be used instead. The following code shows an example using the TIM2 timer.
+If we need a mutable reference to a shared resource, then `borrow_mut` and `deref_mut` should be used instead. The following code shows an example using the TIM2 timer.
 
 ```rust,ignore
 use core::cell::RefCell;
@@ -553,55 +410,31 @@ fn timer() {
 
 ```
 
-Whew! This is safe, but it is also a little unwieldy. Is there anything else
-we can do?
+Whew! This is safe, but it is also a little unwieldy. Is there anything else we can do?
 
 ## RTIC
 
-One alternative is the [RTIC framework], short for Real Time Interrupt-driven Concurrency. It
-enforces static priorities and tracks accesses to `static mut` variables
-("resources") to statically ensure that shared resources are always accessed
-safely, without requiring the overhead of always entering critical sections and
-using reference counting (as in `RefCell`). This has a number of advantages such
-as guaranteeing no deadlocks and giving extremely low time and memory overhead.
+One alternative is the [RTIC framework], short for Real Time Interrupt-driven Concurrency. It enforces static priorities and tracks accesses to `static mut` variables ("resources") to statically ensure that shared resources are always accessed safely, without requiring the overhead of always entering critical sections and using reference counting (as in `RefCell`). This has a number of advantages such as guaranteeing no deadlocks and giving extremely low time and memory overhead.
 
 [RTIC framework]: https://github.com/rtic-rs/cortex-m-rtic
 
-The framework also includes other features like message passing, which reduces
-the need for explicit shared state, and the ability to schedule tasks to run at
-a given time, which can be used to implement periodic tasks. Check out [the
-documentation] for more information!
+The framework also includes other features like message passing, which reduces the need for explicit shared state, and the ability to schedule tasks to run at a given time, which can be used to implement periodic tasks. Check out [the documentation] for more information!
 
 [the documentation]: https://rtic.rs
 
 ## Real Time Operating Systems
 
-Another common model for embedded concurrency is the real-time operating system
-(RTOS). While currently less well explored in Rust, they are widely used in
-traditional embedded development. Open source examples include [FreeRTOS] and
-[ChibiOS]. These RTOSs provide support for running multiple application threads
-which the CPU swaps between, either when the threads yield control (called
-cooperative multitasking) or based on a regular timer or interrupts (preemptive
-multitasking). The RTOS typically provide mutexes and other synchronisation
-primitives, and often interoperate with hardware features such as DMA engines.
+Another common model for embedded concurrency is the real-time operating system (RTOS). While currently less well explored in Rust, they are widely used in traditional embedded development. Open source examples include [FreeRTOS] and [ChibiOS]. These RTOSs provide support for running multiple application threads which the CPU swaps between, either when the threads yield control (called cooperative multitasking) or based on a regular timer or interrupts (preemptive multitasking). The RTOS typically provide mutexes and other synchronisation primitives, and often interoperate with hardware features such as DMA engines.
 
 [FreeRTOS]: https://freertos.org/
 [ChibiOS]: http://chibios.org/
 
-At the time of writing, there are not many Rust RTOS examples to point to,
-but it's an interesting area so watch this space!
+At the time of writing, there are not many Rust RTOS examples to point to, but it's an interesting area so watch this space!
 
 ## Multiple Cores
 
-It is becoming more common to have two or more cores in embedded processors,
-which adds an extra layer of complexity to concurrency. All the examples using
-a critical section (including the `cortex_m::interrupt::Mutex`) assume the only
-other execution thread is the interrupt thread, but on a multi-core system
-that's no longer true. Instead, we'll need synchronisation primitives designed
-for multiple cores (also called SMP, for symmetric multi-processing).
+It is becoming more common to have two or more cores in embedded processors, which adds an extra layer of complexity to concurrency. All the examples using a critical section (including the `cortex_m::interrupt::Mutex`) assume the only other execution thread is the interrupt thread, but on a multi-core system that's no longer true. Instead, we'll need synchronisation primitives designed for multiple cores (also called SMP, for symmetric multi-processing).
 
-These typically use the atomic instructions we saw earlier, since the
-processing system will ensure that atomicity is maintained over all cores.
+These typically use the atomic instructions we saw earlier, since the processing system will ensure that atomicity is maintained over all cores.
 
-Covering these topics in detail is currently beyond the scope of this book,
-but the general patterns are the same as for the single-core case.
+Covering these topics in detail is currently beyond the scope of this book, but the general patterns are the same as for the single-core case.
