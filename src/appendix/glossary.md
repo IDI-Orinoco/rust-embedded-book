@@ -1,64 +1,51 @@
-# Appendix A: Glossary
+# Apéndice A: Glosario
 
-The embedded ecosystem is full of different protocols, hardware components and
-vendor-specific things that use their own terms and abbreviations. This Glossary
-attempts to list them with pointers for understanding them better.
+El ecosistema embebido está lleno de diferentes protocolos, componentes de hardware y específicos de cada proveedor que utilizan sus propios términos y abreviaturas. Este glosario intenta enumerarlos con indicaciones para entenderlos mejor.
 
 ### BSP
 
-A Board Support Crate provides a high level interface configured for a specific
-board. It usually depends on a [HAL](#hal) crate.
-There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
-or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
+Una _Crate_ de Soporte de Tarjeta (Board Support _Crate_) proporciona una interfaz de alto nivel configurada para una tarjeta específica. Normalmente depende de una _crate_ [HAL](#hal).
+Hay una descripción más detallada en la  [página de registros de memoria mapeada](../start/registers.md) o para una visión más amplia ver [este video](https://youtu.be/vLYit_HHPaY).
 
 ### FPU
 
-Floating-point Unit. A 'math processor' running only operations on floating-point numbers.
+Unidad de punto flotante. Un 'procesador matemático' que ejecuta sólo operaciones con números de punto flotante.
 
 ### HAL
 
-A Hardware Abstraction Layer crate provides a developer friendly interface to a microcontroller's
-features and peripherals. It is usually implemented on top of a [Peripheral Access Crate (PAC)](#pac).
-It may also implement traits from the [`embedded-hal`](https://crates.io/crates/embedded-hal) crate.
-There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
-or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
+Una Capa de Abstracción de Hardware proporciona una interfaz amigable para el desarrollador a las características y periféricos de un microcontrolador. Normalmente se implementa sobre una [_Crate_ de Acceso Periférico (PAC)](#pac).
+También se puede implementar _traits_ de la _crate_ [`embedded-hal`](https://crates.io/crates/embedded-hal).
+Hay una descripción más detallada en la [página de registros de memoria mapeada](../start/registers.md) o para una visión más amplia ver [este video](https://youtu.be/vLYit_HHPaY).
 
 ### I2C
 
-Sometimes referred to as `I²C` or Inter-IC. It is a protocol meant for hardware communication
-within a single integrated circuit. See [here][i2c] for more details
+También llamado `I²C` o Inter-IC. Es un protocolo destinado a la comunicación de hardware dentro de un único circuito integrado. Ver [aquí][i2c] para más detalles
 
 [i2c]: https://en.wikipedia.org/wiki/I2c
 
 ### PAC
 
-A Peripheral Access Crate provides access to a microcontroller's peripherals. It is one of
-the lower level crates and is usually generated directly from the provided [SVD](#svd), often
-using [svd2rust](https://github.com/rust-embedded/svd2rust/). The [Hardware Abstraction Layer](#hal)
-would usually depend on this crate.
-There is a more detailed description on the [memory-mapped registers page](../start/registers.md)
-or for a broader overview see [this video](https://youtu.be/vLYit_HHPaY).
+Una _Crate_ de Acceso Periférico proporciona acceso a los periféricos de un microcontrolador. Es uno de nivel inferior y normalmente se genera directamente a partir del [SVD](#svd) proporcionado, a menudo utilizando [svd2rust] (#svd). utilizando [svd2rust](https://github.com/rust-embedded/svd2rust/). La [Capa de Abstracción de Hardware](#hal) dependerá normalmente de este _crate_.
+Hay una descripción más detallada en la [página de registros de memoria mapeada](../start/registers.md) o para una visión más amplia ver [este video](https://youtu.be/vLYit_HHPaY).
 
 ### SPI
 
-Serial Peripheral Interface. See [here][spi] for more information.
+Interfaz Periférica Serial. Ver [aquí][spi] para más información.
 
 [spi]: https://en.wikipedia.org/wiki/Serial_peripheral_interface
 
 ### SVD
 
-System View Description is an XML file format used to describe the programmers view of a
-microcontroller device. You can read more about it on
-[the ARM CMSIS documentation site](https://www.keil.com/pack/doc/CMSIS/SVD/html/index.html).
+Descripción de la Vista del Sistema es un formato de archivo XML utilizado para describir la vista de los programadores de un dispositivo microcontrolador. Puede leer más sobre él en [el sitio de documentación ARM CMSIS](https://www.keil.com/pack/doc/CMSIS/SVD/html/index.html).
 
 ### UART
 
-Universal asynchronous receiver-transmitter. See [here][uart] for more information.
+Receptor-Transmisor Asíncrono Universal. Ver [aquí][uart] para más información.
 
 [uart]: https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter
 
 ### USART
 
-Universal synchronous and asynchronous receiver-transmitter. See [here][usart] for more information.
+Receptor-Transmisor Síncrono y Asíncrono Universal. Ver [aquí][usart] para más información.
 
 [usart]: https://en.wikipedia.org/wiki/Universal_synchronous_and_asynchronous_receiver-transmitter
