@@ -1,32 +1,32 @@
-# Panicking
+# Pánico
 
-Panicking is a core part of the Rust language. Built-in operations like indexing are runtime checked for memory safety. When out of bounds indexing is attempted this results in a panic.
+El pánico es una parte esencial del lenguaje Rust. Las operaciones integradas, como la indexación, se comprueban en tiempo de ejecución para garantizar la seguridad de la memoria. Cuando se intenta indexar fuera de los límites, se produce un pánico.
 
-In the standard library panicking has a defined behavior: it unwinds the stack of the panicking thread, unless the user opted for aborting the program on panics.
+En la biblioteca estándar el pánico tiene un comportamiento definido: despliega la pila del hilo en pánico, a menos que el usuario haya optado por abortar el programa en caso de pánico.
 
-In programs without standard library, however, the panicking behavior is left undefined. A behavior can be chosen by declaring a `#[panic_handler]` function. This function must appear exactly *once* in the dependency graph of a program, and must have the following signature: `fn(&PanicInfo) -> !`, where [`PanicInfo`] is a struct containing information about the location of the panic.
+En programas sin biblioteca estándar, sin embargo, el comportamiento de pánico se deja indefinido. Se puede elegir un comportamiento declarando una función `#[panic_handler]`. Esta función debe existir exactamente _una vez_ en el grafo de dependencias de un programa, y debe tener la siguiente firma: `fn(&PanicInfo) -> !`, donde [`PanicInfo`] es una estructura que contiene información sobre la localización del pánico.
 
-[`PanicInfo`]: https://doc.rust-lang.org/core/panic/struct.PanicInfo.html
+[`panicinfo`]: https://doc.rust-lang.org/core/panic/struct.PanicInfo.html
 
-Given that embedded systems range from user facing to safety critical (cannot crash) there's no one size fits all panicking behavior but there are plenty of commonly used behaviors. These common behaviors have been packaged into crates that define the `#[panic_handler]` function. Some examples include:
+Dado que los sistemas embebidos van desde los orientados al usuario hasta los de seguridad crítica (que no pueden colapsar), no hay un comportamiento de pánico talla única, pero hay un montón de comportamientos comúnmente utilizados. Estos comportamientos comunes han sido empaquetados en _crates_ que definen la función `#[panic_handler]`. Algunos ejemplos incluyen:
 
-- [`panic-abort`]. A panic causes the abort instruction to be executed.
-- [`panic-halt`]. A panic causes the program, or the current thread, to halt by entering an infinite loop.
-- [`panic-itm`]. The panicking message is logged using the ITM, an ARM Cortex-M specific peripheral.
-- [`panic-semihosting`]. The panicking message is logged to the host using the semihosting technique.
+- [`panic-abort`]. Un pánico provoca la ejecución de la instrucción abort.
+- [`panic-halt`]. Un pánico hace que el programa, o el hilo actual, se detenga entrando en un bucle infinito.
+- [`panic-itm`]. El mensaje de pánico se registra utilizando el ITM, un periférico específico de ARM Cortex-M.
+- [`panic-semihosting`]. El mensaje de pánico se registra en el host utilizando la técnica semihosting.
 
 [`panic-abort`]: https://crates.io/crates/panic-abort
 [`panic-halt`]: https://crates.io/crates/panic-halt
 [`panic-itm`]: https://crates.io/crates/panic-itm
 [`panic-semihosting`]: https://crates.io/crates/panic-semihosting
 
-You may be able to find even more crates searching for the [`panic-handler`] keyword on crates.io.
+Puedes encontrar más _crates_ buscando la palabra clave [`panic-handler`] en crates.io.
 
 [`panic-handler`]: https://crates.io/keywords/panic-handler
 
-A program can pick one of these behaviors simply by linking to the corresponding crate. The fact that the panicking behavior is expressed in the source of an application as a single line of code is not only useful as documentation but can also be used to change the panicking behavior according to the compilation profile. For example:
+Un programa puede elegir uno de estos comportamientos simplemente enlazando con la _crate_ correspondiente. El hecho de que el comportamiento de pánico se exprese en el código fuente de una aplicación como una única línea de código no sólo es útil como documentación, sino que también puede utilizarse para cambiar el comportamiento de pánico en función del perfil de compilación. Por ejemplo:
 
-``` rust,ignore
+```rust,ignore
 #![no_main]
 #![no_std]
 
@@ -41,18 +41,18 @@ use panic_abort as _;
 // ..
 ```
 
-In this example the crate links to the `panic-halt` crate when built with the dev profile (`cargo build`), but links to the `panic-abort` crate when built with the release profile (`cargo build --release`).
+En este ejemplo la _crate_ enlaza con la _crate_ `panic-halt` cuando se construye con el perfil dev (`cargo build`), pero enlaza con la _crate_ `panic-abort` cuando se construye con el perfil release (`cargo build --release`).
 
-> The `use panic_abort as _;` form of the `use` statement is used to ensure the `panic_abort` panic handler is
-> included in our final executable while making it clear to the compiler that we won't explicitly use anything from
-> the crate. Without the `as _` rename, the compiler would warn that we have an unused import.
-> Sometimes you might see `extern crate panic_abort` instead, which is an older style used before the
-> 2018 edition of Rust, and should now only be used for "sysroot" crates (those distributed with Rust itself) such
-> as `proc_macro`, `alloc`, `std`, and `test`.
+> La forma `use panic_abort as _;` de la sentencia `use` se usa para asegurar que el manejador de pánico `panic_abort`
+> se incluye en nuestro ejecutable final, dejando claro al compilador que no usaremos explícitamente nada
+> de la crate. Sin el cambio de nombre `as _`, el compilador nos avisaría de que tenemos una importación sin usar.
+> A veces se puede ver `extern crate panic_abort` en su lugar, que es un estilo más antiguo utilizado antes de la
+> edición 2018 de Rust, y ahora sólo debería usarse para crates "sysroot" (los que se distribuyen con el propio Rust) tales
+> como `proc_macro`, `alloc`, `std`, y `test`.
 
-## An example
+## Un ejemplo
 
-Here's an example that tries to index an array beyond its length. The operation results in a panic.
+He aquí un ejemplo que intenta indexar un array más allá de su longitud. La operación resulta en un pánico.
 
 ```rust,ignore
 #![no_main]
@@ -72,7 +72,7 @@ fn main() -> ! {
 }
 ```
 
-This example chose the `panic-semihosting` behavior which prints the panic message to the host console using semihosting.
+Este ejemplo elige el comportamiento `panic-semihosting` que imprime el mensaje de pánico en la consola del host usando semihosting.
 
 ``` text
 $ cargo run
@@ -80,4 +80,4 @@ $ cargo run
 panicked at 'index out of bounds: the len is 3 but the index is 4', src/main.rs:12:13
 ```
 
-You can try changing the behavior to `panic-halt` and confirm that no message is printed in that case.
+Puedes probar a cambiar el comportamiento a `panic-halt` y confirmar que no se imprime ningún mensaje en ese caso.

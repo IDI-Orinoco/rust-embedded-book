@@ -1,36 +1,36 @@
 # Hardware
 
-By now you should be somewhat familiar with the tooling and the development process. In this section we'll switch to real hardware; the process will remain largely the same. Let's dive in.
+A estas alturas ya deberías estar familiarizado con las herramientas y el proceso de desarrollo. En esta sección cambiaremos a hardware real; el proceso seguirá siendo en gran medida el mismo. Empecemos.
 
-## Know your hardware
+## Conoce tu hardware
 
-Before we begin you need to identify some characteristics of the target device as these will be used to configure the project:
+Antes de empezar es necesario identificar algunas características del dispositivo de destino, ya que se utilizarán para configurar el proyecto:
 
-- The ARM core. e.g. Cortex-M3.
+- El núcleo ARM. Por ejemplo, Cortex-M3.
 
-- Does the ARM core include an FPU? Cortex-M4**F** and Cortex-M7**F** cores do.
+- ¿Incluye el núcleo ARM una FPU? Los núcleos Cortex-M4**F** y Cortex-M7**F** sí.
 
-- How much Flash memory and RAM does the target device have? e.g. 256 KiB of   Flash and 32 KiB of RAM.
+- ¿Cuánta memoria Flash y RAM tiene el dispositivo de destino? Por ejemplo, 256 KiB de Flash y 32 KiB de RAM.
 
-- Where are Flash memory and RAM mapped in the address space? e.g. RAM is   commonly located at address `0x2000_0000`.
+- ¿Dónde están mapeadas la memoria Flash y la RAM en el espacio de direcciones? Por ejemplo, la RAM se encuentra normalmente en la dirección `0x2000_0000`.
 
-You can find this information in the data sheet or the reference manual of your device.
+Puedes encontrar esta información en la hoja de datos o en el manual de referencia de tu dispositivo.
 
-In this section we'll be using our reference hardware, the STM32F3DISCOVERY. This board contains an STM32F303VCT6 microcontroller. This microcontroller has:
+En esta sección utilizaremos nuestro hardware de referencia, la STM32F3DISCOVERY. Esta tarjeta contiene un microcontrolador STM32F303VCT6. Este microcontrolador tiene:
 
-- A Cortex-M4F core that includes a single precision FPU
+- Un núcleo Cortex-M4F que incluye una FPU de precisión simple
 
-- 256 KiB of Flash located at address 0x0800_0000.
+- 256 KiB de Flash localizados en la dirección 0x0800_0000.
 
-- 40 KiB of RAM located at address 0x2000_0000. (There's another RAM region but   for simplicity we'll ignore it).
+- 40 KiB de RAM localizados en la dirección 0x2000_0000. (Hay otra región de RAM pero por simplicidad la ignoraremos).
 
-## Configuring
+## Configuración
 
-We'll start from scratch with a fresh template instance. Refer to the [previous section on QEMU] for a refresher on how to do this without `cargo-generate`.
+Empezaremos desde cero con una instancia de plantilla nueva. Consulta la [sección anterior sobre QEMU] para refrescar cómo hacer esto sin `cargo-generate`.
 
-[previous section on QEMU]: qemu.md
+[sección anterior sobre qemu]: qemu.md
 
-``` text
+```text
 $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
  Project Name: app
  Creating project called `app`...
@@ -39,13 +39,13 @@ $ cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 $ cd app
 ```
 
-Step number one is to set a default compilation target in `.cargo/config.toml`.
+El paso número uno es establecer un objetivo de compilación por defecto en `.cargo/config.toml`.
 
-``` console
+```console
 tail -n5 .cargo/config.toml
 ```
 
-``` toml
+```toml
 # Pick ONE of these compilation targets
 # target = "thumbv6m-none-eabi"    # Cortex-M0 and Cortex-M0+
 # target = "thumbv7m-none-eabi"    # Cortex-M3
@@ -53,11 +53,11 @@ tail -n5 .cargo/config.toml
 target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
 
-We'll use `thumbv7em-none-eabihf` as that covers the Cortex-M4F core.
+Usaremos `thumbv7em-none-eabihf` ya que cubre el núcleo Cortex-M4F.
 
-The second step is to enter the memory region information into the `memory.x` file.
+El segundo paso es introducir la información de la región de memoria en el archivo `memory.x`.
 
-``` text
+```text
 $ cat memory.x
 /* Linker script for the STM32F303VCT6 */
 MEMORY
@@ -67,13 +67,14 @@ MEMORY
   RAM : ORIGIN = 0x20000000, LENGTH = 40K
 }
 ```
-> **NOTE**: If you for some reason changed the `memory.x` file after you had made
-> the first build of a specific build target, then do `cargo clean` before
-> `cargo build`, because `cargo build` may not track updates of `memory.x`.
 
-We'll start with the hello example again, but first we have to make a small change.
+> **NOTA**: Si por alguna razón ha cambiado el archivo `memory.x` después de haber hecho
+> la primera compilación de un objetivo de compilación específico, entonces haz `cargo clean` antes de
+> de `cargo build`, porque `cargo build` puede no seguir las actualizaciones de `memory.x`.
 
-In `examples/hello.rs`, make sure the `debug::exit()` call is commented out or removed. It is used only for running in QEMU.
+Empezaremos con el ejemplo hello de nuevo, pero primero tenemos que hacer un pequeño cambio.
+
+En `examples/hello.rs`, asegúrate de que la llamada `debug::exit()` está comentada o eliminada. Se utiliza sólo para ejecutar en QEMU.
 
 ```rust,ignore
 #[entry]
@@ -88,29 +89,29 @@ fn main() -> ! {
 }
 ```
 
-You can now cross compile programs using `cargo build` and inspect the binaries using `cargo-binutils` as you did before. The `cortex-m-rt` crate handles all the magic required to get your chip running, as helpfully, pretty much all Cortex-M CPUs boot in the same fashion.
+Ahora puedes compilar programas usando `cargo build` e inspeccionar los binarios usando `cargo-binutils` como hacías antes. La crate `cortex-m-rt` se encarga de toda la magia necesaria para que tu chip funcione, ya que prácticamente todas las CPUs Cortex-M arrancan de la misma manera.
 
-``` console
+```console
 cargo build --example hello
 ```
 
-## Debugging
+## Depuración
 
-Debugging will look a bit different. In fact, the first steps can look different depending on the target device. In this section we'll show the steps required to debug a program running on the STM32F3DISCOVERY. This is meant to serve as a reference; for device specific information about debugging check out [the Debugonomicon](https://github.com/rust-embedded/debugonomicon).
+La depuración será un poco diferente. De hecho, los primeros pasos pueden parecer diferentes dependiendo del dispositivo de destino. En esta sección mostraremos los pasos necesarios para depurar un programa que se ejecuta en el STM32F3DISCOVERY. Esto debe servir como referencia; para información específica del dispositivo sobre depuración consulte el [Debugonomicon](https://github.com/rust-embedded/debugonomicon).
 
-As before we'll do remote debugging and the client will be a GDB process. This time, however, the server will be OpenOCD.
+Como antes haremos depuración remota y el cliente será un proceso GDB. Esta vez, sin embargo, el servidor será OpenOCD.
 
-As done during the [verify] section connect the discovery board to your laptop / PC and check that the ST-LINK header is populated.
+Como se hizo durante la sección [verificar] conecte la tarjeta discovery a su portátil / PC y compruebe que la cabecera ST-LINK está poblada.
 
-[verify]: ../intro/install/verify.md
+[verificar]: ../intro/install/verify.md
 
-On a terminal run `openocd` to connect to the ST-LINK on the discovery board. Run this command from the root of the template; `openocd` will pick up the `openocd.cfg` file which indicates which interface file and target file to use.
+En un terminal, ejecute `openocd` para conectarse al ST-LINK de la tarjeta discovery. Ejecute este comando desde la raíz de la plantilla; `openocd` leerá el archivo `openocd.cfg` que indica qué archivo de interfaz y archivo de destino utilizar.
 
-``` console
+```console
 cat openocd.cfg
 ```
 
-``` text
+```text
 # Sample OpenOCD configuration for the STM32F3DISCOVERY development board
 
 # Depending on the hardware revision you got you'll have to pick ONE of these
@@ -125,11 +126,11 @@ source [find interface/stlink.cfg]
 source [find target/stm32f3x.cfg]
 ```
 
-> **NOTE** If you found out that you have an older revision of the discovery
-> board during the [verify] section then you should modify the `openocd.cfg`
-> file at this point to use `interface/stlink-v2.cfg`.
+> **NOTA** Si descubriste que tienes una revisión anterior de la tarjeta discovery
+> durante la sección [verificar] entonces debe modificar el archivo `openocd.cfg`
+> en este punto para usar `interface/stlink-v2.cfg`.
 
-``` text
+```text
 $ openocd
 Open On-Chip Debugger 0.10.0
 Licensed under GNU GPL v2
@@ -149,25 +150,25 @@ Info : Target voltage: 2.913879
 Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 ```
 
-On another terminal run GDB, also from the root of the template.
+En otro terminal ejecute GDB, también desde la raíz de la plantilla.
 
-``` text
+```text
 gdb-multiarch -q target/thumbv7em-none-eabihf/debug/examples/hello
 ```
 
-**NOTE**: like before you might need another version of gdb instead of `gdb-multiarch` depending on which one you installed in the installation chapter. This could also be `arm-none-eabi-gdb` or just `gdb`.
+**NOTA**: como antes, puede que necesites otra versión de gdb en lugar de `gdb-multiarch` dependiendo de la que haya instalado en el capítulo de instalación. También puede ser `arm-none-eabi-gdb` o simplemente `gdb`.
 
-Next connect GDB to OpenOCD, which is waiting for a TCP connection on port 3333.
+A continuación conecte GDB a OpenOCD, que está esperando una conexión TCP en el puerto 3333 utilizando el comando `target`.
 
-``` console
+```console
 (gdb) target remote :3333
 Remote debugging using :3333
 0x00000000 in ?? ()
 ```
 
-Now proceed to *flash* (load) the program onto the microcontroller using the `load` command.
+Ahora proceda a _flashear_ (cargar) el programa en el microcontrolador utilizando el comando `load`.
 
-``` console
+```console
 (gdb) load
 Loading section .vector_table, size 0x400 lma 0x8000000
 Loading section .text, size 0x1518 lma 0x8000400
@@ -176,18 +177,18 @@ Start address 0x08000400, load size 7468
 Transfer rate: 13 KB/sec, 2489 bytes/write.
 ```
 
-The program is now loaded. This program uses semihosting so before we do any semihosting call we have to tell OpenOCD to enable semihosting. You can send commands to OpenOCD using the `monitor` command.
+El programa ya está cargado. Este programa usa semihosting así que antes de hacer cualquier llamada a semihosting tenemos que decirle a OpenOCD que habilite semihosting. Puedes enviar comandos a OpenOCD usando el comando `monitor`.
 
-``` console
+```console
 (gdb) monitor arm semihosting enable
 semihosting is enabled
 ```
 
-> You can see all the OpenOCD commands by invoking the `monitor help` command.
+> Puedes ver todos los comandos de OpenOCD invocando el comando `monitor help`.
 
-Like before we can skip all the way to `main` using a breakpoint and the `continue` command.
+Como antes podemos saltar hasta `main` usando un _breakpoint_ y el comando `continue`.
 
-``` console
+```console
 (gdb) break main
 Breakpoint 1 at 0x8000490: file examples/hello.rs, line 11.
 Note: automatically using hardware breakpoints for read-only addresses.
@@ -199,23 +200,23 @@ Breakpoint 1, hello::__cortex_m_rt_main_trampoline () at examples/hello.rs:11
 11      #[entry]
 ```
 
-> **NOTE** If GDB blocks the terminal instead of hitting the breakpoint after
-> you issue the `continue` command above, you might want to double check that
-> the memory region information in the `memory.x` file is correctly set up
-> for your device (both the starts *and* lengths). 
+> **NOTA** Si GDB bloquea el terminal en lugar de parar en el _breakpoint_ después de
+> ejecutar el comando `continue` anterior, es posible que quieras volver a comprobar que
+> la información de la región de memoria en el archivo `memory.x` está configurada correctamente.
+> para tu dispositivo (tanto los inicios como las longitudes).
 
-Step into the main function with `step`.
+Entra en la función principal con `step`.
 
-``` console
+```console
 (gdb) step
 halted: PC: 0x08000496
 hello::__cortex_m_rt_main () at examples/hello.rs:13
 13          hprintln!("Hello, world!").unwrap();
 ```
 
-After advancing the program with `next` you should see "Hello, world!" printed on the OpenOCD console, among other stuff.
+Después de hacer avanzar el programa con `next` deberías ver "Hello, world!" impreso en la consola de OpenOCD, entre otras cosas.
 
-``` console
+```console
 $ openocd
 (..)
 Info : halted: PC: 0x08000502
@@ -227,11 +228,12 @@ Info : halted: PC: 0x080004b4
 Info : halted: PC: 0x080004b8
 Info : halted: PC: 0x080004bc
 ```
-The message is only displayed once as the program is about to enter the infinite loop defined in line 19: `loop {}`
 
-You can now exit GDB using the `quit` command.
+El mensaje sólo se muestra una vez cuando el programa está a punto de entrar en el bucle infinito definido en la línea 19: `loop {}`.
 
-``` console
+Ahora puedes salir de GDB usando el comando `quit`.
+
+```console
 (gdb) quit
 A debugging session is active.
 
@@ -240,13 +242,13 @@ A debugging session is active.
 Quit anyway? (y or n)
 ```
 
-Debugging now requires a few more steps so we have packed all those steps into a single GDB script named `openocd.gdb`. The file was created during the `cargo generate` step, and should work without any modifications. Let's have a peek:
+La depuración ahora requiere algunos pasos más, así que hemos empaquetado todos esos pasos en un único script GDB llamado `openocd.gdb`. El archivo fue creado durante el paso `cargo generate`, y debería funcionar sin modificaciones. Echemos un vistazo:
 
-``` console
+```console
 cat openocd.gdb
 ```
 
-``` text
+```text
 target extended-remote :3333
 
 # print demangled symbols
@@ -265,15 +267,15 @@ load
 stepi
 ```
 
-Now running `<gdb> -x openocd.gdb target/thumbv7em-none-eabihf/debug/examples/hello` will immediately connect GDB to OpenOCD, enable semihosting, load the program and start the process.
+Ahora ejecutando `<gdb> -x openocd.gdb target/thumbv7em-none-eabihf/debug/examples/hello` conectará inmediatamente GDB a OpenOCD, habilitará el semihosting, cargará el programa e iniciará el proceso.
 
-Alternatively, you can turn `<gdb> -x openocd.gdb` into a custom runner to make `cargo run` build a program *and* start a GDB session. This runner is included in `.cargo/config.toml` but it's commented out.
+Alternativamente, puedes convertir `<gdb> -x openocd.gdb` en un runner personalizado para hacer que `cargo run` construya un programa _y_ comience una sesión GDB. Este runner está incluido en `.cargo/config.toml` pero está comentado.
 
-``` console
+```console
 head -n10 .cargo/config.toml
 ```
 
-``` toml
+```toml
 [target.thumbv7m-none-eabi]
 # uncomment this to make `cargo run` execute programs on QEMU
 # runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
@@ -286,7 +288,7 @@ runner = "arm-none-eabi-gdb -x openocd.gdb"
 # runner = "gdb -x openocd.gdb"
 ```
 
-``` text
+```text
 $ cargo run --example hello
 (..)
 Loading section .vector_table, size 0x400 lma 0x8000000

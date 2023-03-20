@@ -38,7 +38,7 @@ A menos que usted declare explícitamente lo contrario, cualquier contribución 
 
 ## Código de conducta
 
-Las contribuciones a esta crate están organizadas bajo los términos del [Código de Conducta de Rust][CoC], el mantenedor de esta crate, el [equipo de Recursos][team], se compromete a intervenir para mantener ese código de conducta.
+Las contribuciones a esta _crate_ están organizadas bajo los términos del [Código de Conducta de Rust][CoC], el mantenedor de esta _crate_, el [equipo de Recursos][team], se compromete a intervenir para mantener ese código de conducta.
 
 [CoC]: CODE_OF_CONDUCT.md
 [team]: https://github.com/rust-embedded/wg#the-resources-team
