@@ -1,19 +1,20 @@
-# Interrupts
+# Interrupciones
 
-Interrupts differ from exceptions in a variety of ways but their operation and use is largely similar and they are also handled by the same interrupt controller. Whereas exceptions are defined by the Cortex-M architecture, interrupts are always vendor (and often even chip) specific implementations, both in naming and functionality.
+Las interrupciones difieren de las excepciones en varios aspectos, pero su funcionamiento y uso es muy similar y también son manejadas por el mismo controlador de interrupciones. Mientras que las excepciones están definidas por la arquitectura Cortex-M, las interrupciones son siempre implementaciones específicas del proveedor (y a menudo incluso del chip), tanto en nombre como en funcionalidad.
 
-Interrupts do allow for a lot of flexibility which needs to be accounted for when attempting to use them in an advanced way. We will not cover those uses in this book, however it is a good idea to keep the following in mind:
+Las interrupciones permiten una gran flexibilidad que debe tenerse en cuenta cuando se intenta utilizarlas de forma avanzada. No cubriremos esos usos en este libro, sin embargo es una buena idea tener en mente lo siguiente:
 
-* Interrupts have programmable priorities which determine their handlers' execution order
-* Interrupts can nest and preempt, i.e. execution of an interrupt handler might be interrupted by another higher-priority interrupt
-* In general the reason causing the interrupt to trigger needs to be cleared to prevent re-entering the interrupt handler endlessly
+- Las interrupciones tienen prioridades programables que determinan el orden de ejecución de sus manejadores.
+- Las interrupciones pueden anidarse y priorizarse, es decir, la ejecución de un manejador de interrupción puede ser interrumpida por otra interrupción de mayor prioridad.
+- En general, el motivo por el que se produce la interrupción debe borrarse para evitar que re-entre en el manejador de interrupciones indefinidamente.
 
-The general initialization steps at runtime are always the same:
-* Setup the peripheral(s) to generate interrupts requests at the desired occasions
-* Set the desired priority of the interrupt handler in the interrupt controller
-* Enable the interrupt handler in the interrupt controller
+Los pasos generales de inicialización en tiempo de ejecución son siempre los mismos:
 
-Similarly to exceptions, the `cortex-m-rt` crate provides an [`interrupt`] attribute to declare interrupt handlers. The available interrupts (and their position in the interrupt handler table) are usually automatically generated via `svd2rust` from a SVD description.
+- Configurar el(los) periférico(s) para generar peticiones de interrupción en las ocasiones deseadas
+- Establecer la prioridad deseada del manejador de interrupciones en el controlador de interrupciones
+- Habilitar el manejador de interrupciones en el controlador de interrupciones
+
+De forma similar a las excepciones, la _crate_ `cortex-m-rt` proporciona un atributo [`interrupt`] para declarar los manejadores de interrupciones. Las interrupciones disponibles (y su posición en la tabla de manejadores de interrupción) se generan automáticamente a través de `svd2rust` a partir de una descripción SVD.
 
 [`interrupt`]: https://docs.rs/cortex-m-rt-macros/0.1.5/cortex_m_rt_macros/attr.interrupt.html
 
@@ -26,9 +27,9 @@ fn TIM2() {
 }
 ```
 
-Interrupt handlers look like plain functions (except for the lack of arguments) similar to exception handlers. However they can not be called directly by other parts of the firmware due to the special calling conventions. It is however possible to generate interrupt requests in software to trigger a diversion to the interrupt handler.
+Los manejadores de interrupciones parecen funciones simples (excepto por la falta de argumentos) similares a los manejadores de excepciones. Sin embargo, no pueden ser llamados directamente por otras partes del firmware debido a las convenciones especiales de llamada. Sin embargo, es posible generar peticiones de interrupción en el software para desencadenar un desvío al manejador de interrupciones.
 
-Similar to exception handlers it is also possible to declare `static mut` variables inside the interrupt handlers for *safe* state keeping.
+De forma similar a los manejadores de excepciones, también es posible declarar variables `static mut` dentro de los manejadores de interrupciones para mantener el estado _safe_.
 
 ``` rust,ignore
 #[interrupt]
@@ -40,6 +41,6 @@ fn TIM2() {
 }
 ```
 
-For a more detailed description about the mechanisms demonstrated here please refer to the [exceptions section].
+Para una descripción más detallada sobre los mecanismos demostrados aquí, por favor ve a la [sección de excepciones].
 
-[exceptions section]: ./exceptions.md
+[sección de excepciones]: ./exceptions.md

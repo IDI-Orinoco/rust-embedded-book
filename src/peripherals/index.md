@@ -1,44 +1,44 @@
-# Peripherals
+# Periféricos
 
-## What are Peripherals?
+## ¿Qué son los periféricos?
 
-Most Microcontrollers have more than just a CPU, RAM, or Flash Memory - they contain sections of silicon which are used for interacting with systems outside of the microcontroller, as well as directly and indirectly interacting with their surroundings in the world via sensors, motor controllers, or human interfaces such as a display or keyboard. These components are collectively known as Peripherals.
+La mayoría de los microcontroladores tienen algo más que una CPU, RAM o memoria Flash: contienen secciones de silicio que se utilizan para interactuar con sistemas externos al microcontrolador, así como para interactuar directa e indirectamente con su entorno en el mundo a través de sensores, controladores de motor o interfaces humanas como una pantalla o un teclado. Estos componentes se conocen colectivamente como periféricos.
 
-These peripherals are useful because they allow a developer to offload processing to them, avoiding having to handle everything in software. Similar to how a desktop developer would offload graphics processing to a video card, embedded developers can offload some tasks to peripherals allowing the CPU to spend its time doing something else important, or doing nothing in order to save power.
+Estos periféricos son útiles porque le permiten al desarrollador relegar procesamiento en ellos, evitando tener que gestionar todo en el software. Al igual que un desarrollador en una pc relegaría el procesamiento gráfico a una tarjeta de vídeo, los desarrolladores de sistemas embebidos pueden relegar algunas tareas a los periféricos, lo que permite a la CPU dedicar su tiempo a hacer otra cosa importante, o no hacer nada para ahorrar energía.
 
-If you look at the main circuit board in an old-fashioned home computer from the 1970s or 1980s (and actually, the desktop PCs of yesterday are not so far removed from the embedded systems of today) you would expect to see:
+Si nos fijamos en la tarjeta principal de un computador doméstico antiguo de los años 70 u 80 (y en realidad, los PC de sobremesa de ayer no están tan alejados de los sistemas embebidos de hoy en día) esperaríamos ver:
 
-* A processor
-* A RAM chip
-* A ROM chip
-* An I/O controller
+- Un procesador
+- Un chip de RAM
+- Un chip de ROM
+- Un controlador de E/S
 
-The RAM chip, ROM chip and I/O controller (the peripheral in this system) would be joined to the processor through a series of parallel traces known as a 'bus'. This bus carries address information, which selects which device on the bus the processor wishes to communicate with, and a data bus which carries the actual data. In our embedded microcontrollers, the same principles apply - it's just that everything is packed on to a single piece of silicon.
+El chip de RAM, el chip de ROM y el controlador de E/S (el periférico en este sistema) estarían unidos al procesador a través de una serie de pistas paralelas conocidas como 'bus'. Este bus transporta la información de la dirección, que selecciona con qué dispositivo del bus desea comunicarse el procesador, y un bus de datos que transporta los datos propiamente dichos. En nuestros microcontroladores embebidos se aplican los mismos principios, sólo que todo está empaquetado en una única pieza de silicio.
 
-However, unlike graphics cards, which typically have a Software API like Vulkan, Metal, or OpenGL, peripherals are exposed to our Microcontroller with a hardware interface, which is mapped to a chunk of the memory.
+Sin embargo, a diferencia de las tarjetas gráficas, que normalmente tienen una API de software como Vulkan, Metal u OpenGL, los periféricos están expuestos a nuestro microcontrolador con una interfaz de hardware, que se asigna a un área de la memoria.
 
-## Linear and Real Memory Space
+## Espacio de Memoria Lineal y Real
 
-On a microcontroller, writing some data to some other arbitrary address, such as `0x4000_0000` or `0x0000_0000`, may also be a completely valid action.
+En un microcontrolador, escribir algunos datos en alguna otra dirección arbitraria, como `0x4000_0000` o `0x0000_0000`, también puede ser una acción completamente válida.
 
-On a desktop system, access to memory is tightly controlled by the MMU, or Memory Management Unit. This component has two major responsibilities: enforcing access permission to sections of memory (preventing one process from reading or modifying the memory of another process); and re-mapping segments of the physical memory to virtual memory ranges used in software. Microcontrollers do not typically have an MMU, and instead only use real physical addresses in software.
+En un sistema de sobremesa, el acceso a la memoria está estrechamente controlado por la MMU, o Unidad de Gestión de Memoria. Este componente tiene dos responsabilidades principales: hacer cumplir los permisos de acceso a secciones de memoria (impidiendo que un proceso lea o modifique la memoria de otro proceso); y reasignar segmentos de la memoria física a rangos de memoria virtual utilizados en el software. Los microcontroladores no suelen tener una MMU, y en su lugar sólo utilizan direcciones físicas reales en el software.
 
-Although 32 bit microcontrollers have a real and linear address space from `0x0000_0000`, and `0xFFFF_FFFF`, they generally only use a few hundred kilobytes of that range for actual memory. This leaves a significant amount of address space remaining. In earlier chapters, we were talking about RAM being located at address `0x2000_0000`. If our RAM was 64 KiB long (i.e. with a maximum address of 0xFFFF) then addresses `0x2000_0000` to `0x2000_FFFF` would correspond to our RAM. When we write to a variable which lives at address `0x2000_1234`, what happens internally is that some logic detects the upper portion of the address (0x2000 in this example) and then activates the RAM so that it can act upon the lower portion of the address (0x1234 in this case). On a Cortex-M we also have our Flash ROM mapped in at address `0x0000_0000` up to, say, address `0x0007_FFFF` (if we have a 512 KiB Flash ROM). Rather than ignore all remaining space between these two regions, Microcontroller designers instead mapped the interface for peripherals in certain memory locations. This ends up looking something like this:
+Aunque los microcontroladores de 32 bits tienen un espacio de direcciones real y lineal desde `0x0000_0000`, y `0xFFFF_FFFF`, generalmente sólo utilizan unos pocos cientos de kilobytes de ese rango para la memoria real. Esto deja una cantidad significativa de espacio de direcciones restante. En capítulos anteriores, hablábamos de que la RAM estaba localizada en la dirección `0x2000_0000`. Si nuestra RAM tuviera 64 KiB de longitud (es decir, con una dirección máxima de 0xFFFF) entonces las direcciones `0x2000_0000` a `0x2000_FFFF` corresponderían a nuestra RAM. Cuando escribimos en una variable que esta en la dirección `0x2000_1234`, lo que ocurre internamente es que alguna lógica detecta la parte superior de la dirección (0x2000 en este ejemplo) y luego activa la RAM para que pueda actuar sobre la parte inferior de la dirección (0x1234 en este caso). En un Cortex-M también tenemos nuestra Flash ROM mapeada en la dirección `0x0000_0000` hasta, digamos, la dirección `0x0007_FFFF` (si tenemos una Flash ROM de 512 KiB). En lugar de ignorar todo el espacio restante entre estas dos regiones, los diseñadores de microcontroladores mapearon la interfaz para los periféricos en ciertas posiciones de memoria. Esto termina pareciendo algo como esto
 
 ![](../assets/nrf52-memory-map.png)
 
-[Nordic nRF52832 Datasheet (pdf)]
+[Hoja de datos Nordic nRF52832 (pdf)]
 
-## Memory Mapped Peripherals
+## Periféricos Mapeados en Memoria
 
-Interaction with these peripherals is simple at a first glance - write the right data to the correct address. For example, sending a 32 bit word over a serial port could be as direct as writing that 32 bit word to a certain memory address. The Serial Port Peripheral would then take over and send out the data automatically.
+La interacción con estos periféricos es simple a primera vista - escribir los datos correctos en la dirección correcta. Por ejemplo, enviar una palabra de 32 bits a través de un puerto serial podría ser tan directo como escribir esa palabra de 32 bits en una determinada dirección de memoria. El periférico del puerto serial se encargaría entonces de enviar los datos automáticamente.
 
-Configuration of these peripherals works similarly. Instead of calling a function to configure a peripheral, a chunk of memory is exposed which serves as the hardware API. Write `0x8000_0000` to a SPI Frequency Configuration Register, and the SPI port will send data at 8 Megabits per second. Write `0x0200_0000` to the same address, and the SPI port will send data at 125 Kilobits per second. These configuration registers look a little bit like this:
+La configuración de estos periféricos funciona de forma similar. En lugar de llamar a una función para configurar un periférico, se expone un trozo de memoria que sirve como API de hardware. Escribe `0x8000_0000` en un Registro de Configuración de Frecuencia SPI, y el puerto SPI enviará datos a 8 Megabits por segundo. Escribe `0x0200_0000` en la misma dirección, y el puerto SPI enviará datos a 125 Kilobits por segundo. Estos registros de configuración se parecen un poco a esto:
 
 ![](../assets/nrf52-spi-frequency-register.png)
 
-[Nordic nRF52832 Datasheet (pdf)]
+[Hoja de datos Nordic nRF52832 (pdf)]
 
-This interface is how interactions with the hardware are made, no matter what language is used, whether that language is Assembly, C, or Rust.
+Esta interfaz es la forma en que se realizan las interacciones con el hardware, independientemente del lenguaje que se utilice, ya sea ensamblador, C o Rust.
 
-[Nordic nRF52832 Datasheet (pdf)]: http://infocenter.nordicsemi.com/pdf/nRF52832_PS_v1.1.pdf
+[hoja de datos nordic nrf52832 (pdf)]: http://infocenter.nordicsemi.com/pdf/nRF52832_PS_v1.1.pdf

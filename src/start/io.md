@@ -1,3 +1,3 @@
-# IO
+# E/S
 
-> **TODO** Cover memory mapped I/O using registers.
+> **TODO** Cubrir las E/S mapeadas en la memoria usando registros.
