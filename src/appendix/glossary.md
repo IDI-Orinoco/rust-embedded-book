@@ -5,7 +5,7 @@ El ecosistema embebido está lleno de diferentes protocolos, componentes de hard
 ### BSP
 
 Una _Crate_ de Soporte de Tarjeta (Board Support _Crate_) proporciona una interfaz de alto nivel configurada para una tarjeta específica. Normalmente depende de una _crate_ [HAL](#hal).
-Hay una descripción más detallada en la  [página de registros de memoria mapeada](../start/registers.md) o para una visión más amplia ver [este video](https://youtu.be/vLYit_HHPaY).
+Hay una descripción más detallada en la [página de registros de memoria mapeada](../start/registers.md) o para una visión más amplia ver [este video](https://youtu.be/vLYit_HHPaY).
 
 ### FPU
 

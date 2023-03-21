@@ -1,6 +1,6 @@
 # Herramientas
 
-Tratar con microcontroladores implica el uso de varias herramientas diferentes ya que estaremos con una arquitectura diferente a la de tu portátil y tendremos que ejecutar y depurar programas en un dispositivo *remoto*.
+Tratar con microcontroladores implica el uso de varias herramientas diferentes ya que estaremos con una arquitectura diferente a la de tu portátil y tendremos que ejecutar y depurar programas en un dispositivo _remoto_.
 
 Utilizaremos todas las herramientas listadas a continuación. Cualquier versión reciente debería funcionar no se especifica una versión mínima, pero hemos enumerado las versiones que hemos probado.
 
@@ -40,10 +40,11 @@ En general, LLDB funciona tan bien como GDB cuando se trata de depuración, pero
 GDB no es capaz de comunicarse directamente con el hardware de depuración ST-Link en tu tarjeta de desarrollo STM32F3DISCOVERY. Necesita un traductor y el Open On-Chip Debugger, OpenOCD, es ese traductor. OpenOCD es un programa que se ejecuta en tu laptop/PC y traduce entre el protocolo de depuración remota basado en TCP/IP de GDB y el protocolo USB de ST-Link. de GDB y el protocolo basado en USB de ST-Link.
 
 OpenOCD también realiza otros trabajos importantes como parte de la traducción para la depuración del microcontrolador ARM Cortex-M basado en la tarjeta de desarrollo STM32F3DISCOVERY:
-* Sabe cómo interactuar con los registros mapeados en memoria utilizados por el periférico de depuración ARM CoreSight. Son estos registros CoreSight los que permiten:
-  * Manipulación de Breakpoint/Watchpoint
-  * Lectura y escritura de los registros de la CPU
-  * Detectar cuando la CPU ha sido detenida por un evento de depuración
-  * Continuar la ejecución de la CPU después de un evento de depuración
-  * etc.
-* También sabe cómo borrar y escribir en la FLASH del microcontrolador.
+
+- Sabe cómo interactuar con los registros mapeados en memoria utilizados por el periférico de depuración ARM CoreSight. Son estos registros CoreSight los que permiten:
+  - Manipulación de Breakpoint/Watchpoint
+  - Lectura y escritura de los registros de la CPU
+  - Detectar cuando la CPU ha sido detenida por un evento de depuración
+  - Continuar la ejecución de la CPU después de un evento de depuración
+  - etc.
+- También sabe cómo borrar y escribir en la FLASH del microcontrolador.

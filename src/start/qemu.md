@@ -63,7 +63,7 @@ test = false
 bench = false
 ```
 
-### Usando ninguno
+### Sin usar herramientas
 
 Toma la última instantánea de la plantilla `cortex-m-quickstart` y extráela.
 
@@ -100,22 +100,22 @@ fn main() -> ! {
 
 Este programa es un poco diferente de un programa estándar de Rust, así que echemos un vistazo más de cerca.
 
-`#![no_std]` indica que este programa _no_ se enlazará a la _crate_ estándar, `std`. En su lugar, se enlazará a su subconjunto: el `core` _crate_.
+`#![no_std]` indica que este programa _no_ se enlazará a la _crate_ estándar, `std`. En su lugar, se enlazará a su subconjunto: la `core` _crate_.
 
 `#![no_main]` indica que este programa no usará la interfaz estándar `main` que usan la mayoría de los programas Rust. La principal razón para usar `no_main` es que usar la interfaz `main` en el contexto `no_std` requiere nightly.
 
 `use panic_halt as _;`. Esta _crate_ proporciona un `panic_handler` que define el comportamiento de pánico del programa. Cubriremos esto con más detalle en el capítulo [Panicking](panicking.md) del libro.
 
-[`#[entry]`][entry] es un atributo proporcionado por [`cortex-m-rt`] _crate_ que se utiliza para marcar el punto de entrada del programa. Como no estamos usando la interfaz estándar `main` necesitamos otra forma de indicar el punto de entrada del programa y esa sería `#[entrada]`.
+[`#[entry]`][entry] es un atributo proporcionado por la _crate_ [`cortex-m-rt`] que se utiliza para marcar el punto de entrada del programa. Como no estamos usando la interfaz estándar `main` necesitamos otra forma de indicar el punto de entrada del programa y esa sería `#[entry]`.
 
-[entrada]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html
+[entry]: https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html
 [`cortex-m-rt`]: https://crates.io/crates/cortex-m-rt
 
 `fn main() -> !`. Nuestro programa será el _único_ proceso ejecutándose en el hardware de destino, ¡así que no queremos que termine! Usamos una [función divergente](https://doc.rust-lang.org/rust-by-example/fn/diverging.html) (el bit `-> !` en la firma de la función) para asegurar en tiempo de compilación que ese será el caso.
 
 ## Compilación cruzada
 
-El siguiente paso es _compilar_ el programa para la arquitectura Cortex-M3. Esto es tan sencillo como ejecutar `cargo build --target $TRIPLE` si sabes cuál debe ser el objetivo de compilación (`$TRIPLE`). Por suerte, el archivo `.cargo/config.toml` de la plantilla tiene la respuesta:
+El siguiente paso es _compilar_ el programa para la arquitectura Cortex-M3. Esto es tan sencillo como ejecutar `cargo build --target $TRIPLE` si tienes claro cuál debe ser el objetivo de compilación (`$TRIPLE`). Por suerte, el archivo `.cargo/config.toml` de la plantilla tiene la respuesta:
 
 ```console
 tail -n6 .cargo/config.toml
@@ -130,13 +130,13 @@ target = "thumbv7m-none-eabi"    # Cortex-M3
 # target = "thumbv7em-none-eabihf" # Cortex-M4F and Cortex-M7F (with FPU)
 ```
 
-Para realizar la compilación cruzada para la arquitectura Cortex-M3 tenemos que utilizar `thumbv7m-none-eabi`. Ese target no se instala automáticamente al instalar el toolchain de Rust, ahora sería un buen momento para añadir ese target al toolchain, si aún no lo has hecho:
+Para realizar la compilación cruzada para la arquitectura Cortex-M3 tenemos que utilizar `thumbv7m-none-eabi`. Ese _target_ no se instala automáticamente al instalar el toolchain de Rust, ahora sería un buen momento para añadir ese _target_ al toolchain, si aún no lo has hecho:
 
 ```console
 rustup target add thumbv7m-none-eabi
 ```
 
-Dado que el objetivo de compilación `thumbv7m-none-eabi` ha sido establecido por defecto en tu fichero `.cargo/config.toml`, los dos comandos siguientes hacen lo mismo:
+Dado que el objetivo de compilación `thumbv7m-none-eabi` ha sido establecido por defecto en tu archivo `.cargo/config.toml`, los dos comandos siguientes hacen lo mismo:
 
 ```console
 cargo build --target thumbv7m-none-eabi
@@ -220,7 +220,7 @@ Total              14570
 > - `.vector_table` es una sección _no_ estándar que utilizamos para almacenar la tabla de vectores (interrupciones)
 > - Las secciones `.ARM.attributes` y `.debug_*` contienen metadatos y _no_ se cargarán en el objetivo al flashear el binario.
 
-**IMPORTANTE**: Los archivos ELF contienen metadatos como información de depuración, por lo que su _tamaño en disco_ _no_ refleja con exactitud el espacio que ocupará el programa al ser flasheado en un dispositivo. \*Use siempre `cargo-size` para comprobar el tamaño real de un binario.
+**IMPORTANTE**: Los archivos ELF contienen metadatos como información de depuración, por lo que su _tamaño en disco_ _no_ refleja con exactitud el espacio que ocupará el programa al ser flasheado en un dispositivo. _Usa_ siempre `cargo-size` para comprobar el tamaño real de un binario.
 
 Se puede usar `cargo-objdump` para desensamblar el binario.
 
@@ -278,7 +278,7 @@ A continuación, ¡vamos a ver cómo ejecutar un programa embebido en QEMU! Esta
 Por conveniencia aquí está el código fuente de `examples/hello.rs`:
 
 ```rust,ignore
-//! Prints "Hello, world!" on the host console using semihosting
+//! Escribe "Hola, mundo!"en la consola del anfitrión usando semihosting
 
 #![no_main]
 #![no_std]
@@ -290,10 +290,10 @@ use cortex_m_semihosting::{debug, hprintln};
 
 #[entry]
 fn main() -> ! {
-    hprintln!("Hello, world!").unwrap();
+    hprintln!("Hola, mundo!").unwrap();
 
-    // exit QEMU
-    // NOTE do not run this on hardware; it can corrupt OpenOCD state
+    // salir de QEMU
+    // NOTA no ejecute esto en el hardware; puede corromper el estado del OpenOCD
     debug::exit(debug::EXIT_SUCCESS);
 
     loop {}
@@ -341,7 +341,7 @@ Vamos a desglosar ese comando QEMU:
 
 - `-cpu cortex-m3`. Esto le dice a QEMU que emule una CPU Cortex-M3. Especificar el modelo de CPU nos permite detectar algunos errores de compilación: por ejemplo, ejecutar un programa compilado para Cortex-M4F, que tiene una FPU por hardware, hará que QEMU se equivoque durante su ejecución.
 
-- `-machine lm3s6965evb`. Esto le dice a QEMU que emule el LM3S6965EVB, una placa de evaluación que contiene un microcontrolador LM3S6965.
+- `-machine lm3s6965evb`. Esto le dice a QEMU que emule el LM3S6965EVB, una tarjeta de evaluación que contiene un microcontrolador LM3S6965.
 
 - `-nographic`. Esto le dice a QEMU que no lance su GUI.
 
@@ -411,7 +411,7 @@ gdb-multiarch -q target/thumbv7m-none-eabi/debug/examples/hello
 
 **NOTA**: puede que necesite otra versión de gdb en lugar de `gdb-multiarch` dependiendo de la que haya instalado en el capítulo de instalación. También podría ser `arm-none-eabi-gdb` o simplemente `gdb`.
 
-A continuación, dentro de la shell GDB nos conectamos a QEMU, que está esperando una conexión en el puerto TCP 3333.
+A continuación, dentro de la shell GDB nos conectamos a QEMU, usando el comando `target`, que está esperando una conexión en el puerto TCP 3333.
 
 ```console
 target remote :3333
@@ -427,11 +427,12 @@ Verás que el proceso se detiene y que el contador del programa apunta a una fun
 
 > Ten en cuenta que en algunas configuraciones, en lugar de mostrar la línea `Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473` como se muestra arriba, gdb puede imprimir algunas advertencias como:
 >
-> `core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254` > `    src/libcore/num/bignum.rs: No such file or directory.`
+> `core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254` 
+> `    src/libcore/num/bignum.rs: No such file or directory.`
 >
 > Es un fallo conocido. Puedes ignorar con seguridad esas advertencias, lo más probable es que estés en Reset().
 
-Este manejador de reinicio eventualmente llamará a nuestra función principal. Saltemos todo el camino hasta allí usando un punto de interrupción y el comando `continue`. Para establecer el punto de ruptura, primero echemos un vistazo a dónde nos gustaría romper en nuestro código, con el comando `list`.
+Este manejador de reset eventualmente llamará a nuestra función principal. Saltemos todo el camino hasta allí usando un _breakpoint_ y el comando `continue`. Para establecer el punto de ruptura, primero echemos un vistazo a dónde nos gustaría hacer el _break_ en nuestro código, con el comando `list`.
 
 ```console
 list main
@@ -452,7 +453,7 @@ Esto mostrará el código fuente, del archivo examples/hello.rs.
 15          // exit QEMU
 ```
 
-Nos gustaría añadir un punto de interrupción justo antes del "¡Hola, mundo!", que está en la línea 13. Lo hacemos con el comando `break`:
+Nos gustaría añadir un _breakpoint_ justo antes del "¡Hola, mundo!", que está en la línea 13. Lo hacemos con el comando `break`:
 
 ```console
 break 13
@@ -481,7 +482,7 @@ next
 16          debug::exit(debug::EXIT_SUCCESS);
 ```
 
-At this point you should see "Hello, world!" printed on the terminal that's running `qemu-system-arm`.
+En este punto deberías ver "Hello, world!" impreso en el terminal que está ejecutando `qemu-system-arm`.
 
 ```text
 $ qemu-system-arm (..)
