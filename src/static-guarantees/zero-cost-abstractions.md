@@ -1,6 +1,6 @@
-# Zero Cost Abstractions
+# Abstracciones de Costo Cero
 
-Type states are also an excellent example of Zero Cost Abstractions - the ability to move certain behaviors to compile time execution or analysis. These type states contain no actual data, and are instead used as markers. Since they contain no data, they have no actual representation in memory at runtime:
+Los estados de tipo también son un excelente ejemplo de abstracciones de costo cero: la capacidad de mover ciertos comportamientos para compilar el tiempo de ejecución o análisis. Estos estados de tipo no contienen datos reales y, en su lugar, se utilizan como marcadores. Dado que no contienen datos, no tienen una representación real en la memoria en tiempo de ejecución:
 
 ```rust,ignore
 use core::mem::size_of;
@@ -11,15 +11,15 @@ let _ = size_of::<PulledHigh>(); // == 0
 let _ = size_of::<GpioConfig<Enabled, Input, PulledHigh>>(); // == 0
 ```
 
-## Zero Sized Types
+## Tipos de tamaño cero
 
 ```rust,ignore
 struct Enabled;
 ```
 
-Structures defined like this are called Zero Sized Types, as they contain no actual data. Although these types act "real" at compile time - you can copy them, move them, take references to them, etc., however the optimizer will completely strip them away.
+Las estructuras definidas de esta manera se denominan tipos de tamaño cero, ya que no contienen datos reales. Aunque estos tipos actúan como "reales" en tiempo de compilación, puede copiarlos, moverlos, tomar referencias a ellos, etc., sin embargo, el optimizador los eliminará por completo.
 
-In this snippet of code:
+En este fragmento de código:
 
 ```rust,ignore
 pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ> {
@@ -33,10 +33,10 @@ pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ> {
 }
 ```
 
-The GpioConfig we return never exists at runtime. Calling this function will generally boil down to a single assembly instruction - storing a constant register value to a register location. This means that the type state interface we've developed is a zero cost abstraction - it uses no more CPU, RAM, or code space tracking the state of `GpioConfig`, and renders to the same machine code as a direct register access.
+El GpioConfig que devolvemos nunca existe en tiempo de ejecución. Llamar a esta función generalmente se reducirá a una sola instrucción de ensamblaje: almacenar un valor de registro constante en una ubicación de registro. Esto significa que la interfaz de estado de tipo que hemos desarrollado es una abstracción de costo cero: no usa más CPU, RAM o espacio de código para rastrear el estado de `GpioConfig`, y representa el mismo código de máquina como un acceso de registro directo.
 
-## Nesting
+## Anidado
 
-In general, these abstractions may be nested as deeply as you would like. As long as all components used are zero sized types, the whole structure will not exist at runtime.
+En general, estas abstracciones se pueden anidar tan profundamente como desee. Siempre que todos los componentes utilizados sean tipos de tamaño cero, la estructura completa no existirá en tiempo de ejecución.
 
-For complex or deeply nested structures, it may be tedious to define all possible combinations of state. In these cases, macros may be used to generate all implementations.
+Para estructuras complejas o profundamente anidadas, puede ser tedioso definir todas las combinaciones posibles de estado. En estos casos, se pueden utilizar macros para generar todas las implementaciones.

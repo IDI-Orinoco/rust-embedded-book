@@ -1,9 +1,9 @@
-# Typestate Programming
+# Programación de estado de tipos (typestates)
 
-The concept of [typestates] describes the encoding of information about the current state of an object into the type of that object. Although this can sound a little arcane, if you have used the [Builder Pattern] in Rust, you have already started using Typestate Programming!
+El concepto de [typestates] describe la codificación de información sobre el estado actual de un objeto en el tipo de ese objeto. Aunque esto puede sonar un poco arcano, si ha usado [Patrón Constructor] en Rust, ¡ya ha comenzado a usar Typestate Programming!
 
 [typestates]: https://en.wikipedia.org/wiki/Typestate_analysis
-[Builder Pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
+[Patrón Constructor]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 
 ```rust
 pub mod foo_module {
@@ -49,17 +49,17 @@ fn main() {
 }
 ```
 
-In this example, there is no direct way to create a `Foo` object. We must create a `FooBuilder`, and properly initialize it before we can obtain the `Foo` object we want.
+En este ejemplo, no hay una forma directa de crear un objeto `Foo`. Debemos crear un `FooBuilder` e inicializarlo correctamente antes de que podamos obtener el objeto `Foo` que queremos.
 
-This minimal example encodes two states:
+Este ejemplo mínimo codifica dos estados:
 
-* `FooBuilder`, which represents an "unconfigured", or "configuration in process" state
-* `Foo`, which represents a "configured", or "ready to use" state.
+- `FooBuilder`, que representa un estado "desconfigurado" o "configuración en proceso"
+- `Foo`, que representa un estado "configurado" o "listo para usar".
 
-## Strong Types
+## Tipos Fuertes
 
-Because Rust has a [Strong Type System], there is no easy way to magically create an instance of `Foo`, or to turn a `FooBuilder` into a `Foo` without calling the `into_foo()` method. Additionally, calling the `into_foo()` method consumes the original `FooBuilder` structure, meaning it can not be reused without the creation of a new instance.
+Debido a que Rust tiene un [Sistema de Tipos Fuerte], no hay una manera fácil de crear mágicamente una instancia de `Foo`, o de convertir un `FooBuilder` en un `Foo` sin llamar al método `into_foo()`. Además, llamar al método `into_foo()` consume la estructura original de `FooBuilder`, lo que significa que no se puede reutilizar sin la creación de una nueva instancia.
 
-[Strong Type System]: https://en.wikipedia.org/wiki/Strong_and_weak_typing
+[sistema de tipos fuerte]: https://en.wikipedia.org/wiki/Strong_and_weak_typing
 
-This allows us to represent the states of our system as types, and to include the necessary actions for state transitions into the methods that exchange one type for another. By creating a `FooBuilder`, and exchanging it for a `Foo` object, we have walked through the steps of a basic state machine.
+Esto nos permite representar los estados de nuestro sistema como tipos e incluir las acciones necesarias para las transiciones de estado en los métodos que intercambian un tipo por otro. Al crear un `FooBuilder` e intercambiarlo por un objeto `Foo`, hemos recorrido los pasos de una máquina de estado básica.

@@ -1,19 +1,19 @@
-## Mutable Global State
+## Estado Global Mutable
 
-Unfortunately, hardware is basically nothing but mutable global state, which can feel very frightening for a Rust developer. Hardware exists independently from the structures of the code we write, and can be modified at any time by the real world.
+Desafortunadamente, el hardware no es más que un estado global mutable, lo que puede resultar muy aterrador para un desarrollador de Rust. El hardware existe independientemente de las estructuras del código que escribimos y puede ser modificado en cualquier momento por el mundo real.
 
-## What should our rules be?
+## ¿Cuáles deberían ser nuestras reglas?
 
-How can we reliably interact with these peripherals?
+¿Cómo podemos interactuar de forma fiable con estos periféricos?
 
-1. Always use `volatile` methods to read or write to peripheral memory, as it can change at any time
-2. In software, we should be able to share any number of read-only accesses to these peripherals
-3. If some software should have read-write access to a peripheral, it should hold the only reference to that peripheral
+1. Utilice siempre métodos `volatile` para leer o escribir en la memoria periférica, ya que puede cambiar en cualquier momento
+2. En el software, deberíamos poder compartir cualquier número de accesos de solo lectura a estos periféricos
+3. Si algún software debe tener acceso de lectura y escritura a un periférico, debe contener la única referencia a ese periférico
 
-## The Borrow Checker
+## El Verificador de Préstamos (The Borrow Checker)
 
-The last two of these rules sound suspiciously similar to what the Borrow Checker does already!
+¡Las últimas dos de estas reglas suenan sospechosamente similares a lo que ya hace el Borrow Checker!
 
-Imagine if we could pass around ownership of these peripherals, or offer immutable or mutable references to them?
+¿Imagínese si pudiéramos pasar la propiedad de estos periféricos u ofrecerles referencias inmutables o mutables?
 
-Well, we can, but for the Borrow Checker, we need to have exactly one instance of each peripheral, so Rust can handle this correctly. Well, luckily in the hardware, there is only one instance of any given peripheral, but how can we expose that in the structure of our code?
+Bueno, podemos, pero para el Borrow Checker, necesitamos tener exactamente una instancia de cada periférico, para que Rust pueda manejar esto correctamente. Bueno, afortunadamente en el hardware, solo hay una instancia de cualquier periférico dado, pero ¿cómo podemos exponer eso en la estructura de nuestro código?

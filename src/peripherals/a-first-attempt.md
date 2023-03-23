@@ -1,21 +1,21 @@
-# A First Attempt
+# Un Primer Intento
 
-## The Registers
+## Los Registros
 
-Let's look at the 'SysTick' peripheral - a simple timer which comes with every Cortex-M processor core. Typically you'll be looking these up in the chip manufacturer's data sheet or *Technical Reference Manual*, but this example is common to all ARM Cortex-M cores, let's look in the [ARM reference manual]. We see there are four registers:
+Echemos un vistazo al periférico 'SysTick' - un simple temporizador que viene con cada núcleo de procesador Cortex-M. Típicamente lo buscarás en la hoja de datos del fabricante del chip o en el _Manual de Referencia Técnica_, pero este ejemplo es común a todos los núcleos Cortex-M de ARM, miremos en el [manual de referencia de ARM]. Vemos que hay cuatro registros:
 
-[ARM reference manual]: http://infocenter.arm.com/help/topic/com.arm.doc.dui0553a/Babieigh.html
+[manual de referencia de arm]: http://infocenter.arm.com/help/topic/com.arm.doc.dui0553a/Babieigh.html
 
-| Offset | Name        | Description                 | Width  |
-|--------|-------------|-----------------------------|--------|
-| 0x00   | SYST_CSR    | Control and Status Register | 32 bits|
-| 0x04   | SYST_RVR    | Reload Value Register       | 32 bits|
-| 0x08   | SYST_CVR    | Current Value Register      | 32 bits|
-| 0x0C   | SYST_CALIB  | Calibration Value Register  | 32 bits|
+| Offset | Nombre     | Descripción                      | Ancho   |
+| ------ | ---------- | -------------------------------- | ------- |
+| 0x00   | SYST_CSR   | Registro de control y estado     | 32 bits |
+| 0x04   | SYST_RVR   | Registro de valor de recarga     | 32 bits |
+| 0x08   | SYST_CVR   | Registro de valor actual         | 32 bits |
+| 0x0C   | SYST_CALIB | Registro de Valor de Calibración | 32 bits |
 
-## The C Approach
+## El enfoque C
 
-In Rust, we can represent a collection of registers in exactly the same way as we do in C - with a `struct`.
+En Rust, podemos representar una colección de registros exactamente de la misma manera que lo hacemos en C - con una `struct`.
 
 ```rust,ignore
 #[repr(C)]
@@ -27,33 +27,32 @@ struct SysTick {
 }
 ```
 
-The qualifier `#[repr(C)]` tells the Rust compiler to lay this structure out like a C compiler would. That's very important, as Rust allows structure fields to be re-ordered, while C does not. You can imagine the debugging we'd have to do if these fields were silently re-arranged by the compiler! With this qualifier in place, we have our four 32-bit fields which correspond to the table above. But of course, this `struct` is of no use by itself - we need a variable.
+El calificador `#[repr(C)]` le dice al compilador de Rust que diseñe esta estructura como lo haría un compilador de C. Eso es muy importante, ya que Rust permite reordenar los campos de estructura, mientras que C no. ¡Puedes imaginar la depuración que tendríamos que hacer si el compilador reorganizara estos campos en silencio! Con este calificador en su lugar, tenemos nuestros cuatro campos de 32 bits que corresponden a la tabla anterior. Pero, por supuesto, esta `estructura` no sirve por sí sola, necesitamos una variable.
 
 ```rust,ignore
 let systick = 0xE000_E010 as *mut SysTick;
 let time = unsafe { (*systick).cvr };
 ```
 
-## Volatile Accesses
+## Accesos volátiles
 
-Now, there are a couple of problems with the approach above.
+Ahora, hay un par de problemas con el enfoque anterior.
 
-1. We have to use unsafe every time we want to access our Peripheral.
-2. We've got no way of specifying which registers are read-only or read-write.
-3. Any piece of code anywhere in your program could access the hardware
-   through this structure.
-4. Most importantly, it doesn't actually work...
+1. Tenemos que usar `unsafe` cada vez que queramos acceder a nuestro Periférico.
+2. No tenemos forma de especificar qué registros son de solo lectura o de lectura y escritura.
+3. Cualquier pieza de código en cualquier parte de tu programa podría acceder al hardware a través de esta estructura.
+4. Aún más importante, esto en realidad no funciona...
 
-Now, the problem is that compilers are clever. If you make two writes to the same piece of RAM, one after the other, the compiler can notice this and just skip the first write entirely. In C, we can mark variables as `volatile` to ensure that every read or write occurs as intended. In Rust, we instead mark the *accesses* as volatile, not the variable.
+Ahora, el problema es que los compiladores son inteligentes. Si realiza dos escrituras en la misma pieza de RAM, una tras otra, el compilador puede notarlo y omitir la primera escritura por completo. En C, podemos marcar las variables como "volátiles" para garantizar que cada lectura o escritura ocurra según lo previsto. En Rust, en cambio, marcamos los _accesos_ como volátiles, no como variables.
 
 ```rust,ignore
 let systick = unsafe { &mut *(0xE000_E010 as *mut SysTick) };
 let time = unsafe { core::ptr::read_volatile(&mut systick.cvr) };
 ```
 
-So, we've fixed one of our four problems, but now we have even more `unsafe` code! Fortunately, there's a third party crate which can help - [`volatile_register`].
+Entonces, hemos solucionado uno de nuestros cuatro problemas, ¡pero ahora tenemos aún más código `no seguro`! Afortunadamente, hay una _crate_ de terceros que puede ayudar: [`registro_volatil`].
 
-[`volatile_register`]: https://crates.io/crates/volatile_register
+[`registro_volatil`]: https://crates.io/crates/volatile_register
 
 ```rust,ignore
 use volatile_register::{RW, RO};
@@ -76,13 +75,13 @@ fn get_time() -> u32 {
 }
 ```
 
-Now, the volatile accesses are performed automatically through the `read` and `write` methods. It's still `unsafe` to perform writes, but to be fair, hardware is a bunch of mutable state and there's no way for the compiler to know whether these writes are actually safe, so this is a good default position.
+Ahora, los accesos volátiles se realizan automáticamente a través de los métodos `read` y `write`. Todavía es `inseguro` realizar escrituras, pero para ser justos, el hardware es un montón de estados mutables y no hay forma de que el compilador sepa si estas escrituras son realmente seguras, por lo que esta es una buena posición inicial.
 
-## The Rusty Wrapper
+## Un envoltorio Rust para SysTick
 
-We need to wrap this `struct` up into a higher-layer API that is safe for our users to call. As the driver author, we manually verify the unsafe code is correct, and then present a safe API for our users so they don't have to worry about it (provided they trust us to get it right!).
+Necesitamos envolver esta `estructura` en una API de capa superior que sea segura para que llamen nuestros usuarios. Como autor del controlador, verificamos manualmente que el código inseguro sea correcto y luego presentamos una API segura para nuestros usuarios para que no tengan que preocuparse por eso (¡siempre que confíen en que lo haremos bien!).
 
-One example might be:
+Un ejemplo podría ser:
 
 ```rust,ignore
 use volatile_register::{RW, RO};
@@ -122,7 +121,7 @@ pub fn example_usage() -> String {
 }
 ```
 
-Now, the problem with this approach is that the following code is perfectly acceptable to the compiler:
+Ahora, el problema con este enfoque es que el siguiente código es perfectamente aceptable para el compilador:
 
 ```rust,ignore
 fn thread1() {
@@ -136,4 +135,4 @@ fn thread2() {
 }
 ```
 
-Our `&mut self` argument to the `set_reload` function checks that there are no other references to *that* particular `SystemTimer` struct, but they don't stop the user creating a second `SystemTimer` which points to the exact same peripheral! Code written in this fashion will work if the author is diligent enough to spot all of these 'duplicate' driver instances, but once the code is spread out over multiple modules, drivers, developers, and days, it gets easier and easier to make these kinds of mistakes.
+Nuestro argumento `&mut self` para la función `set_reload` verifica que no haya otras referencias a _esa_ estructura `SystemTimer` en particular, ¡pero no impiden que el usuario cree un segundo `SystemTimer` que apunte exactamente al mismo periférico! El código escrito de esta manera funcionará si el autor es lo suficientemente diligente para detectar todas estas instancias de controlador 'duplicadas', pero una vez que el código se distribuye en varios módulos, controladores, desarrolladores y días, se vuelve cada vez más fácil hacer estos tipos de errores.

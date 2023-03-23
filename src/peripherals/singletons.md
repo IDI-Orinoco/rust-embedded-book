@@ -1,15 +1,15 @@
 # Singletons
 
-> In software engineering, the singleton pattern is a software design pattern that restricts the instantiation of a class to one object.
+> En ingeniería de software, el patrón singleton es un patrón de diseño de software que restringe la instanciación de una clase a un objeto.
 >
-> *Wikipedia: [Singleton Pattern]*
+> *Wikipedia: [Singleton Pattern], [Singleton](es)*
 
 [Singleton Pattern]: https://en.wikipedia.org/wiki/Singleton_pattern
+[Singleton]: https://es.wikipedia.org/wiki/Singleton
 
+## Pero, ¿por qué no podemos simplemente usar variables globales?
 
-## But why can't we just use global variable(s)?
-
-We could make everything a public static, like this
+Podríamos hacer que todo sea público estático, como esto:
 
 ```rust,ignore
 static mut THE_SERIAL_PORT: SerialPort = SerialPort;
@@ -21,11 +21,11 @@ fn main() {
 }
 ```
 
-But this has a few problems. It is a mutable global variable, and in Rust, these are always unsafe to interact with. These variables are also visible across your whole program, which means the borrow checker is unable to help you track references and ownership of these variables.
+Pero esto tiene algunos problemas. Es una variable global mutable, y en Rust, siempre es inseguro interactuar con estas. Estas variables también son visibles en todo su programa, lo que significa que el verificador de préstamos no puede ayudarte a rastrear las referencias y la propiedad de estas variables.
 
-## How do we do this in Rust?
+## ¿Cómo hacemos esto en Rust?
 
-Instead of just making our peripheral a global variable, we might instead decide to make a structure, in this case called `PERIPHERALS`, which contains an `Option<T>` for each of our peripherals.
+En lugar de convertir nuestro periférico en una variable global, podríamos decidir crear una estructura, en este caso denominada `PERIPHERALS`, que contiene una `Opción<T>` para cada uno de nuestros periféricos.
 
 ```rust,ignore
 struct Peripherals {
@@ -42,7 +42,7 @@ static mut PERIPHERALS: Peripherals = Peripherals {
 };
 ```
 
-This structure allows us to obtain a single instance of our peripheral. If we try to call `take_serial()` more than once, our code will panic!
+Esta estructura nos permite obtener una única instancia de nuestro periférico. Si intentamos llamar a `take_serial()` más de una vez, ¡nuestro código entrará en pánico!
 
 ```rust,ignore
 fn main() {
@@ -52,13 +52,13 @@ fn main() {
 }
 ```
 
-Although interacting with this structure is `unsafe`, once we have the `SerialPort` it contained, we no longer need to use `unsafe`, or the `PERIPHERALS` structure at all.
+Aunque interactuar con esta estructura es `unsafe`, una vez que tenemos el `SerialPort` que contiene, ya no necesitamos usar `unsafe`, o la estructura `PERIPHERALS` en absoluto.
 
-This has a small runtime overhead because we must wrap the `SerialPort` structure in an option, and we'll need to call `take_serial()` once, however this small up-front cost allows us to leverage the borrow checker throughout the rest of our program.
+Esto tiene una pequeña sobrecarga en la ejecución porque debemos envolver la estructura `SerialPort` en una opción, y necesitaremos llamar a `take_serial()` una vez, sin embargo, este pequeño costo inicial nos permite aprovechar el verificador de préstamos en el resto de nuestro programa.
 
-## Existing library support
+## Soporte de biblioteca existente
 
-Although we created our own `Peripherals` structure above, it is not necessary to do this for your code. the `cortex_m` crate contains a macro called `singleton!()` that will perform this action for you.
+Aunque creamos nuestra propia estructura `Peripherals` arriba, no es necesario hacer esto para su código. la caja `cortex_m` contiene una macro llamada `singleton!()` que realizará esta acción por ti.
 
 ```rust,ignore
 use cortex_m::singleton;
@@ -72,7 +72,7 @@ fn main() {
 
 [cortex_m docs](https://docs.rs/cortex-m/latest/cortex_m/macro.singleton.html)
 
-Additionally, if you use [`cortex-m-rtic`](https://github.com/rtic-rs/cortex-m-rtic), the entire process of defining and obtaining these peripherals are abstracted for you, and you are instead handed a `Peripherals` structure that contains a non-`Option<T>` version of all of the items you define.
+Además, si usas [`cortex-m-rtic`](https://github.com/rtic-rs/cortex-m-rtic), todo el proceso de definición y obtención de estos periféricos es abstraído para ti, y tu, en cambio, recibes una estructura `Peripherals` que contiene una versión que es no-`Option<T>` de todos los elementos que definas.
 
 ```rust,ignore
 // cortex-m-rtic v0.5.x
@@ -81,19 +81,19 @@ const APP: () = {
     #[init]
     fn init(cx: init::Context) {
         static mut X: u32 = 0;
-         
+
         // Cortex-M peripherals
         let core: cortex_m::Peripherals = cx.core;
-        
+
         // Device specific peripherals
         let device: lm3s6965::Peripherals = cx.device;
     }
 }
 ```
 
-## But why?
+## ¿Pero por qué?
 
-But how do these Singletons make a noticeable difference in how our Rust code works?
+Pero, ¿cómo estos Singleton marcan una diferencia notable en el funcionamiento de nuestro código Rust?
 
 ```rust,ignore
 impl SerialPort {
@@ -109,12 +109,12 @@ impl SerialPort {
 }
 ```
 
-There are two important factors in play here:
+Hay dos factores importantes en juego aquí:
 
-* Because we are using a singleton, there is only one way or place to obtain a `SerialPort` structure
-* To call the `read_speed()` method, we must have ownership or a reference to a `SerialPort` structure
+- Debido a que estamos usando un singleton, solo hay una forma o lugar para obtener una estructura `SerialPort`
+- Para llamar al método `read_speed()`, debemos tener propiedad o una referencia a una estructura `SerialPort`
 
-These two factors put together means that it is only possible to access the hardware if we have appropriately satisfied the borrow checker, meaning that at no point do we have multiple mutable references to the same hardware!
+Estos dos factores juntos significan que solo es posible acceder al hardware si hemos satisfecho adecuadamente el verificador de préstamos, lo que significa que en ningún momento tenemos múltiples referencias mutables al mismo hardware.
 
 ```rust,ignore
 fn main() {
@@ -128,11 +128,11 @@ fn main() {
 }
 ```
 
-## Treat your hardware like data
+## Trate su hardware como si fueran datos
 
-Additionally, because some references are mutable, and some are immutable, it becomes possible to see whether a function or method could potentially modify the state of the hardware. For example,
+Además, dado que algunas referencias son mutables y otras inmutables, es posible ver si una función o método podría modificar potencialmente el estado del hardware. Por ejemplo,
 
-This is allowed to change hardware settings:
+Esto está permitido para cambiar la configuración del hardware:
 
 ```rust,ignore
 fn setup_spi_port(
@@ -143,7 +143,7 @@ fn setup_spi_port(
 }
 ```
 
-This isn't:
+Esto no está permitido:
 
 ```rust,ignore
 fn read_button(gpio: &GpioPin) -> bool {
@@ -151,4 +151,4 @@ fn read_button(gpio: &GpioPin) -> bool {
 }
 ```
 
-This allows us to enforce whether code should or should not make changes to hardware at **compile time**, rather than at runtime. As a note, this generally only works across one application, but for bare metal systems, our software will be compiled into a single application, so this is not usually a restriction.
+Esto nos permite imponer si el código debe o no realizar cambios en el hardware en **tiempo de compilación**, en lugar de en tiempo de ejecución. Como nota, esto generalmente solo funciona en una aplicación, pero para los sistemas completos, nuestro software se compilará en una sola aplicación, por lo que esto no suele ser una restricción.

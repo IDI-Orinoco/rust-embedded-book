@@ -1,22 +1,22 @@
-# Design Contracts
+# Contratos de diseño
 
-In our last chapter, we wrote an interface that *didn't* enforce design contracts. Let's take another look at our imaginary GPIO configuration register:
+En nuestro último capítulo, escribimos una interfaz que _no_ hacía cumplir los contratos de diseño. Echemos otro vistazo a nuestro registro de configuración GPIO imaginario:
 
-| Name         | Bit Number(s) | Value | Meaning   | Notes |
-| ---:         | ------------: | ----: | ------:   | ----: |
-| enable       | 0             | 0     | disabled  | Disables the GPIO |
-|              |               | 1     | enabled   | Enables the GPIO |
-| direction    | 1             | 0     | input     | Sets the direction to Input |
-|              |               | 1     | output    | Sets the direction to Output |
-| input_mode   | 2..3          | 00    | hi-z      | Sets the input as high resistance |
-|              |               | 01    | pull-low  | Input pin is pulled low |
-|              |               | 10    | pull-high | Input pin is pulled high |
-|              |               | 11    | n/a       | Invalid state. Do not set |
-| output_mode  | 4             | 0     | set-low   | Output pin is driven low |
-|              |               | 1     | set-high  | Output pin is driven high |
-| input_status | 5             | x     | in-val    | 0 if input is < 1.5v, 1 if input >= 1.5v |
+|       Nombre | Número(s) de bit | Valor | Significado |                                                 Notas |
+| -----------: | ---------------: | ----: | ----------: | ----------------------------------------------------: |
+|       enable |                0 |     0 |    disabled |                                   Deshabilita el GPIO |
+|              |                  |     1 |     enabled |                                      Habilita el GPIO |
+|    direction |                1 |     0 |       input |                      Establece la dirección a Entrada |
+|              |                  |     1 |      output |                       Establece la dirección a Salida |
+|   input_mode |             2..3 |    00 |        hi-z |             Establece la entrada como alta impedancia |
+|              |                  |    01 |    pull-low |                        El pin de entrada es pull-down |
+|              |                  |    10 |   pull-high |                          El pin de entrada es pull-up |
+|              |                  |    11 |         n/a |                        Estado Inválido. No establecer |
+|  output_mode |                4 |     0 |     set-low |                      El pin de salida se lleva a bajo |
+|              |                  |     1 |    set-high |                      El pin de salida se lleva a alto |
+| input_status |                5 |     x |      in-val | 0 si la entrada es < 1.5v, 1 si la entrada es >= 1.5v |
 
-If we instead checked the state before making use of the underlying hardware, enforcing our design contracts at runtime, we might write code that looks like this instead:
+Si, en cambio, verificamos el estado antes de hacer uso del hardware subyacente, haciendo cumplir nuestros contratos de diseño en tiempo de ejecución, podríamos escribir un código que se vea así:
 
 ```rust,ignore
 /// GPIO interface
@@ -97,9 +97,9 @@ impl GpioConfig {
 }
 ```
 
-Because we need to enforce the restrictions on the hardware, we end up doing a lot of runtime checking which wastes time and resources, and this code will be much less pleasant for the developer to use.
+Debido a que necesitamos hacer cumplir las restricciones en el hardware, terminamos haciendo muchas comprobaciones en tiempo de ejecución, lo que desperdicia tiempo y recursos, y este código será mucho menos agradable de usar para el desarrollador.
 
-## Type States
+## Tipo de estados
 
 But what if instead, we used Rust's type system to enforce the state transition rules? Take this example:
 
@@ -209,7 +209,7 @@ impl<IN_MODE> GpioConfig<Enabled, Input, IN_MODE> {
 }
 ```
 
-Now let's see what the code using this would look like:
+Ahora veamos cómo se vería el código que usa esto:
 
 ```rust,ignore
 /*
@@ -245,10 +245,10 @@ output_pin.set_bit(true);
 // output_pin.into_input_pull_down();
 ```
 
-This is definitely a convenient way to store the state of the pin, but why do it this way? Why is this better than storing the state as an `enum` inside of our `GpioConfig` structure?
+Esta es definitivamente una forma conveniente de almacenar el estado del pin, pero ¿por qué hacerlo de esta manera? ¿Por qué es esto mejor que almacenar el estado como un `enum` dentro de nuestra estructura `GpioConfig`?
 
-## Compile Time Functional Safety
+## Tiempo de compilación Seguridad funcional
 
-Because we are enforcing our design constraints entirely at compile time, this incurs no runtime cost. It is impossible to set an output mode when you have a pin in an input mode. Instead, you must walk through the states by converting it to an output pin, and then setting the output mode. Because of this, there is no runtime penalty due to checking the current state before executing a function.
+Debido a que estamos aplicando nuestras restricciones de diseño por completo en tiempo de compilación, esto no genera costos de tiempo de ejecución. Es imposible establecer un modo de salida cuando tienes un pin en un modo de entrada. En su lugar, debes recorrer los estados convirtiéndolos en un pin de salida y luego configurando el modo de salida. Debido a esto, no hay penalización de tiempo de ejecución por verificar el estado actual antes de ejecutar una función.
 
-Also, because these states are enforced by the type system, there is no longer room for errors by consumers of this interface. If they try to perform an illegal state transition, the code will not compile!
+Además, debido a que estos estados son impuestos por el sistema de tipos, ya no hay espacio para errores por parte de los consumidores de esta interfaz. Si intentan realizar una transición de estado ilegal, ¡el código no se compilará!

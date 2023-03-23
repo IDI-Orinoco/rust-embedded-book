@@ -1,57 +1,57 @@
-# Peripherals as State Machines
+# Periféricos como Máquinas de Estado
 
-The peripherals of a microcontroller can be thought of as set of state machines. For example, the configuration of a simplified [GPIO pin] could be represented as the following tree of states:
+Los periféricos de un microcontrolador se pueden considerar como un conjunto de máquinas de estado. Por ejemplo, la configuración de un [pin GPIO] simplificada podría representarse como el siguiente árbol de estados:
 
-[GPIO pin]: https://en.wikipedia.org/wiki/General-purpose_input/output
+[pin gpio]: https://en.wikipedia.org/wiki/General-purpose_input/output
 
-* Disabled
-* Enabled
-    * Configured as Output
-        * Output: High
-        * Output: Low
-    * Configured as Input
-        * Input: High Resistance
-        * Input: Pulled Low
-        * Input: Pulled High
+- Desactivado
+- Activado
+  - Configurado como Salida
+    - Salida: Alto
+    - Salida: Bajo
+  - Configurado como Entrada
+    - Entrada: Alta Impedancia
+    - Entrada: Pull-down
+    - Entrada: Pull-up
 
-If the peripheral starts in the `Disabled` mode, to move to the `Input: High Resistance` mode, we must perform the following steps:
+Si el periférico arranca en el modo `Deshabilitado`, para pasar al modo `Entrada: Alta Impedancia`, debemos realizar los siguientes pasos:
 
-1. Disabled
-2. Enabled
-3. Configured as Input
-4. Input: High Resistance
+1. Deshabilitado
+2. Habilitado
+3. Configurado como Entrada
+4. Entrada: Alta Impedancia
 
-If we wanted to move from `Input: High Resistance` to `Input: Pulled Low`, we must perform the following steps:
+Si quisiéramos pasar de `Entrada: Alta Impedancia` a `Entrada: Pull-down`, debemos realizar los siguientes pasos:
 
-1. Input: High Resistance
-2. Input: Pulled Low
+1. Entrada: Alta Impedancia
+2. Entrada: Pull-down
 
-Similarly, if we want to move a GPIO pin from configured as `Input: Pulled Low` to `Output: High`, we must perform the following steps:
+De igual forma, si queremos mover un pin GPIO de configurado como `Entrada: Pull-down` a `Salida: Alto`, debemos realizar los siguientes pasos:
 
-1. Input: Pulled Low
-2. Configured as Input
-3. Configured as Output
-4. Output: High
+1. Entrada: Pull-down
+2. Configurado como Entrada
+3. Configurado como Salida
+4. Salida: Alto
 
-## Hardware Representation
+## Representación de hardware
 
-Typically the states listed above are set by writing values to given registers mapped to a GPIO peripheral. Let's define an imaginary GPIO Configuration Register to illustrate this:
+Por lo general, los estados enumerados anteriormente se establecen escribiendo valores en registros asignados a un periférico GPIO. Definamos un registro de configuración GPIO imaginario para ilustrar esto:
 
-| Name         | Bit Number(s) | Value | Meaning   | Notes |
-| ---:         | ------------: | ----: | ------:   | ----: |
-| enable       | 0             | 0     | disabled  | Disables the GPIO |
-|              |               | 1     | enabled   | Enables the GPIO |
-| direction    | 1             | 0     | input     | Sets the direction to Input |
-|              |               | 1     | output    | Sets the direction to Output |
-| input_mode   | 2..3          | 00    | hi-z      | Sets the input as high resistance |
-|              |               | 01    | pull-low  | Input pin is pulled low |
-|              |               | 10    | pull-high | Input pin is pulled high |
-|              |               | 11    | n/a       | Invalid state. Do not set |
-| output_mode  | 4             | 0     | set-low   | Output pin is driven low |
-|              |               | 1     | set-high  | Output pin is driven high |
-| input_status | 5             | x     | in-val    | 0 if input is < 1.5v, 1 if input >= 1.5v |
+|       Nombre | Número(s) de bit | Valor | Significado |                                                 Notas |
+| -----------: | ---------------: | ----: | ----------: | ----------------------------------------------------: |
+|       enable |                0 |     0 |    disabled |                                   Deshabilita el GPIO |
+|              |                  |     1 |     enabled |                                      Habilita el GPIO |
+|    direction |                1 |     0 |       input |                     Establece la dirección en Entrada |
+|              |                  |     1 |      output |                      Establece la dirección en Salida |
+|   input_mode |             2..3 |    00 |        hi-z |             Establece la entrada como alta impedancia |
+|              |                  |    01 |   pull-down |            El pin de entrada se establece a pull-down |
+|              |                  |    10 |     pull-up |              El pin de entrada se establece a pull-up |
+|              |                  |    11 |         n/a |                        Estado Inválido. No establecer |
+|  output_mode |                4 |     0 |     set-low |                      El pin de salida se lleva a bajo |
+|              |                  |     1 |    set-high |                      El pin de salida se lleva a alto |
+| input_status |                5 |     x |      in-val | 0 si la entrada es < 1.5v, 1 si la entrada es >= 1.5v |
 
-We _could_ expose the following structure in Rust to control this GPIO:
+_Podríamos_ exponer la siguiente estructura en Rust para controlar este GPIO:
 
 ```rust,ignore
 /// GPIO interface
@@ -91,8 +91,8 @@ impl GpioConfig {
 }
 ```
 
-However, this would allow us to modify certain registers that do not make sense. For example, what happens if we set the `output_mode` field when our GPIO is configured as an input? 
+Sin embargo, esto nos permitiría modificar ciertos registros que no tienen sentido. Por ejemplo, ¿qué sucede si configuramos el campo `output_mode` cuando nuestro GPIO está configurado como entrada?
 
-In general, use of this structure would allow us to reach states not defined by our state machine above: e.g. an output that is pulled low, or an input that is set high. For some hardware, this may not matter. On other hardware, it could cause unexpected or undefined behavior!
+En general, el uso de esta estructura nos permitiría alcanzar estados no definidos por nuestra máquina de estado anterior: p.e. una salida con un pull-down o una entrada establecida a nivel alto. Para algunos hardware, esto puede no importar. ¡En otro hardware, podría causar un comportamiento inesperado o indefinido!
 
-Although this interface is convenient to write, it doesn't enforce the design contracts set out by our hardware implementation.
+Aunque esta interfaz es conveniente para escribir, no hace cumplir los contratos de diseño establecidos por nuestra implementación de hardware.
