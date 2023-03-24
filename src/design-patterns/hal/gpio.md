@@ -1,13 +1,13 @@
-# Recommendations for GPIO Interfaces
+# Recomendaciones para interfaces GPIO
 
 <a id="c-zst-pin"></a>
-## Pin types are zero-sized by default (C-ZST-PIN)
+## Los tipos de pin son de tamaño cero por defecto (C-ZST-PIN)
 
-GPIO Interfaces exposed by the HAL should provide dedicated zero-sized types for each pin on every interface or port, resulting in a zero-cost GPIO abstraction when all pin assignments are statically known.
+Las Interfaces GPIO expuestas por la HAL deberían proporcionar tipos dedicados de tamaño cero para cada pin en cada interfaz o puerto, resultando en una abstracción GPIO de coste cero cuando todas las asignaciones de pines son conocidas estáticamente.
 
-Each GPIO Interface or Port should implement a `split` method returning a struct with every pin.
+Cada interfaz o puerto GPIO debe implementar un método `split` que devuelva una estructura con cada pin.
 
-Example:
+Ejemplo:
 
 ```rust
 pub struct PA0;
@@ -34,11 +34,11 @@ pub struct PortAPins {
 ```
 
 <a id="c-erased-pin"></a>
-## Pin types provide methods to erase pin and port (C-ERASED-PIN)
+## Los tipos de pines proporcionan métodos para borrar pines y puertos (C-ERASED-PIN)
 
-Pins should provide type erasure methods that move their properties from compile time to runtime, and allow more flexibility in applications.
+Los pines deben proporcionar métodos de borrado de tipos que trasladen sus propiedades de tiempo de compilación a tiempo de ejecución, y permitan una mayor flexibilidad en las aplicaciones.
 
-Example:
+Ejemplo:
 
 ```rust
 /// Port A, pin 0.
@@ -80,17 +80,17 @@ enum Port {
 ```
 
 <a id="c-pin-state"></a>
-## Pin state should be encoded as type parameters (C-PIN-STATE)
+## El estado de los pines debería codificarse como parámetros de tipo (C-PIN-STATE)
 
-Pins may be configured as input or output with different characteristics depending on the chip or family. This state should be encoded in the type system to prevent use of pins in incorrect states.
+Los pines pueden configurarse como entrada o salida con diferentes características dependiendo del chip o familia. Este estado debe codificarse en el sistema de tipos para evitar el uso de pines en estados incorrectos.
 
-Additional, chip-specific state (eg. drive strength) may also be encoded in this way, using additional type parameters.
+Los estados adicionales específicos de cada chip (por ejemplo, la intensidad de accionamiento) también pueden codificarse de este modo, utilizando parámetros de tipo adicionales.
 
-Methods for changing the pin state should be provided as `into_input` and `into_output` methods.
+Los métodos para cambiar el estado del pin deben proporcionarse como métodos `into_input` y `into_output`.
 
-Additionally, `with_{input,output}_state` methods should be provided that temporarily reconfigure a pin in a different state without moving it.
+Además, se deben proporcionar métodos `with_{input,output}_state` que reconfiguren temporalmente un pin en un estado diferente sin moverlo.
 
-The following methods should be provided for every pin type (that is, both erased and non-erased pin types should provide the same API):
+Se deben proporcionar los siguientes métodos para cada tipo de pin (es decir, tanto los tipos de pin borrados como los no borrados deben proporcionar la misma API):
 
 * `pub fn into_input<N: InputState>(self, input: N) -> Pin<N>`
 * `pub fn into_output<N: OutputState>(self, output: N) -> Pin<N>`
@@ -110,9 +110,9 @@ The following methods should be provided for every pin type (that is, both erase
   ```
 
 
-Pin state should be bounded by sealed traits. Users of the HAL should have no need to add their own state. The traits can provide HAL-specific methods required to implement the pin state API.
+El estado de los pines debe estar limitado por _traits_ sellados. Los usuarios de la HAL no deberían tener necesidad de añadir su propio estado. Los _traits_ pueden proporcionar métodos específicos de la HAL necesarios para implementar la API de estado de los pines.
 
-Example:
+Ejemplo:
 
 ```rust
 # use std::marker::PhantomData;

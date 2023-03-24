@@ -1,12 +1,12 @@
-# HAL Design Patterns
+# Patrones de Diseño HAL
 
-This is a set of common and recommended patterns for writing hardware abstraction layers (HALs) for microcontrollers in Rust. These patterns are intended to be used in addition to the existing [Rust API Guidelines] when writing HALs for microcontrollers.
+Este es un conjunto de patrones comunes y recomendados para escribir capas de abstracción de hardware (HALs) para microcontroladores en Rust. Estos patrones están pensados para ser usados además de las [Orientaciones Rust API] existentes cuando se escriben HALs para microcontroladores.
 
-[Rust API Guidelines]: https://rust-lang.github.io/api-guidelines/
+[orientaciones rust api]: https://rust-lang.github.io/api-guidelines/
 
-[Checklist](checklist.md)
+[Lista de comprobación](checklist.md)
 
-- [Naming](naming.md)
-- [Interoperability](interoperability.md)
-- [Predictability](predictability.md)
+- [Nomenclatura](naming.md)
+- [Interoperabilidad](interoperability.md)
+- [Previsibilidad](predictability.md)
 - [GPIO](gpio.md)

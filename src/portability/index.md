@@ -1,62 +1,65 @@
-# Portability
+# Portabilidad
 
-In embedded environments portability is a very important topic: Every vendor and even each family from a single manufacturer offers different peripherals and capabilities and similarly the ways to interact with the peripherals will vary.
+En entornos embebidos, la portabilidad es un tema muy importante: Cada proveedor e incluso cada familia de un mismo fabricante ofrece diferentes periféricos y capacidades y, de forma similar, las formas de interactuar con los periféricos variarán.
 
-A common way to equalize such differences is via a layer called Hardware Abstraction layer or **HAL**.
+Una forma común de igualar estas diferencias es a través de una capa llamada capa de Abstracción de Hardware o **HAL**.
 
-> Hardware abstractions are sets of routines in software that emulate some platform-specific details, giving programs direct access to the hardware resources.
+> Las abstracciones de hardware son conjuntos de rutinas en software que emulan algunos detalles específicos de la plataforma, dando a los programas acceso directo a los recursos de hardware.
 >
-> They often allow programmers to write device-independent, high performance applications by providing standard operating system (OS) calls to hardware.
+> Suelen permitir a los programadores escribir aplicaciones independientes del dispositivo y de alto rendimiento al proporcionar llamadas estándar del sistema operativo (SO) al hardware.
 >
-> *Wikipedia: [Hardware Abstraction Layer]*
+> _Wikipedia: [capa de abstracción de hardware]_
 
-[Hardware Abstraction Layer]: https://en.wikipedia.org/wiki/Hardware_abstraction
+[capa de abstracción de hardware]: https://en.wikipedia.org/wiki/Hardware_abstraction
 
-Embedded systems are a bit special in this regard since we typically do not have operating systems and user installable software but firmware images which are compiled as a whole as well as a number of other constraints. So while the traditional approach as defined by Wikipedia could potentially work it is likely not the most productive approach to ensure portability.
+Los sistemas embebidos son un poco especiales en este sentido, ya que normalmente no tenemos sistemas operativos y software instalable por el usuario, sino imágenes de firmware que se compilan como un todo, así como una serie de otras limitaciones. Así que, aunque el enfoque tradicional tal y como lo define Wikipedia podría funcionar, probablemente no sea el enfoque más productivo para garantizar la portabilidad.
 
-How do we do this in Rust? Enter **embedded-hal**...
+¿Cómo lo hacemos en Rust? Entra **embedded-hal**...
 
-## What is embedded-hal?
+## ¿Qué es embedded-hal?
 
-In a nutshell it is a set of traits which define implementation contracts between **HAL implementations**, **drivers** and **applications (or firmwares)**. Those contracts include both capabilities (i.e. if a trait is implemented for a certain type, the **HAL implementation** provides a certain capability) and methods (i.e. if you can construct a type implementing a trait it is guaranteed that you have the methods specified in the trait available).
+En pocas palabras es un conjunto de _traits_ que definen contratos de implementación entre **implementaciones de HAL**, **controladores** y **aplicaciones (o firmwares)**. Estos contratos incluyen tanto capacidades (es decir, si un _trait_ se implementa para un determinado tipo, la **implementación de HAL** proporciona una determinada capacidad) como métodos (es decir, si puedes construir un tipo implementando un _trait_, está garantizado que dispones de los métodos especificados en el _trait_).
 
-A typical layering might look like this:
+Una estratificación típica podría ser la siguiente
 
 ![](../assets/rust_layers.svg)
 
-Some of the defined traits in **embedded-hal** are:
-* GPIO (input and output pins)
-* Serial communication
-* I2C
-* SPI
-* Timers/Countdowns
-* Analog Digital Conversion
+Algunos de los traits definidos en **embedded-hal** son:
 
-The main reason for having the **embedded-hal** traits and crates implementing and using them is to keep complexity in check. If you consider that an application might have to implement the use of the peripheral in the hardware as well as the application and potentially drivers for additional hardware components, then it should be easy to see that the re-usability is very limited. Expressed mathematically, if **M** is the number of peripheral HAL implementations and **N** the number of drivers then if we were to reinvent the wheel for every application then we would end up with **M*N** implementations while by using the *API* provided by the **embedded-hal** traits will make the implementation complexity approach **M+N**. Of course there're additional benefits to be had, such as less trial-and-error due to a well-defined and ready-to-use APIs.
+- GPIO (pines de entrada y salida)
+- Comunicación serie
+- I2C
+- SPI
+- Temporizadores/Cuentas atrás
+- Conversión analógico-digital
 
-## Users of the embedded-hal
+La razón principal para tener los _traits_ **embedded-hal** y las crates que los implementan y utilizan es mantener la complejidad bajo control. Si se tiene en cuenta que una aplicación puede tener que implementar el uso del periférico en el hardware, así como la aplicación y, potencialmente, los controladores para los componentes de hardware adicionales, entonces debería ser fácil ver que la reutilización es muy limitada. Expresado matemáticamente, si **M** es el número de implementaciones de periféricos HAL y **N** el número de drivers, entonces si tuviéramos que reinventar la rueda para cada aplicación acabaríamos con **M\*N** implementaciones, mientras que usando la _API_ proporcionada por los _traits_ **embedded-hal** la complejidad de la implementación se acercará a **M+N**. Por supuesto hay beneficios adicionales que se pueden obtener, tales como menos ensayo-y-error debido a una API bien definida y lista para usar.
 
-As said above there are three main users of the HAL:
+## Usuarios de embedded-hal
 
-### HAL implementation
+Como se ha dicho anteriormente hay tres usuarios principales de la HAL:
 
-A HAL implementation provides the interfacing between the hardware and the users of the HAL traits. Typical implementations consist of three parts:
-* One or more hardware specific types
-* Functions to create and initialize such a type, often providing various configuration options (speed, operation mode, use pins, etc.)
-* one or more `trait` `impl` of **embedded-hal** traits for that type
+### Implementación HAL
 
-Such a **HAL implementation** can come in various flavours:
-* Via low-level hardware access, e.g. via registers
-* Via operating system, e.g. by using the `sysfs` under Linux
-* Via adapter, e.g. a mock of types for unit testing
-* Via driver for hardware adapters, e.g. I2C multiplexer or GPIO expander
+Una implementación HAL proporciona la interfaz entre el hardware y los usuarios de los _traits_ HAL. Las implementaciones típicas constan de tres partes:
 
-### Driver
+- Uno o más tipos específicos de hardware
+- Funciones para crear e inicializar dicho tipo, a menudo proporcionando varias opciones de configuración (velocidad, modo de funcionamiento, pines de uso, etc.)
+- Uno o más `trait` `impl` de _traits_ **embedded-hal** para ese tipo.
 
-A driver implements a set of custom functionality for an internal or external component, connected to a peripheral implementing the embedded-hal traits. Typical examples for such drivers include various sensors (temperature, magnetometer, accelerometer, light), display devices (LED arrays, LCD displays) and actuators (motors, transmitters).
+La implementación de **HAL** puede ser de varios tipos:
 
-A driver has to be initialized with an instance of type that implements a certain `trait` of the embedded-hal which is ensured via trait bound and provides its own type instance with a custom set of methods allowing to interact with the driven device.
+- Mediante acceso a hardware de bajo nivel, p.e. a través de registros.
+- A través del sistema operativo, p.e. mediante el uso de `sysfs` en Linux
+- A través de un adaptador, p.e. un simulador de tipos para pruebas unitarias.
+- A través de controladores para adaptadores de hardware, p.e. multiplexores I2C o expansores GPIO.
 
-### Application
+### Controlador
 
-The application binds the various parts together and ensures that the desired functionality is achieved. When porting between different systems, this is the part which requires the most adaptation efforts, since the application needs to correctly initialize the real hardware via the HAL implementation and the initialisation of different hardware differs, sometimes drastically so. Also the user choice often plays a big role, since components can be physically connected to different terminals, hardware buses sometimes need external hardware to match the configuration or there are different trade-offs to be made in the use of internal peripherals (e.g. multiple timers with different capabilities are available or peripherals conflict with others).
+Un driver implementa un conjunto de funcionalidades personalizadas para un componente interno o externo, conectado a un periférico que implementa los _traits_ embedded-hal. Ejemplos típicos para tales controladores incluyen varios sensores (temperatura, magnetómetro, acelerómetro, luz), dispositivos de visualización (matrices de LED, pantallas LCD) y actuadores (motores, transmisores).
+
+Un controlador tiene que ser inicializado con una instancia de tipo que implemente un determinado `trait` del embedded-hal que se asegura a través de _trait bound_ y proporciona su propia instancia de tipo con un conjunto personalizado de métodos que permiten interactuar con el dispositivo controlado.
+
+### Aplicación
+
+La aplicación une las distintas partes y asegura que se consigue la funcionalidad deseada. Al portar entre diferentes sistemas, esta es la parte que requiere más esfuerzos de adaptación, ya que la aplicación necesita inicializar correctamente el hardware real a través de la implementación HAL y la inicialización de diferentes hardware difiere, a veces drásticamente. También la elección del usuario juega a menudo un papel importante, ya que los componentes pueden conectarse físicamente a diferentes terminales, los buses de hardware a veces necesitan hardware externo para ajustarse a la configuración o hay que hacer diferentes compensaciones en el uso de los periféricos internos (p.e. se dispone de múltiples temporizadores con diferentes capacidades o los periféricos entran en conflicto con otros).

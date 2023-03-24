@@ -1,3 +1,3 @@
-# Design Patterns
+# Patrones de Diseño
 
-This chapter aims to collect various useful design patterns for embedded Rust.
+Este capítulo tiene como objetivo recopilar varios patrones de diseño útiles para Rust embebido.

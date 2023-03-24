@@ -1,7 +1,7 @@
-# Naming
-
+# Nomenclatura
 
 <a id="c-crate-name"></a>
-## The crate is named appropriately (C-CRATE-NAME)
 
-HAL crates should be named after the chip or family of chips they aim to support. Their name should end with `-hal` to distinguish them from register access crates. The name should not contain underscores (use dashes instead).
+## La _crate_ recibe el nombre apropiado (C-CRATE-NAME)
+
+Las _crates_ HAL deberían llamarse como el chip o familia de chips que desean soportar. Su nombre debe terminar con `-hal` para distinguirlos de las _crates_ de acceso a registros. El nombre no debe contener guiones bajos (utilice guiones en su lugar).

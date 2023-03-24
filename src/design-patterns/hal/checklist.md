@@ -1,26 +1,23 @@
-# HAL Design Patterns Checklist
+# Lista de Patrones de Diseño HAL
 
-- **Naming** *(crate aligns with Rust naming conventions)*
-  - [ ] The crate is named appropriately ([C-CRATE-NAME])
-- **Interoperability** *(crate interacts nicely with other library functionality)*
-  - [ ] Wrapper types provide a destructor method ([C-FREE])
-  - [ ] HALs reexport their register access crate ([C-REEXPORT-PAC])
-  - [ ] Types implement the `embedded-hal` traits ([C-HAL-TRAITS])
-- **Predictability** *(crate enables legible code that acts how it looks)*
-  - [ ] Constructors are used instead of extension traits ([C-CTOR])
-- **GPIO Interfaces** *(GPIO Interfaces follow a common pattern)*
-  - [ ] Pin types are zero-sized by default ([C-ZST-PIN])
-  - [ ] Pin types provide methods to erase pin and port ([C-ERASED-PIN])
-  - [ ] Pin state should be encoded as type parameters ([C-PIN-STATE])
+- **Nomenclatura** _(la crate se alinea con las convenciones de nomenclatura de Rust)_
+  - [ ] La _crate_ tiene el nombre apropiado ([C-CRATE-NAME])
+- **Interoperabilidad** _( la crate interactúa bien con otras funcionalidades de la librería)_
+  - [ ] Los tipos Wrapper proporcionan un método destructor ([C-FREE])
+  - [ ] Las HAL reexportan su _crate_ de acceso a registros ([C-REEXPORT-PAC])
+  - [ ] Los tipos implementan los _traits_ `embedded-hal` ([C-HAL-TRAITS])
+- **Predictibilidad** _(crate permite código legible que actúa como parece)_
+  - [ ] Se utilizan constructores en lugar de _traits_ de extensión ([C-CTOR])
+- **Interfaces GPIO** _(Las Interfaces GPIO siguen un patrón común)_
+  - [ ] Los tipos de pin son de tamaño cero por defecto ([C-ZST-PIN])
+  - [ ] Los tipos de pin proporcionan métodos para borrar el pin y el puerto ([C-ERASED-PIN])
+  - [ ] El estado de las pines debe codificarse como parámetros de tipo ([C-PIN-STATE])
 
-[C-CRATE-NAME]: naming.html#c-crate-name
-
-[C-FREE]: interoperability.html#c-free
-[C-REEXPORT-PAC]: interoperability.html#c-reexport-pac
-[C-HAL-TRAITS]: interoperability.html#c-hal-traits
-
-[C-CTOR]: predictability.html#c-ctor
-
-[C-ZST-PIN]: gpio.md#c-zst-pin
-[C-ERASED-PIN]: gpio.md#c-erased-pin
-[C-PIN-STATE]: gpio.md#c-pin-state
+[c-crate-name]: naming.html#c-crate-name
+[c-free]: interoperability.html#c-free
+[c-reexport-pac]: interoperabilidad.html#c-reexport-pac
+[c-hal-traits]: interoperabilidad.html#c-hal-traits
+[c-ctor]: predictability.html#c-ctor
+[c-zst-pin]: gpio.md#c-zst-pin
+[c-erased-pin]: gpio.md#c-erased-pin
+[c-pin-state]: gpio.md#c-pin-state

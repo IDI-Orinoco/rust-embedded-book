@@ -1,16 +1,16 @@
-# Predictability
+# Predictibilidad
 
 <a id="c-ctor"></a>
-## Constructors are used instead of extension traits (C-CTOR)
+## Se utilizan constructores en lugar de _traits_ de extensión (C-CTOR)
 
-All peripherals to which the HAL adds functionality should be wrapped in a new type, even if no additional fields are required for that functionality.
+Todos los periféricos a los que la HAL añade funcionalidad deben envolverse en un nuevo tipo, incluso si no se requieren campos adicionales para esa funcionalidad.
 
-Extension traits implemented for the raw peripheral should be avoided.
+Deben evitarse los _traits_ de extensión implementados para el periférico directamente.
 
 <a id="c-inline"></a>
-## Methods are decorated with `#[inline]` where appropriate (C-INLINE)
+## Los métodos están decorados con `#[inline]` cuando es apropiado (C-INLINE)
 
-The Rust compiler does not by default perform full inlining across crate boundaries. As embedded applications are sensitive to unexpected code size increases, `#[inline]` should be used to guide the compiler as follows:
+El compilador de Rust no realiza por defecto inlining completo a través de los límites de las _crates_. Como las aplicaciones embebidas son sensibles a aumentos inesperados del tamaño del código, `#[inline]` debería ser usado para guiar al compilador de la siguiente manera:
 
-* All "small" functions should be marked `#[inline]`. What qualifies as "small" is subjective, but generally all functions that are expected to compile down to single-digit instruction sequences qualify as small.
-* Functions that are very likely to take constant values as parameters should be marked as `#[inline]`. This enables the compiler to compute even complicated initialization logic at compile time, provided the function inputs are known.
+- Todas las funciones "pequeñas" deben marcarse como `#[inline]`. Lo que se califica como "pequeño" es subjetivo, pero generalmente todas las funciones que se espera que compilen en secuencias de instrucciones de un solo dígito se califican como pequeñas.
+- Las funciones que es muy probable que tomen valores constantes como parámetros deben marcarse como `#[inline]`. Esto permite al compilador calcular incluso la complicada lógica de inicialización en tiempo de compilación, siempre que se conozcan las entradas de la función.

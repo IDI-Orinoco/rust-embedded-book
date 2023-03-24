@@ -1,16 +1,16 @@
-# Interoperability
+# Interoperabilidad
 
 
 <a id="c-free"></a>
-## Wrapper types provide a destructor method (C-FREE)
+## Los tipos Wrapper proporcionan un método destructor (C-FREE)
 
-Any non-`Copy` wrapper type provided by the HAL should provide a `free` method that consumes the wrapper and returns back the raw peripheral (and possibly other objects) it was created from.
+Cualquier tipo de wrapper que no sea `Copy` proporcionado por la HAL debería proporcionar un método `free` que consuma el wrapper y devuelva el periférico en bruto (y posiblemente otros objetos) a partir del cual fue creado.
 
-The method should shut down and reset the peripheral if necessary. Calling `new` with the raw peripheral returned by `free` should not fail due to an unexpected state of the peripheral.
+El método debe apagar y reiniciar el periférico si es necesario. Llamar a `new` con el periférico devuelto por `free` no debería fallar debido a un estado inesperado del periférico.
 
-If the HAL type requires other non-`Copy` objects to be constructed (for example I/O pins), any such object should be released and returned by `free` as well. `free` should return a tuple in that case.
+Si el tipo de HAL requiere que se construyan otros objetos que no sean `Copy` (por ejemplo pines de E/S), cualquier objeto de este tipo debería ser liberado y devuelto por `free` también. En ese caso, `free` debería devolver una tupla.
 
-For example:
+Por ejemplo:
 
 ```rust
 # pub struct TIMER0;
@@ -28,19 +28,19 @@ impl Timer {
 ```
 
 <a id="c-reexport-pac"></a>
-## HALs reexport their register access crate (C-REEXPORT-PAC)
+## HALs reexportan su caja de acceso a registros (C-REEXPORT-PAC)
 
-HALs can be written on top of [svd2rust]-generated PACs, or on top of other crates that provide raw register access. HALs should always reexport the register access crate they are based on in their crate root.
+Las HALs pueden ser escritas sobre PACs generados por [svd2rust], o sobre otros crates que proveen acceso a registros sin procesar. Las HALs siempre deben reexportar el crate de acceso a registros en el que se basan en su crate raíz.
 
-A PAC should be reexported under the name `pac`, regardless of the actual name of the crate, as the name of the HAL should already make it clear what PAC is being accessed.
+Un PAC debe ser reexportado bajo el nombre `pac`, independientemente del nombre real de la crate, como el nombre de la HAL ya debe dejar claro qué PAC se está accediendo.
 
 [svd2rust]: https://github.com/rust-embedded/svd2rust
 
 <a id="c-hal-traits"></a>
-## Types implement the `embedded-hal` traits (C-HAL-TRAITS)
+## Los tipos implementan los rasgos `embedded-hal` (C-HAL-TRAITS)
 
-Types provided by the HAL should implement all applicable traits provided by the [`embedded-hal`] crate.
+Los tipos proporcionados por la HAL deben implementar todos los rasgos aplicables proporcionados por el crate [`embedded-hal`].
 
-Multiple traits may be implemented for the same type.
+Pueden implementarse múltiples rasgos para el mismo tipo.
 
 [`embedded-hal`]: https://github.com/rust-embedded/embedded-hal
