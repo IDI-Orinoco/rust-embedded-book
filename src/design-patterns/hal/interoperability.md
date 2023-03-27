@@ -28,18 +28,18 @@ impl Timer {
 ```
 
 <a id="c-reexport-pac"></a>
-## HALs reexportan su caja de acceso a registros (C-REEXPORT-PAC)
+## HALs reexportan su _crate_ de acceso a registros (C-REEXPORT-PAC)
 
-Las HALs pueden ser escritas sobre PACs generados por [svd2rust], o sobre otros crates que proveen acceso a registros sin procesar. Las HALs siempre deben reexportar el crate de acceso a registros en el que se basan en su crate raíz.
+Las HALs pueden ser escritas sobre PACs generados por [svd2rust], o sobre otras _crates_ que proveen acceso a registros sin procesar. Las HALs siempre deben reexportar la _crate_ de acceso a registros en el que se basan en su _crate_ raíz.
 
-Un PAC debe ser reexportado bajo el nombre `pac`, independientemente del nombre real de la crate, como el nombre de la HAL ya debe dejar claro qué PAC se está accediendo.
+Un PAC debe ser reexportado bajo el nombre `pac`, independientemente del nombre real de la _crate_, como el nombre de la HAL ya debe dejar claro qué PAC se está accediendo.
 
 [svd2rust]: https://github.com/rust-embedded/svd2rust
 
 <a id="c-hal-traits"></a>
 ## Los tipos implementan los rasgos `embedded-hal` (C-HAL-TRAITS)
 
-Los tipos proporcionados por la HAL deben implementar todos los rasgos aplicables proporcionados por el crate [`embedded-hal`].
+Los tipos proporcionados por la HAL deben implementar todos los rasgos aplicables proporcionados por la _crate_ [`embedded-hal`].
 
 Pueden implementarse múltiples rasgos para el mismo tipo.
 

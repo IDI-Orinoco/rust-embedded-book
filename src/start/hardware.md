@@ -89,7 +89,7 @@ fn main() -> ! {
 }
 ```
 
-Ahora puedes compilar programas usando `cargo build` e inspeccionar los binarios usando `cargo-binutils` como hacías antes. La crate `cortex-m-rt` se encarga de toda la magia necesaria para que tu chip funcione, ya que prácticamente todas las CPUs Cortex-M arrancan de la misma manera.
+Ahora puedes compilar programas usando `cargo build` e inspeccionar los binarios usando `cargo-binutils` como hacías antes. La _crate_ `cortex-m-rt` se encarga de toda la magia necesaria para que tu chip funcione, ya que prácticamente todas las CPUs Cortex-M arrancan de la misma manera.
 
 ```console
 cargo build --example hello

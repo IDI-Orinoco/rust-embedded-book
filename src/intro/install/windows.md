@@ -2,7 +2,7 @@
 
 ## `arm-none-eabi-gdb`
 
-ARM provides `.exe` installers for Windows. Grab one from [here][gcc], and follow the instructions. Just before the installation process finishes tick/select the "Add path to environment variable" option. Then verify that the tools are in your `%PATH%`:
+ARM proporciona instaladores `.exe` para Windows. Toma uno de [aquí][gcc], y sigue las instrucciones. Justo antes de que termine el proceso de instalación, marca/selecciona la opción "Add path to environment variable". Luego verifica que las herramientas están en tu `%PATH%`:
 
 ``` text
 $ arm-none-eabi-gdb -v
@@ -14,11 +14,11 @@ GNU gdb (GNU Tools for Arm Embedded Processors 7-2018-q2-update) 8.1.0.20180315-
 
 ## OpenOCD
 
-There's no official binary release of OpenOCD for Windows but if you're not in the mood to compile it yourself, the xPack project provides a binary distribution, [here][openocd]. Follow the provided installation instructions. Then update your `%PATH%` environment variable to include the path where the binaries were installed. (`C:\Users\USERNAME\AppData\Roaming\xPacks\@xpack-dev-tools\openocd\0.10.0-13.1\.content\bin\`, if you've been using the easy install) 
+No hay una versión binaria oficial de OpenOCD para Windows, pero si no estás de humor para compilarla tú mismo, el proyecto xPack proporciona una distribución binaria, [aquí][openocd]. Sigue las instrucciones de instalación proporcionadas. A continuación, actualiza tu variable de entorno `%PATH%` para incluir la ruta donde se instalaron los binarios. (`C:\Users\USERNAME\AppData\Roaming\xPacks\@xpack-dev-tools\openocd\0.10.0-13.1\.content\bin\`, si usaste la instalación fácil)
 
 [openocd]: https://xpack.github.io/openocd/
 
-Verify that OpenOCD is in your `%PATH%` with:
+Comprueba que OpenOCD está en tu `%PATH%` con:
 
 ``` text
 $ openocd -v
@@ -28,16 +28,16 @@ Open On-Chip Debugger 0.10.0
 
 ## QEMU
 
-Grab QEMU from [the official website][qemu].
+Baja QEMU desde [el sitio web oficial][qemu].
 
 [qemu]: https://www.qemu.org/download/#windows
 
-## ST-LINK USB driver
+## Controlador USB ST-LINK
 
-You'll also need to install [this USB driver] or OpenOCD won't work. Follow the installer instructions and make sure you install the right version (32-bit or 64-bit) of the driver.
+También necesitarás instalar [este controlador USB] o OpenOCD no funcionará. Sigue las instrucciones del instalador y asegúrate de instalar la versión correcta (32-bit o 64-bit) del controlador.
 
-[this USB driver]: http://www.st.com/en/embedded-software/stsw-link009.html
+[este controlador usb]: http://www.st.com/en/embedded-software/stsw-link009.html
 
-That's all! Go to the [next section].
+¡Eso es todo! anda a la [siguiente sección].
 
-[next section]: verify.md
+[siguiente sección]: verify.md

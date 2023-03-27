@@ -1,37 +1,37 @@
-# The Rust Code of Conduct
+# El Código de Conducta de Rust
 
-## Conduct
+## Conducta
 
-**Contact**: [Resources team][team]
+**Contacto**: [Equipo de recursos][equipo]
 
-* We are committed to providing a friendly, safe, and welcoming environment for all, regardless of level of experience, gender identity and expression, sexual orientation, disability, personal appearance, body size, race, ethnicity, age, religion, nationality, or other similar characteristics.
-* On IRC, please avoid using overtly sexual nicknames or other nicknames that might detract from a friendly, safe and welcoming environment for all.
-* Please be kind and courteous. There's no need to be mean or rude.
-* Respect that people have differences of opinion and that every design or implementation choice carries a trade-off and numerous costs. There is seldom a right answer.
-* Please keep unstructured critique to a minimum. If you have solid ideas you want to experiment with, make a fork and see how it works.
-* We will exclude you from interaction if you insult, demean or harass anyone. That is not welcome behavior. We interpret the term "harassment" as including the definition in the [Citizen Code of Conduct](http://citizencodeofconduct.org/); if you have any lack of clarity about what might be included in that concept, please read their definition. In particular, we don't tolerate behavior that excludes people in socially marginalized groups.
-* Private harassment is also unacceptable. No matter who you are, if you feel you have been or are being harassed or made uncomfortable by a community member, please contact one of the channel ops or any of the [Resources team][team] immediately. Whether you're a regular contributor or a newcomer, we care about making this community a safe place for you and we've got your back.
-* Likewise any spamming, trolling, flaming, baiting or other attention-stealing behavior is not welcome.
+- Nos comprometemos a proporcionar un entorno amigable, seguro y acogedor para todos, independientemente del nivel de experiencia, identidad y expresión de género, orientación sexual, discapacidad, apariencia personal, tamaño corporal, raza, etnia, edad, religión, nacionalidad u otras características similares.
+- En el IRC, por favor, evita el uso de apodos abiertamente sexuales u otros apodos que puedan ir en detrimento de un ambiente amistoso, seguro y acogedor para todos.
+- Por favor, sé amable y cortés. No hay necesidad de ser malo o grosero.
+- Respeta las diferencias de opinión entre las personas y que cada elección de diseño o implementación conlleva una compensación y numerosos costos. Rara vez hay una respuesta correcta.
+- Reduzca al mínimo las críticas no estructuradas. Si tiene ideas sólidas con las que quiere experimentar, haga un fork y vea cómo funciona.
+- Te excluiremos de la interacción si insultas, rebajas o acosas a alguien. No es un comportamiento bienvenido. Interpretamos que el término "acoso" incluye la definición del [Código de Conducta del Ciudadano](http://citizencodeofconduct.org/); si no tienes claro qué puede incluirse en ese concepto, lee su definición. En particular, no toleramos comportamientos que excluyan a personas de grupos socialmente marginados.
+- El acoso privado también es inaceptable. Seas quien seas, si crees que has sido o estás siendo acosado o incomodado por un miembro de la comunidad, ponte en contacto inmediatamente con uno de los operadores del canal o con cualquiera de los miembros del [equipo de recursos][equipo]. Tanto si eres un colaborador habitual como un recién llegado, nos preocupamos por hacer de esta comunidad un lugar seguro para ti y te cubrimos las espaldas.
+- Del mismo modo, no se acepta ningún tipo de spam, trolling, flaming, baiting o cualquier otro comportamiento que llame la atención.
 
-## Moderation
+## Moderación
 
-These are the policies for upholding our community's standards of conduct.
+Estas son las políticas para mantener las normas de conducta de nuestra comunidad.
 
-1. Remarks that violate the Rust standards of conduct, including hateful, hurtful, oppressive, or exclusionary remarks, are not allowed. (Cursing is allowed, but never targeting another user, and never in a hateful manner.)
-2. Remarks that moderators find inappropriate, whether listed in the code of conduct or not, are also not allowed.
-3. Moderators will first respond to such remarks with a warning.
-4. If the warning is unheeded, the user will be "kicked," i.e., kicked out of the communication channel to cool off.
-5. If the user comes back and continues to make trouble, they will be banned, i.e., indefinitely excluded.
-6. Moderators may choose at their discretion to un-ban the user if it was a first offense and they offer the offended party a genuine apology.
-7. If a moderator bans someone and you think it was unjustified, please take it up with that moderator, or with a different moderator, **in private**. Complaints about bans in-channel are not allowed.
-8. Moderators are held to a higher standard than other community members. If a moderator creates an inappropriate situation, they should expect less leeway than others.
+1. No se permiten comentarios que violen las normas de conducta de Rust, incluyendo comentarios de odio, hirientes, opresivos o excluyentes. (Maldecir está permitido, pero nunca dirigido a otro usuario, y nunca en forma de odio).
+2. Tampoco están permitidos los comentarios que los moderadores consideren inapropiados, estén o no recogidos en el código de conducta.
+3. Los moderadores responderán en primer lugar a dichos comentarios con una advertencia.
+4. Si la advertencia no es atendida, el usuario será "expulsado", es decir, expulsado del canal de comunicación para que se calme.
+5. Si el usuario vuelve y sigue dando problemas, será baneado, es decir, excluido indefinidamente.
+6. Los moderadores pueden optar a su discreción por desbanear al usuario si se trata de una primera ofensa y si ofrecen al ofendido una disculpa genuina.
+7. Si un moderador banea a alguien y crees que no está justificado, por favor, discútelo con ese moderador, o con otro moderador, **en privado**. Las quejas sobre baneos en el canal no están permitidas.
+8. Los moderadores tienen un estándar más alto que otros miembros de la comunidad. Si un moderador crea una situación inapropiada, debe esperar menos libertad de acción que los demás.
 
-In the Rust community we strive to go the extra step to look out for each other. Don't just aim to be technically unimpeachable, try to be your best self. In particular, avoid flirting with offensive or sensitive issues, particularly if they're off-topic; this all too often leads to unnecessary fights, hurt feelings, and damaged trust; worse, it can drive people away from the community entirely.
+En la comunidad de Rust nos esforzamos por dar un paso más para cuidarnos los unos a los otros. No te limites a ser técnicamente intachable, intenta ser tú mismo. En particular, evita flirtear con temas ofensivos o delicados, sobre todo si no tienen nada que ver con el tema; esto suele provocar peleas innecesarias, herir sentimientos y dañar la confianza; peor aún, puede alejar a la gente por completo de la comunidad.
 
-And if someone takes issue with something you said or did, resist the urge to be defensive. Just stop doing what it was they complained about and apologize. Even if you feel you were misinterpreted or unfairly accused, chances are good there was something you could've communicated better — remember that it's your responsibility to make your fellow Rustaceans comfortable. Everyone wants to get along and we are all here first and foremost because we want to talk about cool technology. You will find that people will be eager to assume good intent and forgive as long as you earn their trust.
+Y si alguien se queja de algo que has dicho o hecho, resiste la tentación de ponerte a la defensiva. Deja de hacer aquello de lo que se quejaban y discúlpate. Incluso si crees que te han malinterpretado o acusado injustamente, lo más probable es que hubiera algo que hubieras podido comunicar mejor: recuerda que es tu responsabilidad hacer que tus compañeros Rustaceanos se sientan cómodos. Todo el mundo quiere llevarse bien y todos estamos aquí ante todo porque queremos hablar de tecnología genial. Verás que la gente estará dispuesta a asumir buenas intenciones y a perdonar siempre que te ganes su confianza.
 
-The enforcement policies listed above apply to all official embedded WG venues; including official IRC channels (#rust-embedded); GitHub repositories under rust-embedded; and all forums under rust-embedded.org (forum.rust-embedded.org).
+Las políticas de cumplimiento listadas arriba se aplican a todos los lugares oficiales de WG embedded; incluyendo los canales IRC oficiales (#rust-embedded); los repositorios GitHub bajo rust-embedded; y todos los foros bajo rust-embedded.org (forum.rust-embedded.org).
 
-*Adapted from the [Node.js Policy on Trolling](http://blog.izs.me/post/30036893703/policy-on-trolling) as well as the [Contributor Covenant v1.3.0](https://www.contributor-covenant.org/version/1/3/0/).*
+*Adaptado de la [Node.js Policy on Trolling](http://blog.izs.me/post/30036893703/policy-on-trolling) y del [Contributor Covenant v1.3.0](https://www.contributor-covenant.org/version/1/3/0/).*
 
-[team]: https://github.com/rust-embedded/wg#the-resources-team
+[equipo]: https://github.com/rust-embedded/wg#the-resources-team

@@ -2,7 +2,7 @@
 
 Semihosting es un mecanismo que permite a los dispositivos embebidos realizar E/S en el anfitrión y se utiliza principalmente para registrar mensajes en la consola del anfitrión. Semihosting requiere una sesión de depuración y prácticamente nada más (¡sin cables adicionales!) por lo que es muy conveniente de usar. La desventaja es que es super lento: cada operación de escritura puede tardar varios milisegundos dependiendo del depurador de hardware (por ejemplo, ST-Link) que utilices.
 
-La crate [`cortex-m-semihosting`] proporciona una API para realizar operaciones semihosting en dispositivos Cortex-M. El programa de abajo es la versión semihosting de "Hello, world!":
+La _crate_ [`cortex-m-semihosting`] proporciona una API para realizar operaciones semihosting en dispositivos Cortex-M. El programa de abajo es la versión semihosting de "Hello, world!":
 
 [`cortex-m-semihosting`]: https://crates.io/crates/cortex-m-semihosting
 
@@ -83,7 +83,7 @@ $ echo $?
 
 Un último consejo: puedes configurar el comportamiento de pánico a `exit(EXIT_FAILURE)`. Esto te permitirá escribir pruebas ejecutar-pasar `no_std` que puedes ejecutar en QEMU.
 
-Para mayor comodidad, la crate `panic-semihosting` tiene una función "exit" que cuando está activada invoca `exit(EXIT_FAILURE)` después de registrar el mensaje de pánico en la stderr del host.
+Para mayor comodidad, la _crate_ `panic-semihosting` tiene una función "exit" que cuando está activada invoca `exit(EXIT_FAILURE)` después de registrar el mensaje de pánico en la stderr del host.
 
 ```rust,ignore
 #![no_main]

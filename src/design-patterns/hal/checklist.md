@@ -1,12 +1,12 @@
-# Lista de Patrones de Diseño HAL
+# Lista de chequeo de Patrones de Diseño HAL
 
-- **Nomenclatura** _(la crate se alinea con las convenciones de nomenclatura de Rust)_
+- **Nomenclatura** _(la **crate** se alinea con las convenciones de nomenclatura de Rust)_
   - [ ] La _crate_ tiene el nombre apropiado ([C-CRATE-NAME])
-- **Interoperabilidad** _( la crate interactúa bien con otras funcionalidades de la librería)_
+- **Interoperabilidad** _( la **crate** interactúa bien con otras funcionalidades de la librería)_
   - [ ] Los tipos Wrapper proporcionan un método destructor ([C-FREE])
   - [ ] Las HAL reexportan su _crate_ de acceso a registros ([C-REEXPORT-PAC])
   - [ ] Los tipos implementan los _traits_ `embedded-hal` ([C-HAL-TRAITS])
-- **Predictibilidad** _(crate permite código legible que actúa como parece)_
+- **Predictibilidad** _(**crate** permite código legible que actúa como parece)_
   - [ ] Se utilizan constructores en lugar de _traits_ de extensión ([C-CTOR])
 - **Interfaces GPIO** _(Las Interfaces GPIO siguen un patrón común)_
   - [ ] Los tipos de pin son de tamaño cero por defecto ([C-ZST-PIN])

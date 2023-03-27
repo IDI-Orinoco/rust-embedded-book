@@ -18,7 +18,7 @@ Aquí están los comandos de instalación para algunas distribuciones de Linux.
 <!-- OpenOCD 0.10.0 -->
 <!-- QEMU 2.11.1 -->
 
-``` console
+```console
 sudo apt install gdb-multiarch openocd qemu-system-arm
 ```
 
@@ -31,7 +31,7 @@ sudo apt install gdb-multiarch openocd qemu-system-arm
 <!-- OpenOCD 0.7.0 (?) -->
 <!-- QEMU 2.0.0 (?) -->
 
-``` console
+```console
 sudo apt install gdb-arm-none-eabi openocd qemu-system-arm
 ```
 
@@ -42,7 +42,7 @@ sudo apt install gdb-arm-none-eabi openocd qemu-system-arm
 <!-- OpenOCD 0.10.0 -->
 <!-- QEMU 2.10.2 -->
 
-``` console
+```console
 sudo dnf install gdb openocd qemu-system-arm
 ```
 
@@ -50,17 +50,17 @@ sudo dnf install gdb openocd qemu-system-arm
 
 > **NOTA** `arm-none-eabi-gdb` es el comando GDB que usarás para depurar programas ARM Cortex-M
 
-``` console
+```console
 sudo pacman -S arm-none-eabi-gdb qemu-arch-extra openocd
 ```
 
 ## reglas udev
 
-Esta regla le permite utilizar OpenOCD con la tarjeta Discovery sin privilegios de root.
+Esta regla te permite utilizar OpenOCD con la tarjeta Discovery sin privilegios de root.
 
 Cree el archivo `/etc/udev/rules.d/70-st-link.rules` con el contenido que se muestra a continuación.
 
-``` text
+```text
 # STM32F3DISCOVERY rev A/B - ST-LINK/V2
 ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", TAG+="uaccess"
 
@@ -70,7 +70,7 @@ ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", TAG+="uaccess"
 
 Y luego, recargar todas las reglas udev con:
 
-``` console
+```console
 sudo udevadm control --reload-rules
 ```
 
@@ -78,7 +78,7 @@ Si tenías la tarjeta conectada al portátil, desconéctala y vuelve a conectarl
 
 Puedes comprobar los permisos ejecutando este comando:
 
-``` console
+```console
 lsusb
 ```
 
@@ -90,9 +90,9 @@ Bus 001 Device 018: ID 0483:374b STMicroelectronics ST-LINK/V2.1
 (..)
 ```
 
-Tome nota de los números de bus y dispositivo. Use esos números para crear una ruta como `/dev/bus/usb/<bus>/<device>`. Luego usa esta ruta así:
+Toma nota de los números de bus y dispositivo. Use esos números para crear una ruta como `/dev/bus/usb/<bus>/<device>`. Luego usa esta ruta así:
 
-``` console
+```console
 ls -l /dev/bus/usb/001/018
 ```
 

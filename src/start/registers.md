@@ -8,10 +8,10 @@ Es muy posible que el código que necesitas para acceder a los periféricos de t
 <img title="Common crates" src="../assets/crates.png">
 </p>
 
-- Micro-architecture Crate - Este tipo de _crate_ maneja cualquier rutina útil común al núcleo del procesador que tu microcontrolador está utilizando, así como cualquier periférico que sea común a todos los microcontroladores que utilizan ese tipo particular de núcleo de procesador. Por ejemplo, la _crate_ [cortex-m] le proporciona funciones para activar y desactivar interrupciones, que son las mismas para todos los microcontroladores basados en Cortex-M. También le da acceso al periférico 'SysTick' incluido con todos los microcontroladores basados en Cortex-M.
-- Peripheral Access Crate (PAC) - Este tipo de _crate_ es una fina envoltura sobre los diversos registros de memoria definidos para el número de parte del micro-controlador que está utilizando. Por ejemplo, [tm4c123x] para la serie Texas Instruments Tiva-C TM4C123, o [stm32f30x] para la serie ST-Micro STM32F30x. Aquí, interactuarás con los registros directamente, siguiendo las instrucciones de funcionamiento de cada periférico dadas en el Manual de Referencia Técnica de tu micro-controlador.
-- HAL Crate - Estas _crates_ ofrecen una API más amigable para tu procesador en particular, a menudo implementando algunos _traits_ comunes definidos en [embedded-hal]. Por ejemplo, esta _crate_ podría ofrecer una estructura `Serial`, con un constructor que toma un conjunto apropiado de pines GPIO y una tasa de baudios, y ofrece algún tipo de función `write_byte` para enviar datos. Ver el capítulo sobre [Portabilidad] para más información sobre [embedded-hal].
-- Board Crate - Estas _crates_ van un paso más allá que una HAL _Crate_ preconfigurando varios periféricos y pines GPIO para adaptarse al kit de desarrollo específico o tarjeta que esté utilizando, como [stm32f3-discovery] para la tarjeta STM32F3DISCOVERY.
+- _Crate_ de Micro-arquitectura - Este tipo de _crate_ maneja cualquier rutina útil común al núcleo del procesador que tu microcontrolador está utilizando, así como cualquier periférico que sea común a todos los microcontroladores que utilizan ese tipo particular de núcleo de procesador. Por ejemplo, la _crate_ [cortex-m] le proporciona funciones para activar y desactivar interrupciones, que son las mismas para todos los microcontroladores basados en Cortex-M. También le da acceso al periférico 'SysTick' incluido con todos los microcontroladores basados en Cortex-M.
+- _Crate_ de Acceso a Periféricos (PAC) - Este tipo de _crate_ es una fina envoltura sobre los diversos registros de memoria definidos para el número de parte del micro-controlador que está utilizando. Por ejemplo, [tm4c123x] para la serie Texas Instruments Tiva-C TM4C123, o [stm32f30x] para la serie ST-Micro STM32F30x. Aquí, interactuarás con los registros directamente, siguiendo las instrucciones de funcionamiento de cada periférico dadas en el Manual de Referencia Técnica de tu micro-controlador.
+- _Crate_ de HAL - Estas _crates_ ofrecen una API más amigable para tu procesador en particular, a menudo implementando algunos _traits_ comunes definidos en [embedded-hal]. Por ejemplo, esta _crate_ podría ofrecer una estructura `Serial`, con un constructor que toma un conjunto apropiado de pines GPIO y una tasa de baudios, y ofrece algún tipo de función `write_byte` para enviar datos. Ver el capítulo sobre [Portabilidad] para más información sobre [embedded-hal].
+- _Crate_ de Tarjeta - Estas _crates_ van un paso más allá que una HAL _Crate_ preconfigurando varios periféricos y pines GPIO para adaptarse al kit de desarrollo específico o tarjeta que esté utilizando, como [stm32f3-discovery] para la tarjeta STM32F3DISCOVERY.
 
 [cortex-m]: https://crates.io/crates/cortex-m
 [tm4c123x]: https://crates.io/crates/tm4c123x
@@ -21,17 +21,17 @@ Es muy posible que el código que necesitas para acceder a los periféricos de t
 [stm32f3-discovery]: https://crates.io/crates/stm32f3-discovery
 [discovery]: https://rust-embedded.github.io/discovery/
 
-## Board Crate
+## _Crate_ de Tarjeta 
 
-Una _board crate_ o crate de tarjeta es el punto de partida perfecto, si eres nuevo en Rust embebido. Abstraen muy bien los detalles de HW que pueden ser abrumadores cuando se empieza a estudiar este tema, y hace que las tareas estándar sean fáciles, como encender o apagar un LED. La funcionalidad que expone varía mucho entre tarjetas. Dado que este libro tiene como objetivo permanecer agnóstico al hardware, las _board crates_ no serán cubiertos por este libro.
+Una _board crate_ o _crate_ de tarjeta es el punto de partida perfecto, si eres nuevo en Rust embebido. Abstraen muy bien los detalles de HW que pueden ser abrumadores cuando se empieza a estudiar este tema, y hace que las tareas estándar sean fáciles, como encender o apagar un LED. La funcionalidad que expone varía mucho entre tarjetas. Dado que este libro tiene como objetivo permanecer agnóstico al hardware, las _board crates_ no serán cubiertos por este libro.
 
-Si quieres experimentar con la tarjeta STM32F3DISCOVERY, es muy recomendable echar un vistazo a la caja de la tarjeta [stm32f3-discovery], que proporciona funcionalidad para hacer parpadear los LEDs de la tarjeta, acceder a su brújula, bluetooth y mucho más. El libro [Discovery] ofrece una gran introducción al uso de una board crate.
+Si quieres experimentar con la tarjeta STM32F3DISCOVERY, es muy recomendable echar un vistazo a la _crate_ de la tarjeta [stm32f3-discovery], que proporciona funcionalidad para hacer parpadear los LEDs de la tarjeta, acceder a su brújula, bluetooth y mucho más. El libro [Discovery] ofrece una gran introducción al uso de una board _crate_.
 
-Pero si estás trabajando en un sistema que todavía no tiene una board crate dedicado, o necesitas una funcionalidad que no proporcionan las _crates_ existentes, sigue leyendo mientras empezamos desde abajo, con las _crates_ de micro-arquitectura.
+Pero si estás trabajando en un sistema que todavía no tiene una board _crate_ dedicado, o necesitas una funcionalidad que no proporcionan las _crates_ existentes, sigue leyendo mientras empezamos desde abajo, con las _crates_ de micro-arquitectura.
 
-## Micro-architecture crate
+## _Crate_ de Micro-arquitectura
 
-Veamos el periférico SysTick que es común a todos los microcontroladores basados en Cortex-M. Podemos encontrar una API de muy bajo nivel en la [cortex-m] crate, y podemos usarlo así:
+Veamos el periférico SysTick que es común a todos los microcontroladores basados en Cortex-M. Podemos encontrar una API de muy bajo nivel en la [cortex-m] _crate_, y podemos usarlo así:
 
 ```rust,ignore
 #![no_std]
@@ -91,7 +91,7 @@ pub fn init() -> (Delay, Leds) {
 
 ```
 
-Hemos accedido al periférico `PWM0` exactamente de la misma forma que antes accedimos al periférico `SYST`, excepto que hemos llamado a `tm4c123x::Peripherals::take()`. Como esta crate fue auto-generada usando [svd2rust], las funciones de acceso para nuestros campos de registro toman una _closure_, en lugar de un argumento numérico. Aunque esto parece un montón de código, el compilador de Rust puede utilizarlo para realizar un montón de comprobaciones por nosotros, ¡pero luego genera código máquina que es bastante parecido al ensamblador escrito a mano! Cuando el código autogenerado no es capaz de determinar que todos los posibles argumentos de una función accesoria en particular son válidos (por ejemplo, si el SVD define el registro como de 32 bits, pero no dice si algunos de esos valores de 32 bits tienen un significado especial), entonces la función se marca como `unsafe`. Podemos ver esto en el ejemplo anterior cuando se establecen los subcampos `load` y `compa` usando la función `bits()`.
+Hemos accedido al periférico `PWM0` exactamente de la misma forma que antes accedimos al periférico `SYST`, excepto que hemos llamado a `tm4c123x::Peripherals::take()`. Como esta _crate_ fue auto-generada usando [svd2rust], las funciones de acceso para nuestros campos de registro toman una _closure_, en lugar de un argumento numérico. Aunque esto parece un montón de código, el compilador de Rust puede utilizarlo para realizar un montón de comprobaciones por nosotros, ¡pero luego genera código máquina que es bastante parecido al ensamblador escrito a mano! Cuando el código autogenerado no es capaz de determinar que todos los posibles argumentos de una función accesoria en particular son válidos (por ejemplo, si el SVD define el registro como de 32 bits, pero no dice si algunos de esos valores de 32 bits tienen un significado especial), entonces la función se marca como `unsafe`. Podemos ver esto en el ejemplo anterior cuando se establecen los subcampos `load` y `compa` usando la función `bits()`.
 
 ### Lectura
 
@@ -136,7 +136,7 @@ pwm0.enable.write(temp); // Oh oh! Variable equivocada!
 
 ## Usando una _crate_ HAL
 
-La _crate_ HAL para un chip funciona típicamente implementando un _Trait_ personalizado para las estructuras crudas expuestas por la PAC. A menudo este _trait_ definirá una función llamada `constrain()` para periféricos simples o `split()` para cosas como puertos GPIO con múltiples pines. Esta función consumirá la estructura subyacente del periférico y devolverá un nuevo objeto con una API de alto nivel. Esta API también puede hacer cosas como que la función `new` del puerto serie requiera un préstamo en alguna estructura `Clock`, que sólo puede ser generada llamando a la función que configura los PLLs y establece todas las frecuencias de reloj. De esta forma, es estáticamente imposible crear un objeto puerto serie sin haber configurado antes las frecuencias de reloj, o que el objeto puerto serie convierta erróneamente la velocidad de transmisión en ticks de reloj. Algunos crates incluso definen rasgos especiales para los estados en los que puede estar cada pin GPIO, requiriendo que el usuario ponga un pin en el estado correcto (digamos, seleccionando el Modo de Función Alternativo apropiado) antes de pasar el pin a Periférico. Todo ello sin costo alguno en tiempo de ejecución.
+La _crate_ HAL para un chip funciona típicamente implementando un _Trait_ personalizado para las estructuras crudas expuestas por la PAC. A menudo este _trait_ definirá una función llamada `constrain()` para periféricos simples o `split()` para cosas como puertos GPIO con múltiples pines. Esta función consumirá la estructura subyacente del periférico y devolverá un nuevo objeto con una API de alto nivel. Esta API también puede hacer cosas como que la función `new` del puerto serie requiera un préstamo en alguna estructura `Clock`, que sólo puede ser generada llamando a la función que configura los PLLs y establece todas las frecuencias de reloj. De esta forma, es estáticamente imposible crear un objeto puerto serie sin haber configurado antes las frecuencias de reloj, o que el objeto puerto serie convierta erróneamente la velocidad de transmisión en ticks de reloj. Algunas crates incluso definen rasgos especiales para los estados en los que puede estar cada pin GPIO, requiriendo que el usuario ponga un pin en el estado correcto (digamos, seleccionando el Modo de Función Alternativo apropiado) antes de pasar el pin a Periférico. Todo ello sin costo alguno en tiempo de ejecución.
 
 Veamos un ejemplo:
 

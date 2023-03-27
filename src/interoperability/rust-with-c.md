@@ -5,13 +5,13 @@ Usar código Rust dentro de un proyecto C o C++ consiste principalmente en dos p
 - Crear una API amigable con C en Rust
 - Incrustar tu proyecto Rust en un sistema de compilación externo
 
-Aparte de `cargo` y `meson`, la mayoría de los sistemas de compilación no tienen soporte nativo para Rust. Así que lo mejor es que utilices `cargo` para compilar tu crate y cualquier dependencia.
+Aparte de `cargo` y `meson`, la mayoría de los sistemas de compilación no tienen soporte nativo para Rust. Así que lo mejor es que utilices `cargo` para compilar tu _crate_ y cualquier dependencia.
 
 ## Creando un proyecto
 
 Crea un nuevo proyecto `cargo` como de costumbre.
 
-Hay banderas para decirle a `cargo` que emita una biblioteca de sistemas, en lugar de su objetivo rust normal. Esto también te permite establecer un nombre de salida diferente para tu biblioteca, si quieres que difiera del resto de tu crate.
+Hay banderas para decirle a `cargo` que emita una biblioteca de sistemas, en lugar de su objetivo rust normal. Esto también te permite establecer un nombre de salida diferente para tu biblioteca, si quieres que difiera del resto de tu _crate_.
 
 ```toml
 [lib]

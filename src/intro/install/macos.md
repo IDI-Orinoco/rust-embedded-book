@@ -1,13 +1,13 @@
 # macOS
 
-All the tools can be installed using [Homebrew] or [MacPorts]:
+Todas las herramientas pueden ser instaladas usando [Homebrew] o [MacPorts]:
 
-[Homebrew]: http://brew.sh/
-[MacPorts]: https://www.macports.org/
+[homebrew]: http://brew.sh/
+[macports]: https://www.macports.org/
 
-## Install tools with [Homebrew]
+## Instala las herramientas con [Homebrew]
 
-``` text
+```text
 $ # GDB
 $ brew install armmbed/formulae/arm-none-eabi-gcc
 
@@ -18,14 +18,15 @@ $ # QEMU
 $ brew install qemu
 ```
 
-> **NOTE** If OpenOCD crashes you may need to install the latest version using: 
+> **NOTA** Si OpenOCD se cae puede que necesites instalar la última versión usando:
+
 ```text
 $ brew install --HEAD openocd
 ```
 
-## Install tools with [MacPorts]
+## Instala las herramientas con [MacPorts]
 
-``` text
+```text
 $ # GDB
 $ sudo port install arm-none-eabi-gcc
 
@@ -36,8 +37,6 @@ $ # QEMU
 $ sudo port install qemu
 ```
 
+¡Eso es todo! anda a la [siguiente sección].
 
-
-That's all! Go to the [next section].
-
-[next section]: verify.md
+[siguiente sección]: verify.md

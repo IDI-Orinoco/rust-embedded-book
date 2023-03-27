@@ -45,7 +45,7 @@ En este ejemplo la _crate_ enlaza con la _crate_ `panic-halt` cuando se construy
 
 > La forma `use panic_abort as _;` de la sentencia `use` se usa para asegurar que el manejador de pánico `panic_abort`
 > se incluye en nuestro ejecutable final, dejando claro al compilador que no usaremos explícitamente nada
-> de la crate. Sin el cambio de nombre `as _`, el compilador nos avisaría de que tenemos una importación sin usar.
+> de la _crate_. Sin el cambio de nombre `as _`, el compilador nos avisaría de que tenemos una importación sin usar.
 > A veces se puede ver `extern crate panic_abort` en su lugar, que es un estilo más antiguo utilizado antes de la
 > edición 2018 de Rust, y ahora sólo debería usarse para crates "sysroot" (los que se distribuyen con el propio Rust) tales
 > como `proc_macro`, `alloc`, `std`, y `test`.

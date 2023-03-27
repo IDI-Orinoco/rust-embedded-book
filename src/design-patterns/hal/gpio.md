@@ -3,7 +3,7 @@
 <a id="c-zst-pin"></a>
 ## Los tipos de pin son de tamaño cero por defecto (C-ZST-PIN)
 
-Las Interfaces GPIO expuestas por la HAL deberían proporcionar tipos dedicados de tamaño cero para cada pin en cada interfaz o puerto, resultando en una abstracción GPIO de coste cero cuando todas las asignaciones de pines son conocidas estáticamente.
+Las Interfaces GPIO expuestas por la HAL deberían proporcionar tipos dedicados de tamaño cero para cada pin en cada interfaz o puerto, resultando en una abstracción GPIO de costo cero cuando todas las asignaciones de pines son conocidas estáticamente.
 
 Cada interfaz o puerto GPIO debe implementar un método `split` que devuelva una estructura con cada pin.
 

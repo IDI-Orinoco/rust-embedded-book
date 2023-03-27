@@ -58,7 +58,7 @@ Esto tiene una pequeña sobrecarga en la ejecución porque debemos envolver la e
 
 ## Soporte de biblioteca existente
 
-Aunque creamos nuestra propia estructura `Peripherals` arriba, no es necesario hacer esto para su código. la caja `cortex_m` contiene una macro llamada `singleton!()` que realizará esta acción por ti.
+Aunque creamos nuestra propia estructura `Peripherals` arriba, no es necesario hacer esto para su código. La _crate_ `cortex_m` contiene una macro llamada `singleton!()` que realizará esta acción por ti.
 
 ```rust,ignore
 use cortex_m::singleton;

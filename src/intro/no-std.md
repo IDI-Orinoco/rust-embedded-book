@@ -18,7 +18,7 @@ Como se mencionó antes, el uso de [libstd](https://doc.rust-lang.org/std/) requ
 
 ## Resumen
 
-`#![no_std]` es un atributo a nivel de crate que indica que el crate se enlazará con el core-crate en lugar de con el std-crate. El crate [libcore](https://doc.rust-lang.org/core/) es a su vez un subconjunto agnóstico de plataforma del crate std que no hace suposiciones sobre el sistema en el que se ejecutará el programa. Como tal, proporciona APIs para primitivas del lenguaje como floats, strings y slices, así como APIs que exponen características del procesador como operaciones atómicas e instrucciones SIMD. Sin embargo, carece de APIs para cualquier cosa que implique la integración de la plataforma. Debido a estas propiedades, el código de no_std y [libcore](https://doc.rust-lang.org/core/) se puede utilizar para cualquier tipo de código de arranque (fase 0) como bootloaders, firmware o kernels.
+`#![no_std]` es un atributo a nivel de _crate_ que indica que la _crate_ se enlazará con la core-crate en lugar de con el std-crate. La _crate_ [libcore](https://doc.rust-lang.org/core/) es a su vez un subconjunto agnóstico de plataforma de la _crate_ std que no hace suposiciones sobre el sistema en el que se ejecutará el programa. Como tal, proporciona APIs para primitivas del lenguaje como floats, strings y slices, así como APIs que exponen características del procesador como operaciones atómicas e instrucciones SIMD. Sin embargo, carece de APIs para cualquier cosa que implique la integración de la plataforma. Debido a estas propiedades, el código de no_std y [libcore](https://doc.rust-lang.org/core/) se puede utilizar para cualquier tipo de código de arranque (fase 0) como bootloaders, firmware o kernels.
 
 ### Resumen
 
@@ -32,9 +32,9 @@ Como se mencionó antes, el uso de [libstd](https://doc.rust-lang.org/std/) requ
 | libcore available                            | ✓      | ✓   |
 | writing firmware, kernel, or bootloader code | ✓      | ✘   |
 
-\* Sólo si usas el crate `alloc` y utilizas un asignador adecuado como [alloc-cortex-m].
+\* Sólo si usas la _crate_ `alloc` y utilizas un asignador adecuado como [alloc-cortex-m].
 
-\*\* Only if you use the `collections` crate and configure a global default allocator.
+\*\* Sólo si usas la _crate_ `collections`  y utilizas un asignador global default allocator.
 
 \*\* HashMap y HashSet no están disponibles debido a la falta de un generador de números aleatorios seguro.
 [alloc-cortex-m]: https://github.com/rust-embedded/alloc-cortex-m
