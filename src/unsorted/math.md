@@ -1,6 +1,6 @@
-# Performing math functionality with `#[no_std]`
+# Realizar funciones matemáticas con `#[no_std]`
 
-If you want to perform math related functionality like calculating the squareroot or the exponential of a number and you have the full standard library available, your code might look like this:
+Si quieres realizar funciones matemáticas como calcular la raíz cuadrada o la exponencial de un número y tienes disponible toda la biblioteca estándar, tu código podría ser como el siguiente:
 
 ```rs
 //! Some mathematical functions with standard support available
@@ -24,7 +24,7 @@ fn main() {
 }
 ```
 
-Without standard library support, these functions are not available. An external crate like [`libm`](https://crates.io/crates/libm) can be used instead. The example code would then look like this:
+Sin el soporte de la biblioteca estándar, estas funciones no están disponibles. En su lugar se puede utilizar una _crate_ externa como [`libm`](https://crates.io/crates/libm). El código de ejemplo sería el siguiente
 
 ```rs
 #![no_main]
@@ -62,7 +62,7 @@ fn main() -> ! {
 }
 ```
 
-If you need to perform more complex operations like DSP signal processing or advanced linear algebra on your MCU, the following crates might help you
+Si necesitas realizar operaciones más complejas como procesamiento de señales DSP o álgebra lineal avanzada en tu MCU, los siguientes crates pueden ayudarte
 
 - [CMSIS DSP library binding](https://github.com/jacobrosenthal/cmsis-dsp-sys)
 - [`micromath`](https://github.com/tarcieri/micromath)

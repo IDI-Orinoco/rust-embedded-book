@@ -1,21 +1,21 @@
-# A little C with your Rust
+# Un poco de C con tu Rust
 
-Using C or C++ inside of a Rust project consists of two major parts:
+Usar C o C++ dentro de un proyecto Rust consta de dos partes principales:
 
-- Wrapping the exposed C API for use with Rust
-- Building your C or C++ code to be integrated with the Rust code
+- Envolver la API C expuesta para usarla con Rust
+- Construir tu código C o C++ para integrarlo con el código Rust
 
-As C++ does not have a stable ABI for the Rust compiler to target, it is recommended to use the `C` ABI when combining Rust with C or C++.
+Como C++ no tiene una ABI estable para el compilador de Rust, se recomienda usar la ABI `C` cuando se combina Rust con C o C++.
 
-## Defining the interface
+## Definir la interfaz
 
-Before consuming C or C++ code from Rust, it is necessary to define (in Rust) what data types and function signatures exist in the linked code. In C or C++, you would include a header (`.h` or `.hpp`) file which defines this data. In Rust, it is necessary to either manually translate these definitions to Rust, or use a tool to generate these definitions.
+Antes de consumir código C o C++ desde Rust, es necesario definir (en Rust) qué tipos de datos y firmas de función existen en el código enlazado. En C o C++, se incluiría un fichero de cabecera (`.h` o `.hpp`) que defina estos datos. En Rust, es necesario traducir manualmente estas definiciones a Rust, o utilizar una herramienta para generar estas definiciones.
 
-First, we will cover manually translating these definitions from C/C++ to Rust.
+Primero, cubriremos la traducción manual de estas definiciones de C/C++ a Rust.
 
-### Wrapping C functions and Datatypes
+### Envolviendo funciones C y Datatypes
 
-Typically, libraries written in C or C++ will provide a header file defining all types and functions used in public interfaces. An example file may look like this:
+Típicamente, las bibliotecas escritas en C o C++ proporcionan un fichero de cabecera que define todos los tipos y funciones utilizados en las interfaces públicas. Un archivo de ejemplo puede tener este aspecto:
 
 ```C
 /* File: cool.h */
@@ -27,7 +27,7 @@ typedef struct CoolStruct {
 void cool_function(int i, char c, CoolStruct* cs);
 ```
 
-When translated to Rust, this interface would look as such:
+Traducida a Rust, esta interfaz quedaría así:
 
 ```rust,ignore
 /* File: cool_bindings.rs */
@@ -46,27 +46,27 @@ extern "C" {
 }
 ```
 
-Let's take a look at this definition one piece at a time, to explain each of the parts.
+Echemos un vistazo a esta definición pieza por pieza, para explicar cada una de las partes.
 
 ```rust,ignore
 #[repr(C)]
 pub struct CoolStruct { ... }
 ```
 
-By default, Rust does not guarantee order, padding, or the size of data included in a `struct`. In order to guarantee compatibility with C code, we include the `#[repr(C)]` attribute, which instructs the Rust compiler to always use the same rules C does for organizing data within a struct.
+Por defecto, Rust no garantiza el orden, el relleno o el tamaño de los datos incluidos en una `struct`. Para garantizar la compatibilidad con el código C, incluimos el atributo `#[repr(C)]`, que indica al compilador de Rust que utilice siempre las mismas reglas que C para organizar los datos dentro de una estructura.
 
 ```rust,ignore
 pub x: cty::c_int,
 pub y: cty::c_int,
 ```
 
-Due to the flexibility of how C or C++ defines an `int` or `char`, it is recommended to use primitive data types defined in `cty`, which will map types from C to types in Rust.
+Debido a la flexibilidad de cómo C o C++ definen un `int` o un `char`, se recomienda usar tipos de datos primitivos definidos en `cty`, que mapeará tipos de C a tipos en Rust.
 
 ```rust,ignore
 extern "C" { pub fn cool_function( ... ); }
 ```
 
-This statement defines the signature of a function that uses the C ABI, called `cool_function`. By defining the signature without defining the body of the function, the definition of this function will need to be provided elsewhere, or linked into the final library or binary from a static library.
+Esta sentencia define la firma de una función que usa la ABI de C, llamada `cool_function`. Al definir la firma sin definir el cuerpo de la función, la definición de esta función necesitará ser proporcionada en otro lugar, o enlazada en la librería final o binaria desde una librería estática.
 
 ```rust,ignore
     i: cty::c_int,
@@ -74,55 +74,53 @@ This statement defines the signature of a function that uses the C ABI, called `
     cs: *mut CoolStruct
 ```
 
-Similar to our datatype above, we define the datatypes of the function arguments using C-compatible definitions. We also retain the same argument names, for clarity.
+Al igual que en el caso anterior, definimos los tipos de datos de los argumentos de las funciones utilizando definiciones compatibles con C. También mantenemos los mismos nombres de argumentos para mayor claridad.
 
-We have one new type here, `*mut CoolStruct`. As C does not have a concept of Rust's references, which would look like this: `&mut CoolStruct`, we instead have a raw pointer. As dereferencing this pointer is `unsafe`, and the pointer may in fact be a `null` pointer, care must be taken to ensure the guarantees typical of Rust when interacting with C or C++ code.
+Aquí tenemos un nuevo tipo, `*mut CoolStruct`. Como C no tiene el concepto de referencias de Rust, que se vería así: `&mut CoolStruct`, en su lugar tenemos un puntero crudo. Como hacer referencia a este puntero es `unsafe`, y el puntero puede ser de hecho un puntero `null`, hay que tener cuidado para asegurar las garantías típicas de Rust cuando se interactúa con código C o C++.
 
-### Automatically generating the interface
+### Generación automática de la interfaz
 
-Rather than manually generating these interfaces, which may be tedious and error prone, there is a tool called [bindgen] which will perform these conversions automatically. For instructions of the usage of [bindgen], please refer to the [bindgen user's manual], however the typical process consists of the following:
+En lugar de generar manualmente estas interfaces, lo que puede ser tedioso y propenso a errores, existe una herramienta llamada [bindgen] que realizará estas conversiones automáticamente. Para instrucciones de uso de [bindgen], consulte el [manual de usuario de bindgen], sin embargo el proceso típico consiste en lo siguiente:
 
-1. Gather all C or C++ headers defining interfaces or datatypes you would like to use with Rust.
-2. Write a `bindings.h` file, which `#include "..."`'s each of the files you gathered in step one.
-3. Feed this `bindings.h` file, along with any compilation flags used to compile
-  your code into `bindgen`. Tip: use `Builder.ctypes_prefix("cty")` /
-  `--ctypes-prefix=cty` and `Builder.use_core()` / `--use-core` to make the generated code `#![no_std]` compatible.
-4. `bindgen` will produce the generated Rust code to the output of the terminal window. This file may be piped to a file in your project, such as `bindings.rs`. You may use this file in your Rust project to interact with C/C++ code compiled and linked as an external library. Tip: don't forget to use the [`cty`](https://crates.io/crates/cty) crate if your types in the generated bindings are prefixed with `cty`.
+1. Reúne todas las cabeceras C o C++ que definan interfaces o tipos de datos que quieras usar con Rust.
+2. Escribe un archivo `bindings.h`, que `#include "..."` cada uno de los archivos que reuniste en el paso uno.
+3. Introduce este fichero `bindings.h`, junto con cualquier bandera de compilación utilizada para compilar tu código en `bindgen`. Consejo: utilice `Builder.ctypes_prefix("cty")` / `--ctypes-prefix=cty` y `Builder.use_core()` / `--use-core` para hacer compatible el código generado `#![no_std]`.
+4. `bindgen` producirá el código Rust generado a la salida de la ventana de terminal. Este archivo puede ser canalizado a un archivo de tu proyecto, como `bindings.rs`. Puedes usar este archivo en tu proyecto Rust para interactuar con código C/C++ compilado y enlazado como una librería externa. Consejo: no te olvides de usar la _crate_ [`cty`](https://crates.io/crates/cty) si tus tipos en los bindings generados están prefijados con `cty`.
 
 [bindgen]: https://github.com/rust-lang/rust-bindgen
-[bindgen user's manual]: https://rust-lang.github.io/rust-bindgen/
+[manual de usuario de bindgen]: https://rust-lang.github.io/rust-bindgen/
 
-## Building your C/C++ code
+## Construyendo tu código C/C++
 
-As the Rust compiler does not directly know how to compile C or C++ code (or code from any other language, which presents a C interface), it is necessary to compile your non-Rust code ahead of time.
+Como el compilador Rust no sabe directamente cómo compilar código C o C++ (o código de cualquier otro lenguaje, que presente una interfaz C), es necesario compilar tu código no Rust con antelación.
 
-For embedded projects, this most commonly means compiling the C/C++ code to a static archive (such as `cool-library.a`), which can then be combined with your Rust code at the final linking step.
+Para proyectos embebidos, esto significa normalmente compilar el código C/C++ en un archivo estático (como `cool-library.a`), que puede combinarse con tu código Rust en el paso final de enlazado.
 
-If the library you would like to use is already distributed as a static archive, it is not necessary to rebuild your code. Just convert the provided interface header file as described above, and include the static archive at compile/link time.
+Si la biblioteca que deseas utilizar ya se distribuye como un archivo estático, no es necesario reconstruir su código. Sólo tienes que convertir el fichero de cabecera de interfaz proporcionado como se ha descrito anteriormente, e incluir el archivo estático en el momento de compilar/enlazar.
 
-If your code exists as a source project, it will be necessary to compile your C/C++ code to a static library, either by triggering your existing build system (such as `make`, `CMake`, etc.), or by porting the necessary compilation steps to use a tool called the `cc` crate. For both of these steps, it is necessary to use a `build.rs` script.
+Si tu código existe como un proyecto fuente, será necesario compilar tu código C/C++ a una biblioteca estática, ya sea activando tu sistema de compilación existente (como `make`, `CMake`, etc.), o portando los pasos de compilación necesarios para utilizar una herramienta llamada `cc` _crate_. Para ambos pasos, es necesario utilizar un script `build.rs`.
 
-### Rust `build.rs` build scripts
+### Scripts de compilación `build.rs` de Rust
 
-A `build.rs` script is a file written in Rust syntax, that is executed on your compilation machine, AFTER dependencies of your project have been built, but BEFORE your project is built.
+Un script `build.rs` es un archivo escrito en sintaxis Rust, que se ejecuta en tu máquina de compilación, DESPUÉS de que las dependencias de tu proyecto hayan sido construidas, pero ANTES de que tu proyecto sea construido.
 
-The full reference may be found [here](https://doc.rust-lang.org/cargo/reference/build-scripts.html). `build.rs` scripts are useful for generating code (such as via [bindgen]), calling out to external build systems such as `Make`, or directly compiling C/C++ through use of the `cc` crate.
+La referencia completa se puede encontrar [aquí](https://doc.rust-lang.org/cargo/reference/build-scripts.html). Los scripts `build.rs` son útiles para generar código (como a través de [bindgen]), llamando a sistemas de compilación externos como `Make`, o compilando directamente C/C++ a través del uso de la _crate_ `cc`.
 
-### Triggering external build systems
+### Activación de sistemas de compilación externos
 
-For projects with complex external projects or build systems, it may be easiest to use [`std::process::Command`] to "shell out" to your other build systems by traversing relative paths, calling a fixed command (such as `make library`), and then copying the resulting static library to the proper location in the `target` build directory.
+Para proyectos con complejos proyectos externos o sistemas de compilación, puede ser más fácil usar [`std::process::Command`] para "enviar" a tus otros sistemas de compilación atravesando rutas relativas, llamando a un comando fijo (como `make library`), y luego copiando la biblioteca estática resultante a la ubicación adecuada en el directorio de compilación `target`.
 
-While your crate may be targeting a `no_std` embedded platform, your `build.rs` executes only on machines compiling your crate. This means you may use any Rust crates which will run on your compilation host.
+Mientras que tu _crate_ puede estar dirigida a una plataforma embebida `no_std`, tu `build.rs` se ejecuta sólo en las máquinas que compilan tu _crate_. Esto significa que puedes usar cualquier _crate_ de Rust que se ejecute en tu anfitrión de compilación.
 
-[`std::process::Command`]: https://doc.rust-lang.org/std/process/struct.Command.html
+[`std::process::command`]: https://doc.rust-lang.org/std/process/struct.Command.html
 
-### Building C/C++ code with the `cc` crate
+### Construyendo código C/C++ con la _crate_ `cc`
 
-For projects with limited dependencies or complexity, or for projects where it is difficult to modify the build system to produce a static library (rather than a final binary or executable), it may be easier to instead utilize the [`cc` crate], which provides an idiomatic Rust interface to the compiler provided by the host.
+Para proyectos con dependencias o complejidad limitadas, o para proyectos donde es difícil modificar el sistema de compilación para producir una librería estática (en lugar de un binario final o ejecutable), puede ser más fácil utilizar la [_crate_ `cc`], que proporciona una interfaz idiomática de Rust al compilador proporcionado por el anfitrión.
 
-[`cc` crate]: https://github.com/alexcrichton/cc-rs
+[_crate_ `cc`]: https://github.com/alexcrichton/cc-rs
 
-In the simplest case of compiling a single C file as a dependency to a static library, an example `build.rs` script using the [`cc` crate] would look like this:
+En el caso más sencillo de compilar un único archivo C como dependencia de una biblioteca estática, un script `build.rs` de ejemplo utilizando la [_crate_ `cc`] tendría el siguiente aspecto:
 
 ```rust,ignore
 fn main() {

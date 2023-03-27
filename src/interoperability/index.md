@@ -1,25 +1,25 @@
-# Interoperability
+# Interoperabilidad
 
-Interoperability between Rust and C code is always dependent on transforming data between the two languages. For this purposes there are two dedicated modules in the `stdlib` called [`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html) and [`std::os::raw`](https://doc.rust-lang.org/std/os/raw/index.html).
+La interoperabilidad entre el código Rust y C depende siempre de la transformación de datos entre los dos lenguajes. Para ello hay dos módulos dedicados en `stdlib` llamados [`std::ffi`](https://doc.rust-lang.org/std/ffi/index.html) y [`std::os::raw`](https://doc.rust-lang.org/std/os/raw/index.html).
 
-`std::os::raw` deals with low-level primitive types that can be converted implicitly by the compiler because the memory layout between Rust and C is similar enough or the same.
+`std::os::raw` trata con tipos primitivos de bajo nivel que pueden ser convertidos implícitamente por el compilador porque la disposición de memoria entre Rust y C es lo suficientemente similar o la misma.
 
-`std::ffi` provides some utility for converting more complex types such as Strings, mapping both `&str` and `String` to C-types that are easier and safer to handle.
+`std::ffi` proporciona alguna utilidad para convertir tipos más complejos como Strings, mapeando tanto `&str` como `String` a tipos C que son más fáciles y seguros de manejar.
 
-Neither of these modules are available in `core`, but you can find a `#![no_std]` compatible version of `std::ffi::{CStr,CString}` in the [`cstr_core`] crate, and most of the `std::os::raw` types in the [`cty`] crate.
+Ninguno de estos módulos está disponible en `core`, pero puedes encontrar una versión compatible con `#![no_std]` de `std::ffi::{CStr,CString}` en la _crate_ [`cstr_core`], y la mayoría de los tipos `std::os::raw` en la _crate_ [`cty`].
 
 [`cstr_core`]: https://crates.io/crates/cstr_core
 [`cty`]: https://crates.io/crates/cty
 
-| Rust type  | Intermediate | C type       |
-|------------|--------------|--------------|
-| String     | CString      | *char        |
-| &str       | CStr         | *const char  |
-| ()         | c_void       | void         |
-| u32 or u64 | c_uint       | unsigned int |
-| etc        | ...          | ...          |
+| Tipo Rust | Intermedio | Tipo C       |
+| --------- | ---------- | ------------ |
+| String    | CString    | \*char       |
+| &str      | CStr       | \*const char |
+| ()        | c_void     | void         |
+| u32 o u64 | c_uint     | unsigned int |
+| etc.      | ...        | ...          |
 
-As mentioned above, primitive types can be converted by the compiler implicitly.
+Como se mencionó anteriormente, los tipos primitivos pueden ser convertidos por el compilador implícitamente.
 
 ```rust,ignore
 unsafe fn foo(num: u32) {
@@ -28,19 +28,18 @@ unsafe fn foo(num: u32) {
 }
 ```
 
-## Interoperability with other build systems
+## Interoperabilidad con otros sistemas de compilación
 
-A common requirement for including Rust in your embedded project is combining Cargo with your existing build system, such as make or cmake.
+Un requisito común para incluir Rust en tu proyecto embebido es combinar Cargo con tu sistema de compilación existente, como make o cmake.
 
-We are collecting examples and use cases for this on our issue tracker in [issue #61].
+Estamos recopilando ejemplos y casos de uso para esto en nuestro issue tracker en [issue #61].
 
 [issue #61]: https://github.com/rust-embedded/book/issues/61
 
+## Interoperabilidad con Sistemas Operativos en Tiempo Real (RTOSs)
 
-## Interoperability with RTOSs
+Integrar Rust con un RTOS como FreeRTOS o ChibiOS es todavía un trabajo en progreso; en particular llamar a funciones RTOS desde Rust puede ser complicado.
 
-Integrating Rust with an RTOS such as FreeRTOS or ChibiOS is still a work in progress; especially calling RTOS functions from Rust can be tricky.
-
-We are collecting examples and use cases for this on our issue tracker in [issue #62].
+Estamos recopilando ejemplos y casos de uso para esto en nuestro issue tracker en [issue #62].
 
 [issue #62]: https://github.com/rust-embedded/book/issues/62

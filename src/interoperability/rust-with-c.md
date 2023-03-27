@@ -1,17 +1,17 @@
-# A little Rust with your C
+# Un poco de Rust con tu C
 
-Using Rust code inside a C or C++ project mostly consists of two parts.
+Usar código Rust dentro de un proyecto C o C++ consiste principalmente en dos partes.
 
-- Creating a C-friendly API in Rust
-- Embedding your Rust project into an external build system
+- Crear una API amigable con C en Rust
+- Incrustar tu proyecto Rust en un sistema de compilación externo
 
-Apart from `cargo` and `meson`, most build systems don't have native Rust support. So you're most likely best off just using `cargo` for compiling your crate and any dependencies.
+Aparte de `cargo` y `meson`, la mayoría de los sistemas de compilación no tienen soporte nativo para Rust. Así que lo mejor es que utilices `cargo` para compilar tu crate y cualquier dependencia.
 
-## Setting up a project
+## Creando un proyecto
 
-Create a new `cargo` project as usual.
+Crea un nuevo proyecto `cargo` como de costumbre.
 
-There are flags to tell `cargo` to emit a systems library, instead of its regular rust target. This also allows you to set a different output name for your library, if you want it to differ from the rest of your crate.
+Hay banderas para decirle a `cargo` que emita una biblioteca de sistemas, en lugar de su objetivo rust normal. Esto también te permite establecer un nombre de salida diferente para tu biblioteca, si quieres que difiera del resto de tu crate.
 
 ```toml
 [lib]
@@ -20,23 +20,23 @@ crate-type = ["cdylib"]      # Creates dynamic lib
 # crate-type = ["staticlib"] # Creates static lib
 ```
 
-## Building a `C` API
+## Creación de una API `C`
 
-Because C++ has no stable ABI for the Rust compiler to target, we use `C` for any interoperability between different languages. This is no exception when using Rust inside of C and C++ code.
+Debido a que C++ no tiene una ABI estable para el compilador de Rust, usamos `C` para cualquier interoperabilidad entre diferentes lenguajes. Esto no es una excepción cuando usamos Rust dentro de código C y C++.
 
 ### `#[no_mangle]`
 
-The Rust compiler mangles symbol names differently than native code linkers expect. As such, any function that Rust exports to be used outside of Rust needs to be told not to be mangled by the compiler.
+El compilador de Rust manipula los nombres de los símbolos de forma diferente a lo que esperan los enlazadores de código nativo. Como tal, cualquier función que Rust exporte para ser usada fuera de Rust necesita que se le diga que no sea manipulada por el compilador.
 
 ### `extern "C"`
 
-By default, any function you write in Rust will use the Rust ABI (which is also not stabilized). Instead, when building outwards facing FFI APIs we need to tell the compiler to use the system ABI.
+Por defecto, cualquier función que escribas en Rust usará la ABI de Rust (que tampoco está estabilizada). En cambio, cuando se construyen APIs FFI orientadas al exterior, necesitamos decirle al compilador que use la ABI del sistema.
 
-Depending on your platform, you might want to target a specific ABI version, which are documented [here](https://doc.rust-lang.org/reference/items/external-blocks.html).
+Dependiendo de tu plataforma, puede que quieras apuntar a una versión ABI específica, que están documentadas [aquí](https://doc.rust-lang.org/reference/items/external-blocks.html).
 
 ---
 
-Putting these parts together, you get a function that looks roughly like this.
+Juntando estas partes, se obtiene una función que se parece más o menos a esto.
 
 ```rust,ignore
 #[no_mangle]
@@ -45,26 +45,26 @@ pub extern "C" fn rust_function() {
 }
 ```
 
-Just as when using `C` code in your Rust project you now need to transform data from and to a form that the rest of the application will understand.
+Igual que cuando usas código `C` en tu proyecto Rust ahora necesitas transformar los datos desde y hacia una forma que el resto de la aplicación entienda.
 
-## Linking and greater project context.
+## Enlazado y mayor contexto del proyecto.
 
-So then, that's one half of the problem solved. How do you use this now?
+Así que, esa es una mitad del problema resuelto. ¿Cómo usas esto ahora?
 
-**This very much depends on your project and/or build system**
+**Esto depende mucho de tu proyecto y/o sistema de compilación**
 
-`cargo` will create a `my_lib.so`/`my_lib.dll` or `my_lib.a` file, depending on your platform and settings. This library can simply be linked by your build system.
+`cargo` creará un archivo `my_lib.so`/`my_lib.dll` o `my_lib.a`, dependiendo de tu plataforma y configuración. Esta biblioteca puede ser simplemente enlazada por tu sistema de compilación.
 
-However, calling a Rust function from C requires a header file to declare the function signatures.
+Sin embargo, llamar a una función Rust desde C requiere un archivo de cabecera para declarar las firmas de la función.
 
-Every function in your Rust-ffi API needs to have a corresponding header function.
+Cada función en tu API Rust-ffi necesita tener una función de cabecera correspondiente.
 
 ```rust,ignore
 #[no_mangle]
 pub extern "C" fn rust_function() {}
 ```
 
-would then become
+se convertiría en
 
 ```C
 void rust_function();
@@ -72,11 +72,11 @@ void rust_function();
 
 etc.
 
-There is a tool to automate this process, called [cbindgen] which analyses your Rust code and then generates headers for your C and C++ projects from it.
+Existe una herramienta para automatizar este proceso, llamada [cbindgen], que analiza tu código Rust y genera a partir de él cabeceras para tus proyectos C y C++.
 
 [cbindgen]: https://github.com/eqrion/cbindgen
 
-At this point, using the Rust functions from C is as simple as including the header and calling them!
+Llegados a este punto, ¡utilizar las funciones Rust desde C es tan sencillo como incluir la cabecera y llamarlas!
 
 ```C
 #include "my-rust-project.h"
