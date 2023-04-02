@@ -3,12 +3,11 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Optimizations: The speed size tradeoff - The Embedded Rust Book</title>
+        <title>Optimizaciones: El equilibrio entre velocidad y tamaño - El Libro de Rust Embebido</title>
 
 
         <!-- Custom HTML head -->
         
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -33,14 +32,15 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -56,7 +56,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -68,12 +68,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -81,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Tooling</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Installation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verify Installation</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html"><strong aria-hidden="true">2.3.</strong> Memory-mapped Registers</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Panicking</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Exceptions</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupts</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> IO</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Peripherals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> A first attempt in Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> The Borrow Checker</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Static Guarantees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Typestate Programming</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Peripherals as State Machines</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Design Contracts</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Zero Cost Abstractions</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portability</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrency</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Collections</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Checklist</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Naming</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Predictability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Tips for embedded C developers</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> A little C with your Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> A little Rust with your C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Unsorted topics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html" class="active"><strong aria-hidden="true">11.1.</strong> Optimizations: The speed size tradeoff</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Performing Math Functionality</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../appendix/glossary.html">Appendix A: Glossary</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introducción</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Herramientas</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Instalación</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verificar Instalación</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Cómo empezar</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html"><strong aria-hidden="true">2.3.</strong> Registros mapeados en memoria</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Pánico</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Excepciones</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupciones</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> E/S</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Periféricos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> Un primer intento en Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> El comprobador de préstamos</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Garantías estáticas</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Programación por Typestate</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Periféricos como máquinas de estado</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Contratos de diseño</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Abstracciones de costo cero</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portabilidad</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrencia</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Colecciones</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Lista de chequeo</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Nomenclatura</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperabilidad</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Previsibilidad</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Consejos para desarrolladores de C embebido</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperabilidad</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> Un poco de C con tu Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> Un poco de Rust con tu C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Temas sin clasificar</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html" class="active"><strong aria-hidden="true">11.1.</strong> Optimizaciones: El equilibrio entre velocidad y tamaño</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Realización de funciones matemáticas</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../appendix/glossary.html">Apéndice A: Glosario</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -99,7 +101,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -110,13 +112,13 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">The Embedded Rust Book</h1>
+                    <h1 class="menu-title">El Libro de Rust Embebido</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/rust-embedded/book" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/idio/rust-embedded-book" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
@@ -135,7 +137,7 @@
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -145,38 +147,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="optimizations-the-speed-size-tradeoff"><a class="header" href="#optimizations-the-speed-size-tradeoff">Optimizations: the speed size tradeoff</a></h1>
-<p>Everyone wants their program to be super fast and super small but it's usually
-not possible to have both characteristics. This section discusses the
-different optimization levels that <code>rustc</code> provides and how they affect the
-execution time and binary size of a program.</p>
-<h2 id="no-optimizations"><a class="header" href="#no-optimizations">No optimizations</a></h2>
-<p>This is the default. When you call <code>cargo build</code> you use the development (AKA
-<code>dev</code>) profile. This profile is optimized for debugging so it enables debug
-information and does <em>not</em> enable any optimizations, i.e. it uses <code>-C opt-level = 0</code>.</p>
-<p>At least for bare metal development, debuginfo is zero cost in the sense that it
-won't occupy space in Flash / ROM so we actually recommend that you enable
-debuginfo in the release profile -- it is disabled by default. That will let you
-use breakpoints when debugging release builds.</p>
+                        <h1 id="optimizaciones-el-compromiso-entre-velocidad-y-tamaño"><a class="header" href="#optimizaciones-el-compromiso-entre-velocidad-y-tamaño">Optimizaciones: el compromiso entre velocidad y tamaño</a></h1>
+<p>Todo el mundo quiere que su programa sea superrápido y superpequeño, pero normalmente no es posible tener ambas características. Esta sección discute los diferentes niveles de optimización que <code>rustc</code> proporciona y cómo afectan al tiempo de ejecución y al tamaño binario de un programa.</p>
+<h2 id="sin-optimizaciones"><a class="header" href="#sin-optimizaciones">Sin optimizaciones</a></h2>
+<p>Esta es la opción por defecto. Cuando se llama a <code>cargo build</code> se utiliza el perfil de desarrollo (AKA <code>dev</code>). Este perfil está optimizado para la depuración, por lo que habilita la información de depuración y <em>no</em> habilita ninguna optimización, es decir, utiliza <code>-C opt-level = 0</code>.</p>
+<p>Al menos para el desarrollo bare metal, debuginfo es costo cero en el sentido de que no ocupará espacio en Flash / ROM por lo que en realidad recomendamos que active debuginfo en el perfil de liberación -- está desactivado por defecto. Esto le permitirá utilizar puntos de interrupción al depurar las versiones.</p>
 <pre><code class="language-toml">[profile.release]
 # symbols are nice and they don't increase the size on Flash
 debug = true
 </code></pre>
-<p>No optimizations is great for debugging because stepping through the code feels
-like you are executing the program statement by statement, plus you can <code>print</code>
-stack variables and function arguments in GDB. When the code is optimized, trying
-to print variables results in <code>$0 = &lt;value optimized out&gt;</code> being printed.</p>
-<p>The biggest downside of the <code>dev</code> profile is that the resulting binary will be
-huge and slow. The size is usually more of a problem because unoptimized
-binaries can occupy dozens of KiB of Flash, which your target device may not
-have -- the result: your unoptimized binary doesn't fit in your device!</p>
-<p>Can we have smaller, debugger friendly binaries? Yes, there's a trick.</p>
-<h3 id="optimizing-dependencies"><a class="header" href="#optimizing-dependencies">Optimizing dependencies</a></h3>
-<p>There's a Cargo feature named <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#overrides"><code>profile-overrides</code></a> that lets you
-override the optimization level of dependencies. You can use that feature to
-optimize all dependencies for size while keeping the top crate unoptimized and
-debugger friendly.</p>
-<p>Here's an example:</p>
+<p>Sin optimizaciones es genial para la depuración, porque el paso a través del código se siente como si estuviera ejecutando el programa declaración por declaración, además de que puede <code>print</code> variables de la pila y los argumentos de función en GDB. Cuando el código está optimizado, al intentar imprimir variables se imprime <code>$0 = &lt;valor optimizado&gt;</code>.</p>
+<p>El mayor inconveniente del perfil <code>dev</code> es que el binario resultante será enorme y lento. El tamaño es normalmente el mayor problema porque los binarios no optimizados pueden ocupar docenas de KiB de Flash, que tu dispositivo de destino puede no tener -- el resultado: ¡tu binario no optimizado no cabe en tu dispositivo!</p>
+<p>¿Podemos tener binarios más pequeños y fáciles de depurar? Sí, hay un truco.</p>
+<h3 id="optimizar-las-dependencias"><a class="header" href="#optimizar-las-dependencias">Optimizar las dependencias</a></h3>
+<p>Existe una función de Cargo llamada <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#overrides"><code>profile-overrides</code></a> que te permite anular el nivel de optimización de las dependencias. Puedes usar esta característica para optimizar todas las dependencias por tamaño mientras mantienes la <em>crate</em> superior sin optimizar y amigable para el depurador.</p>
+<p>Aquí tienes un ejemplo:</p>
 <pre><code class="language-toml"># Cargo.toml
 [package]
 name = &quot;app&quot;
@@ -185,7 +170,7 @@ name = &quot;app&quot;
 [profile.dev.package.&quot;*&quot;] # +
 opt-level = &quot;z&quot; # +
 </code></pre>
-<p>Without the override:</p>
+<p>Sin la anulación:</p>
 <pre><code class="language-text">$ cargo size --bin app -- -A
 app  :
 section               size        addr
@@ -195,7 +180,7 @@ section               size        addr
 .data                    0  0x20000000
 .bss                     4  0x20000000
 </code></pre>
-<p>With the override:</p>
+<p>Con la anulación:</p>
 <pre><code class="language-text">$ cargo size --bin app -- -A
 app  :
 section               size        addr
@@ -205,12 +190,7 @@ section               size        addr
 .data                    0  0x20000000
 .bss                     4  0x20000000
 </code></pre>
-<p>That's a 6 KiB reduction in Flash usage without any loss in the debuggability of
-the top crate. If you step into a dependency then you'll start seeing those
-<code>&lt;value optimized out&gt;</code> messages again but it's usually the case that you want
-to debug the top crate and not the dependencies. And if you <em>do</em> need to debug a
-dependency then you can use the <code>profile-overrides</code> feature to exclude a
-particular dependency from being optimized. See example below:</p>
+<p>Eso es una reducción de 6 KiB en el uso de Flash sin ninguna pérdida en la depurabilidad de la <em>crate</em> superior. Si entras en una dependencia entonces empezarás a ver esos mensajes de <code>&lt;value optimized out&gt;</code> de nuevo, pero normalmente lo que quieres es depurar la <em>crate</em> superior y no las dependencias. Y si <em>necesitas</em> depurar una dependencia entonces puedes usar la característica <code>profile-overrides</code> para excluir una dependencia en particular de ser optimizada. Véase el ejemplo siguiente:</p>
 <pre><code class="language-toml"># ..
 
 # don't optimize the `cortex-m-rt` crate
@@ -222,40 +202,20 @@ opt-level = 0 # +
 codegen-units = 1 # better optimizations
 opt-level = &quot;z&quot;
 </code></pre>
-<p>Now the top crate and <code>cortex-m-rt</code> are debugger friendly!</p>
-<h2 id="optimize-for-speed"><a class="header" href="#optimize-for-speed">Optimize for speed</a></h2>
-<p>As of 2018-09-18 <code>rustc</code> supports three &quot;optimize for speed&quot; levels: <code>opt-level = 1</code>, <code>2</code> and <code>3</code>. When you run <code>cargo build --release</code> you are using the release
-profile which defaults to <code>opt-level = 3</code>.</p>
-<p>Both <code>opt-level = 2</code> and <code>3</code> optimize for speed at the expense of binary size,
-but level <code>3</code> does more vectorization and inlining than level <code>2</code>. In
-particular, you'll see that at <code>opt-level</code> equal to or greater than <code>2</code> LLVM will
-unroll loops. Loop unrolling has a rather high cost in terms of Flash / ROM
-(e.g. from 26 bytes to 194 for a zero this array loop) but can also halve the
-execution time given the right conditions (e.g. number of iterations is big
-enough).</p>
-<p>Currently there's no way to disable loop unrolling in <code>opt-level = 2</code> and <code>3</code> so
-if you can't afford its cost you should optimize your program for size.</p>
-<h2 id="optimize-for-size"><a class="header" href="#optimize-for-size">Optimize for size</a></h2>
-<p>As of 2018-09-18 <code>rustc</code> supports two &quot;optimize for size&quot; levels: <code>opt-level = &quot;s&quot;</code> and <code>&quot;z&quot;</code>. These names were inherited from clang / LLVM and are not too
-descriptive but <code>&quot;z&quot;</code> is meant to give the idea that it produces smaller
-binaries than <code>&quot;s&quot;</code>.</p>
-<p>If you want your release binaries to be optimized for size then change the
-<code>profile.release.opt-level</code> setting in <code>Cargo.toml</code> as shown below.</p>
+<p>¡Ahora la <em>crate</em> superior y <code>cortex-m-rt</code> son amigables con el depurador!</p>
+<h2 id="optimizar-para-velocidad"><a class="header" href="#optimizar-para-velocidad">Optimizar para velocidad</a></h2>
+<p>A partir de 2018-09-18 <code>rustc</code> soporta tres niveles de &quot;optimización para velocidad&quot;: <code>opt-level = 1</code>, <code>2</code> y <code>3</code>. Cuando ejecutas <code>cargo build --release</code> estás usando el perfil release que por defecto es <code>opt-level = 3</code>.</p>
+<p>Tanto <code>opt-level = 2</code> como <code>3</code> optimizan la velocidad a expensas del tamaño del binario, pero el nivel <code>3</code> hace más vectorización e inlining que el nivel <code>2</code>. En particular, verás que en <code>opt-level</code> igual o mayor que <code>2</code> LLVM desenrollará bucles. El desenrollado de bucles tiene un costo bastante alto en términos de Flash / ROM (por ejemplo, de 26 bytes a 194 para un bucle de matriz cero), pero también puede reducir a la mitad el tiempo de ejecución dadas las condiciones adecuadas (por ejemplo, el número de iteraciones es lo suficientemente grande).</p>
+<p>Actualmente no hay forma de deshabilitar el desenrollado de bucles en <code>opt-level = 2</code> y <code>3</code> así que si no puedes permitirte su costo, deberías optimizar tu programa por tamaño.</p>
+<h2 id="optimizar-por-tamaño"><a class="header" href="#optimizar-por-tamaño">Optimizar por tamaño</a></h2>
+<p>A partir de 2018-09-18 <code>rustc</code> soporta dos niveles de &quot;optimización por tamaño&quot;: <code>opt-level = &quot;s&quot;</code> y <code>&quot;z&quot;</code>. Estos nombres fueron heredados de clang / LLVM y no son demasiado descriptivos, pero <code>&quot;z&quot;</code> pretende dar la idea de que produce binarios más pequeños que <code>&quot;s&quot;</code>.</p>
+<p>Si quieres que tus binarios de lanzamiento estén optimizados para el tamaño, entonces cambia el ajuste <code>profile.release.opt-level</code> en <code>Cargo.toml</code> como se muestra a continuación.</p>
 <pre><code class="language-toml">[profile.release]
 # or &quot;z&quot;
 opt-level = &quot;s&quot;
 </code></pre>
-<p>These two optimization levels greatly reduce LLVM's inline threshold, a metric
-used to decide whether to inline a function or not. One of Rust principles are
-zero cost abstractions; these abstractions tend to use a lot of newtypes and
-small functions to hold invariants (e.g. functions that borrow an inner value
-like <code>deref</code>, <code>as_ref</code>) so a low inline threshold can make LLVM miss
-optimization opportunities (e.g. eliminate dead branches, inline calls to
-closures).</p>
-<p>When optimizing for size you may want to try increasing the inline threshold to
-see if that has any effect on the binary size. The recommended way to change the
-inline threshold is to append the <code>-C inline-threshold</code> flag to the other
-rustflags in <code>.cargo/config.toml</code>.</p>
+<p>Estos dos niveles de optimización reducen en gran medida el umbral inline de LLVM, una métrica utilizada para decidir si hacer una función <code>inline</code> o no. Uno de los principios de Rust son las abstracciones de costo cero; estas abstracciones tienden a usar muchos newtypes y pequeñas funciones para mantener invariantes (por ejemplo, funciones que toman prestado un valor interno como <code>deref</code>, <code>as_ref</code>) por lo que un umbral inline bajo puede hacer que LLVM pierda oportunidades de optimización (por ejemplo, eliminar ramas muertas, llamadas inline a cierres).</p>
+<p>Cuando se optimiza por tamaño se puede intentar aumentar el umbral inline para ver si tiene algún efecto en el tamaño del binario. La forma recomendada de cambiar el umbral en línea es añadir la bandera <code>-C inline-threshold</code> a las otras rustflags en <code>.cargo/config.toml</code>.</p>
 <pre><code class="language-toml"># .cargo/config.toml
 # this assumes that you are using the cortex-m-quickstart template
 [target.'cfg(all(target_arch = &quot;arm&quot;, target_os = &quot;none&quot;))']
@@ -264,15 +224,14 @@ rustflags = [
   &quot;-C&quot;, &quot;inline-threshold=123&quot;, # +
 ]
 </code></pre>
-<p>What value to use? <a href="https://github.com/rust-lang/rust/blob/1.29.0/src/librustc_codegen_llvm/back/write.rs#L2105-L2122">As of 1.29.0 these are the inline thresholds that the
-different optimization levels use</a>:</p>
+<p>¿Qué valor usar? <a href="https://github.com/rust-lang/rust/blob/1.29.0/src/librustc_codegen_llvm/back/write.rs#L2105-L2122">A partir de 1.29.0 estos son los umbrales en línea que utilizan los distintos niveles de optimización</a>:</p>
 <ul>
-<li><code>opt-level = 3</code> uses 275</li>
-<li><code>opt-level = 2</code> uses 225</li>
-<li><code>opt-level = &quot;s&quot;</code> uses 75</li>
-<li><code>opt-level = &quot;z&quot;</code> uses 25</li>
+<li><code>opt-level = 3</code> usa 275</li>
+<li><code>opt-level = 2</code> usa 225</li>
+<li><code>opt-level = &quot;s&quot;</code> usa 75</li>
+<li><code>opt-level = &quot;z&quot;</code> usa 25</li>
 </ul>
-<p>You should try <code>225</code> and <code>275</code> when optimizing for size.</p>
+<p>Deberías probar con <code>225</code> y <code>275</code> para optimizar el tamaño.</p>
 
                     </main>
 
@@ -306,21 +265,22 @@ different optimization levels use</a>:</p>
 
 
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
 
 
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 
 
+    </div>
     </body>
 </html>

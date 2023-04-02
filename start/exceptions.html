@@ -3,12 +3,11 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Exceptions - The Embedded Rust Book</title>
+        <title>Excepciones - El Libro de Rust Embebido</title>
 
 
         <!-- Custom HTML head -->
         
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -33,14 +32,15 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -56,7 +56,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -68,12 +68,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -81,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Tooling</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Installation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verify Installation</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html"><strong aria-hidden="true">2.3.</strong> Memory-mapped Registers</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Panicking</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html" class="active"><strong aria-hidden="true">2.6.</strong> Exceptions</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupts</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> IO</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Peripherals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> A first attempt in Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> The Borrow Checker</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Static Guarantees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Typestate Programming</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Peripherals as State Machines</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Design Contracts</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Zero Cost Abstractions</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portability</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrency</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Collections</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Checklist</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Naming</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Predictability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Tips for embedded C developers</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> A little C with your Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> A little Rust with your C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Unsorted topics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizations: The speed size tradeoff</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Performing Math Functionality</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../appendix/glossary.html">Appendix A: Glossary</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introducción</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Herramientas</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Instalación</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verificar Instalación</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Cómo empezar</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html"><strong aria-hidden="true">2.3.</strong> Registros mapeados en memoria</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Pánico</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html" class="active"><strong aria-hidden="true">2.6.</strong> Excepciones</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupciones</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> E/S</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Periféricos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> Un primer intento en Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> El comprobador de préstamos</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Garantías estáticas</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Programación por Typestate</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Periféricos como máquinas de estado</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Contratos de diseño</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Abstracciones de costo cero</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portabilidad</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrencia</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Colecciones</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Lista de chequeo</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Nomenclatura</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperabilidad</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Previsibilidad</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Consejos para desarrolladores de C embebido</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperabilidad</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> Un poco de C con tu Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> Un poco de Rust con tu C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Temas sin clasificar</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizaciones: El equilibrio entre velocidad y tamaño</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Realización de funciones matemáticas</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../appendix/glossary.html">Apéndice A: Glosario</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -99,7 +101,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -110,13 +112,13 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">The Embedded Rust Book</h1>
+                    <h1 class="menu-title">El Libro de Rust Embebido</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/rust-embedded/book" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/idio/rust-embedded-book" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
@@ -135,7 +137,7 @@
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -145,57 +147,37 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="exceptions"><a class="header" href="#exceptions">Exceptions</a></h1>
-<p>Exceptions, and interrupts, are a hardware mechanism by which the processor
-handles asynchronous events and fatal errors (e.g. executing an invalid
-instruction). Exceptions imply preemption and involve exception handlers,
-subroutines executed in response to the signal that triggered the event.</p>
-<p>The <code>cortex-m-rt</code> crate provides an <a href="https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.exception.html"><code>exception</code></a> attribute to declare exception
-handlers.</p>
+                        <h1 id="excepciones"><a class="header" href="#excepciones">Excepciones</a></h1>
+<p>Las excepciones, y las interrupciones, son un mecanismo de hardware mediante el cual el procesador gestiona eventos asíncronos y errores fatales (p.e. la ejecución de una instrucción no válida). Las excepciones implican prioridad e involucran manejadores de excepciones, subrutinas ejecutadas en respuesta a la señal que desencadenó el evento.</p>
+<p>La <em>crate</em> <code>cortex-m-rt</code> proporciona un atributo <a href="https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.exception.html"><code>exception</code></a> para declarar los manejadores de excepciones.</p>
 <pre><code class="language-rust ignore">// Exception handler for the SysTick (System Timer) exception
 #[exception]
 fn SysTick() {
     // ..
-}
-</code></pre>
-<p>Other than the <code>exception</code> attribute exception handlers look like plain
-functions but there's one more difference: <code>exception</code> handlers can <em>not</em> be
-called by software. Following the previous example, the statement <code>SysTick();</code>
-would result in a compilation error.</p>
-<p>This behavior is pretty much intended and it's required to provide a feature:
-<code>static mut</code> variables declared <em>inside</em> <code>exception</code> handlers are <em>safe</em> to use.</p>
+}</code></pre>
+<p>Aparte del atributo <code>exception</code> los manejadores de excepciones parecen funciones simples pero hay una diferencia más: Los manejadores de excepciones <em>no</em> pueden ser llamados por software. Siguiendo el ejemplo anterior, la sentencia <code>SysTick();</code> produciría un error de compilación.</p>
+<p>Este comportamiento es intencionado y es necesario para proporcionar una característica: las variables <code>static mut</code> declaradas <em>dentro</em> de los manejadores de <code>exception</code> son <em>seguras</em> de usar.</p>
 <pre><code class="language-rust ignore">#[exception]
 fn SysTick() {
     static mut COUNT: u32 = 0;
 
     // `COUNT` has transformed to type `&amp;mut u32` and it's safe to use
     *COUNT += 1;
-}
-</code></pre>
-<p>As you may know, using <code>static mut</code> variables in a function makes it
-<a href="https://en.wikipedia.org/wiki/Reentrancy_(computing)"><em>non-reentrant</em></a>. It's undefined behavior to call a non-reentrant function,
-directly or indirectly, from more than one exception / interrupt handler or from
-<code>main</code> and one or more exception / interrupt handlers.</p>
-<p>Safe Rust must never result in undefined behavior so non-reentrant functions
-must be marked as <code>unsafe</code>. Yet I just told that <code>exception</code> handlers can safely
-use <code>static mut</code> variables. How is this possible? This is possible because
-<code>exception</code> handlers can <em>not</em> be called by software thus reentrancy is not
-possible.</p>
+}</code></pre>
+<p>Como sabrás, usar variables <code>static mut</code> en una función la convierte en <a href="https://en.wikipedia.org/wiki/Reentrancy_(computing)"><em>non-reentrant</em></a>. Es un comportamiento indefinido llamar a una función no-reentrante, directa o indirectamente, desde más de un manejador de excepciones / interrupciones o desde <code>main</code> y uno o más manejadores de excepciones / interrupciones.</p>
+<p>Rust seguro nunca debe dar lugar a un comportamiento indefinido por lo que las funciones no reentrantes deben ser marcadas como <code>unsafe</code>. Sin embargo, me acaban de decir que los manejadores de <code>excepciones</code> pueden usar variables <code>static mut</code> de forma segura. ¿Cómo es esto posible? Esto es posible porque los manejadores de <code>excepción</code> no pueden ser llamados por software, por lo que la reentrada no es posible.</p>
 <blockquote>
-<p>Note that the <code>exception</code> attribute transforms definitions of static variables
-inside the function by wrapping them into <code>unsafe</code> blocks and providing us
-with new appropriate variables of type <code>&amp;mut</code> of the same name.
-Thus we can derefence the reference via <code>*</code> to access the values of the variables without
-needing to wrap them in an <code>unsafe</code> block.</p>
+<p>Tenga en cuenta que el atributo <code>exception</code> transforma las definiciones de variables
+estáticas dentro de la función envolviéndolas en bloques &quot;inseguros&quot; y
+proporcionándonos con nuevas variables apropiadas de tipo <code>&amp;mut</code> del mismo nombre.
+De este modo podemos derefenciar la referencia mediante <code>*</code> para acceder a los valores
+de las variables sin necesidad de envolverlas en bloques de tipo <code>unsafe</code>.</p>
 </blockquote>
-<h2 id="a-complete-example"><a class="header" href="#a-complete-example">A complete example</a></h2>
-<p>Here's an example that uses the system timer to raise a <code>SysTick</code> exception
-roughly every second. The <code>SysTick</code> exception handler keeps track of how many
-times it has been called in the <code>COUNT</code> variable and then prints the value of
-<code>COUNT</code> to the host console using semihosting.</p>
+<h2 id="un-ejemplo-completo"><a class="header" href="#un-ejemplo-completo">Un ejemplo completo</a></h2>
+<p>Este es un ejemplo que utiliza el temporizador del sistema para lanzar una excepción <code>SysTick</code> aproximadamente cada segundo. El manejador de la excepción <code>SysTick</code> mantiene un registro de cuantas veces ha sido llamado en la variable <code>COUNT</code> y luego imprime el valor de <code>COUNT</code> en la consola del host usando semihosting.</p>
 <blockquote>
-<p><strong>NOTE</strong>: You can run this example on any Cortex-M device; you can also run it
-on QEMU</p>
+<p><strong>NOTA</strong>: Puedes ejecutar este ejemplo en cualquier dispositivo Cortex-M;
+también puedes ejecutarlo en QEMU</p>
 </blockquote>
 <pre><code class="language-rust ignore">#![deny(unsafe_code)]
 #![no_main]
@@ -250,8 +232,7 @@ fn SysTick() {
         // This will terminate the QEMU process
         debug::exit(debug::EXIT_SUCCESS);
     }
-}
-</code></pre>
+}</code></pre>
 <pre><code class="language-console">tail -n5 Cargo.toml
 </code></pre>
 <pre><code class="language-toml">[dependencies]
@@ -264,46 +245,27 @@ cortex-m-semihosting = &quot;0.3.1&quot;
      Running `qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb (..)
 123456789
 </code></pre>
-<p>If you run this on the Discovery board you'll see the output on the OpenOCD
-console. Also, the program will <em>not</em> stop when the count reaches 9.</p>
-<h2 id="the-default-exception-handler"><a class="header" href="#the-default-exception-handler">The default exception handler</a></h2>
-<p>What the <code>exception</code> attribute actually does is <em>override</em> the default exception
-handler for a specific exception. If you don't override the handler for a
-particular exception it will be handled by the <code>DefaultHandler</code> function, which
-defaults to:</p>
+<p>Si ejecutas esto en la tarjeta Discovery verás la salida en la consola OpenOCD. Además, el programa <em>no</em> se detendrá cuando la cuenta llegue a 9.</p>
+<h2 id="el-manejador-de-excepciones-por-defecto"><a class="header" href="#el-manejador-de-excepciones-por-defecto">El manejador de excepciones por defecto</a></h2>
+<p>Lo que el atributo <code>exception</code> realmente hace es <em>anular</em> el manejador de excepciones por defecto para una excepción específica. Si no anulas el manejador para una excepción en particular, será manejada por la función <code>DefaultHandler</code>, que por defecto es:</p>
 <pre><code class="language-rust ignore">fn DefaultHandler() {
     loop {}
-}
-</code></pre>
-<p>This function is provided by the <code>cortex-m-rt</code> crate and marked as
-<code>#[no_mangle]</code> so you can put a breakpoint on &quot;DefaultHandler&quot; and catch
-<em>unhandled</em> exceptions.</p>
-<p>It's possible to override this <code>DefaultHandler</code> using the <code>exception</code> attribute:</p>
+}</code></pre>
+<p>Esta función es proporcionada por la <em>crate</em> <code>cortex-m-rt</code> y marcada como <code>#[no_mangle]</code> para que puedas poner un breakpoint en &quot;DefaultHandler&quot; y atrapar excepciones <em>sin manejador</em>.</p>
+<p>Es posible sobreescribir este <code>DefaultHandler</code> usando el atributo <code>exception</code>:</p>
 <pre><code class="language-rust ignore">#[exception]
 fn DefaultHandler(irqn: i16) {
     // custom default handler
-}
-</code></pre>
-<p>The <code>irqn</code> argument indicates which exception is being serviced. A negative
-value indicates that a Cortex-M exception is being serviced; and zero or a
-positive value indicate that a device specific exception, AKA interrupt, is
-being serviced.</p>
-<h2 id="the-hard-fault-handler"><a class="header" href="#the-hard-fault-handler">The hard fault handler</a></h2>
-<p>The <code>HardFault</code> exception is a bit special. This exception is fired when the
-program enters an invalid state so its handler can <em>not</em> return as that could
-result in undefined behavior. Also, the runtime crate does a bit of work before
-the user defined <code>HardFault</code> handler is invoked to improve debuggability.</p>
-<p>The result is that the <code>HardFault</code> handler must have the following signature:
-<code>fn(&amp;ExceptionFrame) -&gt; !</code>. The argument of the handler is a pointer to
-registers that were pushed into the stack by the exception. These registers are
-a snapshot of the processor state at the moment the exception was triggered and
-are useful to diagnose a hard fault.</p>
-<p>Here's an example that performs an illegal operation: a read to a nonexistent
-memory location.</p>
+}</code></pre>
+<p>El argumento <code>irqn</code> indica qué excepción se está procesando. Un valor negativo indica que se está sirviendo una excepción Cortex-M; y cero o un valor positivo indican que se está sirviendo una excepción específica del dispositivo, también conocida como interrupción.</p>
+<h2 id="el-manejador-de-fallas-graves"><a class="header" href="#el-manejador-de-fallas-graves">El manejador de fallas graves</a></h2>
+<p>La excepción <code>HardFault</code> es un poco especial. Esta excepción se dispara cuando el programa entra en un estado inválido por lo que su manejador no puede <em>no</em> retornar ya que podría resultar en un comportamiento indefinido. Además, la <em>crate runtime</em> hace algún trabajo antes de que el manejador <code>HardFault</code> definido por el usuario sea invocado para mejorar la depuración.</p>
+<p>El resultado es que el manejador <code>HardFault</code> debe tener la siguiente firma: <code>fn(&amp;ExceptionFrame) -&gt; !</code>. El argumento del manejador es un puntero a los registros que fueron empujados a la pila por la excepción. Estos registros son una instantánea del estado del procesador en el momento en que se produjo la excepción y son útiles para diagnosticar una falla grave.</p>
+<p>He aquí un ejemplo que realiza una operación ilegal: una lectura a una posición de memoria inexistente.</p>
 <blockquote>
-<p><strong>NOTE</strong>: This program won't work, i.e. it won't crash, on QEMU because
-<code>qemu-system-arm -machine lm3s6965evb</code> doesn't check memory loads and will
-happily return <code>0 </code>on reads to invalid memory.</p>
+<p><strong>NOTA</strong>: Este programa no funcionará, es decir, no se bloqueará, en QEMU porque
+<code>qemu-system-arm -machine lm3s6965evb</code> no comprueba las cargas de memoria y
+en lecturas a memoria inválida.</p>
 </blockquote>
 <pre><code class="language-rust ignore">#![no_main]
 #![no_std]
@@ -333,10 +295,8 @@ fn HardFault(ef: &amp;ExceptionFrame) -&gt; ! {
     }
 
     loop {}
-}
-</code></pre>
-<p>The <code>HardFault</code> handler prints the <code>ExceptionFrame</code> value. If you run this
-you'll see something like this on the OpenOCD console.</p>
+}</code></pre>
+<p>El manejador <code>HardFault</code> imprime el valor <code>ExceptionFrame</code>. Si ejecutas esto verás algo como esto en la consola de OpenOCD.</p>
 <pre><code class="language-text">$ openocd
 (..)
 ExceptionFrame {
@@ -350,9 +310,8 @@ ExceptionFrame {
     xpsr: 0x61000000
 }
 </code></pre>
-<p>The <code>pc</code> value is the value of the Program Counter at the time of the exception
-and it points to the instruction that triggered the exception.</p>
-<p>If you look at the disassembly of the program:</p>
+<p>El valor <code>pc</code> es el valor del Contador de Programa en el momento de la excepción y apunta a la instrucción que disparó la excepción.</p>
+<p>Si miras el desensamblado del programa:</p>
 <pre><code class="language-text">$ cargo objdump --bin app --release -- -d --no-show-raw-insn --print-imm-hex
 (..)
 ResetTrampoline:
@@ -361,10 +320,7 @@ ResetTrampoline:
  800094a:       ldr     r0, [r0]
  800094c:       b       #-0x4 &lt;ResetTrampoline+0xa&gt;
 </code></pre>
-<p>You can lookup the value of the program counter <code>0x0800094a</code> in the dissassembly.
-You'll see that a load operation (<code>ldr r0, [r0]</code> ) caused the exception.
-The <code>r0</code> field of <code>ExceptionFrame</code> will tell you the value of register <code>r0</code>
-was <code>0x3fff_fffe</code> at that time.</p>
+<p>Puedes consultar el valor del contador de programa <code>0x0800094a</code> en el desensamblado. Verás que una operación de carga (<code>ldr r0, [r0]</code> ) causó la excepción. El campo <code>r0</code> de <code>ExceptionFrame</code> te dirá que el valor del registro <code>r0</code> era <code>0x3fff_fffe</code> en ese momento.</p>
 
                     </main>
 
@@ -398,21 +354,22 @@ was <code>0x3fff_fffe</code> at that time.</p>
 
 
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
 
 
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 
 
+    </div>
     </body>
 </html>

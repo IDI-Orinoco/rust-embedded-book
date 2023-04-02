@@ -3,12 +3,11 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Memory-mapped Registers - The Embedded Rust Book</title>
+        <title>Registros mapeados en memoria - El Libro de Rust Embebido</title>
 
 
         <!-- Custom HTML head -->
         
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -33,14 +32,15 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -56,7 +56,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -68,12 +68,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -81,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Tooling</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Installation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verify Installation</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html" class="active"><strong aria-hidden="true">2.3.</strong> Memory-mapped Registers</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Panicking</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Exceptions</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupts</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> IO</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Peripherals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> A first attempt in Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> The Borrow Checker</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Static Guarantees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Typestate Programming</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Peripherals as State Machines</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Design Contracts</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Zero Cost Abstractions</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portability</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrency</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Collections</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Checklist</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Naming</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Predictability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Tips for embedded C developers</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> A little C with your Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> A little Rust with your C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Unsorted topics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizations: The speed size tradeoff</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Performing Math Functionality</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../appendix/glossary.html">Appendix A: Glossary</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introducción</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Herramientas</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Instalación</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verificar Instalación</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Cómo empezar</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html" class="active"><strong aria-hidden="true">2.3.</strong> Registros mapeados en memoria</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Pánico</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Excepciones</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupciones</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> E/S</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Periféricos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> Un primer intento en Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> El comprobador de préstamos</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Garantías estáticas</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Programación por Typestate</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Periféricos como máquinas de estado</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Contratos de diseño</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Abstracciones de costo cero</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portabilidad</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrencia</a></li><li class="chapter-item expanded "><a href="../collections/index.html"><strong aria-hidden="true">7.</strong> Colecciones</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Lista de chequeo</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Nomenclatura</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperabilidad</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Previsibilidad</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Consejos para desarrolladores de C embebido</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperabilidad</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> Un poco de C con tu Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> Un poco de Rust con tu C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Temas sin clasificar</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizaciones: El equilibrio entre velocidad y tamaño</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Realización de funciones matemáticas</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../appendix/glossary.html">Apéndice A: Glosario</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -99,7 +101,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -110,13 +112,13 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">The Embedded Rust Book</h1>
+                    <h1 class="menu-title">El Libro de Rust Embebido</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/rust-embedded/book" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/idio/rust-embedded-book" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
@@ -135,7 +137,7 @@
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -145,24 +147,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="memory-mapped-registers"><a class="header" href="#memory-mapped-registers">Memory Mapped Registers</a></h1>
-<p>Embedded systems can only get so far by executing normal Rust code and moving data around in RAM. If we want to get any information into or out of our system (be that blinking an LED, detecting a button press or communicating with an off-chip peripheral on some sort of bus) we're going to have to dip into the world of Peripherals and their 'memory mapped registers'.</p>
-<p>You may well find that the code you need to access the peripherals in your micro-controller has already been written, at one of the following levels:</p>
+                        <h1 id="registros-mapeados-en-memoria"><a class="header" href="#registros-mapeados-en-memoria">Registros Mapeados en Memoria</a></h1>
+<p>Los sistemas embebidos sólo pueden llegar hasta cierto punto ejecutando código Rust normal y moviendo datos en la RAM. Si queremos obtener cualquier información dentro o fuera de nuestro sistema (ya sea parpadeando un LED, detectando la pulsación de un botón o comunicándonos con un periférico fuera del chip en algún tipo de bus) vamos a tener que sumergirnos en el mundo de los periféricos y sus 'registros mapeados en memoria'.</p>
+<p>Es muy posible que el código que necesitas para acceder a los periféricos de tu microcontrolador ya esté escrito, en alguno de los siguientes niveles:</p>
 <p align="center">
 <img title="Common crates" src="../assets/crates.png">
 </p>
 <ul>
-<li>Micro-architecture Crate - This sort of crate handles any useful routines common to the processor core your microcontroller is using, as well as any peripherals that are common to all micro-controllers that use that particular type of processor core. For example the <a href="https://crates.io/crates/cortex-m">cortex-m</a> crate gives you functions to enable and disable interrupts, which are the same for all Cortex-M based micro-controllers. It also gives you access to the 'SysTick' peripheral included with all Cortex-M based micro-controllers.</li>
-<li>Peripheral Access Crate (PAC) - This sort of crate is a thin wrapper over the various memory-wrapper registers defined for your particular part-number of micro-controller you are using. For example, <a href="https://crates.io/crates/tm4c123x">tm4c123x</a> for the Texas Instruments Tiva-C TM4C123 series, or <a href="https://crates.io/crates/stm32f30x">stm32f30x</a> for the ST-Micro STM32F30x series. Here, you'll be interacting with the registers directly, following each peripheral's operating instructions given in your micro-controller's Technical Reference Manual.</li>
-<li>HAL Crate - These crates offer a more user-friendly API for your particular processor, often by implementing some common traits defined in <a href="https://crates.io/crates/embedded-hal">embedded-hal</a>. For example, this crate might offer a <code>Serial</code> struct, with a constructor that takes an appropriate set of GPIO pins and a baud rate, and offers some sort of <code>write_byte</code> function for sending data. See the chapter on <a href="../portability/index.html">Portability</a> for more information on <a href="https://crates.io/crates/embedded-hal">embedded-hal</a>.</li>
-<li>Board Crate - These crates go one step further than a HAL Crate by pre-configuring various peripherals and GPIO pins to suit the specific developer kit or board you are using, such as <a href="https://crates.io/crates/stm32f3-discovery">stm32f3-discovery</a> for the STM32F3DISCOVERY board.</li>
+<li><em>Crate</em> de Micro-arquitectura - Este tipo de <em>crate</em> maneja cualquier rutina útil común al núcleo del procesador que tu microcontrolador está utilizando, así como cualquier periférico que sea común a todos los microcontroladores que utilizan ese tipo particular de núcleo de procesador. Por ejemplo, la <em>crate</em> <a href="https://crates.io/crates/cortex-m">cortex-m</a> le proporciona funciones para activar y desactivar interrupciones, que son las mismas para todos los microcontroladores basados en Cortex-M. También le da acceso al periférico 'SysTick' incluido con todos los microcontroladores basados en Cortex-M.</li>
+<li><em>Crate</em> de Acceso a Periféricos (PAC) - Este tipo de <em>crate</em> es una fina envoltura sobre los diversos registros de memoria definidos para el número de parte del micro-controlador que está utilizando. Por ejemplo, <a href="https://crates.io/crates/tm4c123x">tm4c123x</a> para la serie Texas Instruments Tiva-C TM4C123, o <a href="https://crates.io/crates/stm32f30x">stm32f30x</a> para la serie ST-Micro STM32F30x. Aquí, interactuarás con los registros directamente, siguiendo las instrucciones de funcionamiento de cada periférico dadas en el Manual de Referencia Técnica de tu micro-controlador.</li>
+<li><em>Crate</em> de HAL - Estas <em>crates</em> ofrecen una API más amigable para tu procesador en particular, a menudo implementando algunos <em>traits</em> comunes definidos en <a href="https://crates.io/crates/embedded-hal">embedded-hal</a>. Por ejemplo, esta <em>crate</em> podría ofrecer una estructura <code>Serial</code>, con un constructor que toma un conjunto apropiado de pines GPIO y una tasa de baudios, y ofrece algún tipo de función <code>write_byte</code> para enviar datos. Ver el capítulo sobre [Portabilidad] para más información sobre <a href="https://crates.io/crates/embedded-hal">embedded-hal</a>.</li>
+<li><em>Crate</em> de Tarjeta - Estas <em>crates</em> van un paso más allá que una HAL <em>Crate</em> preconfigurando varios periféricos y pines GPIO para adaptarse al kit de desarrollo específico o tarjeta que esté utilizando, como <a href="https://crates.io/crates/stm32f3-discovery">stm32f3-discovery</a> para la tarjeta STM32F3DISCOVERY.</li>
 </ul>
-<h2 id="board-crate"><a class="header" href="#board-crate">Board Crate</a></h2>
-<p>A board crate is the perfect starting point, if you're new to embedded Rust. They nicely abstract the HW details that might be overwelming when starting studying this subject, and makes standard tasks easy, like turning a LED on or off. The functionality they exposes varies a lot between boards. Since this book aims at staying hardware agnostic, the board crates won't be covered by this book.</p>
-<p>If you want to experiment with the STM32F3DISCOVERY board, it is highly recommmand to take a look at the <a href="https://crates.io/crates/stm32f3-discovery">stm32f3-discovery</a> board crate, which provides functionality to blink the board LEDs, access its compass, bluetooth and more. The <a href="https://rust-embedded.github.io/discovery/">Discovery</a> book offers a great introduction to the use of a board crate.</p>
-<p>But if you're working on a system that doesn't yet have dedicated board crate, or you need functionality not provided by existing crates, read on as we start from the bottom, with the micro-architecture crates.</p>
-<h2 id="micro-architecture-crate"><a class="header" href="#micro-architecture-crate">Micro-architecture crate</a></h2>
-<p>Let's look at the SysTick peripheral that's common to all Cortex-M based micro-controllers. We can find a pretty low-level API in the <a href="https://crates.io/crates/cortex-m">cortex-m</a> crate, and we can use it like this:</p>
+<h2 id="crate-de-tarjeta"><a class="header" href="#crate-de-tarjeta"><em>Crate</em> de Tarjeta</a></h2>
+<p>Una <em>board crate</em> o <em>crate</em> de tarjeta es el punto de partida perfecto, si eres nuevo en Rust embebido. Abstraen muy bien los detalles de HW que pueden ser abrumadores cuando se empieza a estudiar este tema, y hace que las tareas estándar sean fáciles, como encender o apagar un LED. La funcionalidad que expone varía mucho entre tarjetas. Dado que este libro tiene como objetivo permanecer agnóstico al hardware, las <em>board crates</em> no serán cubiertos por este libro.</p>
+<p>Si quieres experimentar con la tarjeta STM32F3DISCOVERY, es muy recomendable echar un vistazo a la <em>crate</em> de la tarjeta <a href="https://crates.io/crates/stm32f3-discovery">stm32f3-discovery</a>, que proporciona funcionalidad para hacer parpadear los LEDs de la tarjeta, acceder a su brújula, bluetooth y mucho más. El libro <a href="https://rust-embedded.github.io/discovery/">Discovery</a> ofrece una gran introducción al uso de una board <em>crate</em>.</p>
+<p>Pero si estás trabajando en un sistema que todavía no tiene una board <em>crate</em> dedicado, o necesitas una funcionalidad que no proporcionan las <em>crates</em> existentes, sigue leyendo mientras empezamos desde abajo, con las <em>crates</em> de micro-arquitectura.</p>
+<h2 id="crate-de-micro-arquitectura"><a class="header" href="#crate-de-micro-arquitectura"><em>Crate</em> de Micro-arquitectura</a></h2>
+<p>Veamos el periférico SysTick que es común a todos los microcontroladores basados en Cortex-M. Podemos encontrar una API de muy bajo nivel en la <a href="https://crates.io/crates/cortex-m">cortex-m</a> <em>crate</em>, y podemos usarlo así:</p>
 <pre><code class="language-rust ignore">#![no_std]
 #![no_main]
 use cortex_m::peripheral::{syst, Peripherals};
@@ -182,11 +184,10 @@ fn main() -&gt; ! {
     }
 
     loop {}
-}
-</code></pre>
-<p>The functions on the <code>SYST</code> struct map pretty closely to the functionality defined by the ARM Technical Reference Manual for this peripheral. There's nothing in this API about 'delaying for X milliseconds' - we have to crudely implement that ourselves using a <code>while</code> loop. Note that we can't access our <code>SYST</code> struct until we have called <code>Peripherals::take()</code> - this is a special routine that guarantees that there is only one <code>SYST</code> structure in our entire program. For more on that, see the <a href="../peripherals/index.html">Peripherals</a> section.</p>
-<h2 id="using-a-peripheral-access-crate-pac"><a class="header" href="#using-a-peripheral-access-crate-pac">Using a Peripheral Access Crate (PAC)</a></h2>
-<p>We won't get very far with our embedded software development if we restrict ourselves to only the basic peripherals included with every Cortex-M. At some point, we're going to need to write some code that's specific to the particular micro-controller we're using. In this example, let's assume we have an Texas Instruments TM4C123 - a middling 80MHz Cortex-M4 with 256 KiB of Flash. We're going to pull in the <a href="https://crates.io/crates/tm4c123x">tm4c123x</a> crate to make use of this chip.</p>
+}</code></pre>
+<p>Las funciones de la estructura <code>SYST</code> se asemejan bastante a la funcionalidad definida en el Manual de Referencia Técnica de ARM para este periférico. No hay nada en esta API sobre 'retrasar X milisegundos' - tenemos que implementarlo nosotros mismos usando un bucle <code>while</code>. Ten en cuenta que no podemos acceder a nuestra estructura <code>SYST</code> hasta que hayamos llamado a <code>Peripherals::take()</code> - esta es una rutina especial que garantiza que sólo hay una estructura <code>SYST</code> en todo nuestro programa. Para más información, consulta la sección <a href="../peripherals/index.html">Periféricos</a>.</p>
+<h2 id="usando-una-peripheral-access-crate-pac-o-una-crate-de-acceso-a-periféricos"><a class="header" href="#usando-una-peripheral-access-crate-pac-o-una-crate-de-acceso-a-periféricos">Usando una <em>Peripheral Access Crate</em> (PAC) o una <em>Crate</em> de Acceso a Periféricos</a></h2>
+<p>No llegaremos muy lejos con nuestro desarrollo de software embebido si nos limitamos sólo a los periféricos básicos incluidos con cada Cortex-M. En algún momento, vamos a necesitar escribir algún código que sea específico para el micro-controlador en particular que estamos utilizando. En este ejemplo, vamos a suponer que tenemos un Texas Instruments TM4C123 - un Cortex-M4 medio de 80MHz con 256 KiB de Flash. Vamos a utilizar la <em>crate</em> <a href="https://crates.io/crates/tm4c123x">tm4c123x</a> para hacer uso de este chip.</p>
 <pre><code class="language-rust ignore">#![no_std]
 #![no_main]
 
@@ -210,34 +211,30 @@ pub fn init() -&gt; (Delay, Leds) {
     pwm._2_cmpa.write(|w| unsafe { w.compa().bits(64) });
     pwm.enable.write(|w| w.pwm4en().set_bit());
 }
-
 </code></pre>
-<p>We've accessed the <code>PWM0</code> peripheral in exactly the same way as we accessed the <code>SYST</code> peripheral earlier, except we called <code>tm4c123x::Peripherals::take()</code>. As this crate was auto-generated using <a href="https://crates.io/crates/svd2rust">svd2rust</a>, the access functions for our register fields take a closure, rather than a numeric argument. While this looks like a lot of code, the Rust compiler can use it to perform a bunch of checks for us, but then generate machine-code which is pretty close to hand-written assembler! Where the auto-generated code isn't able to determine that all possible arguments to a particular accessor function are valid (for example, if the SVD defines the register as 32-bit but doesn't say if some of those 32-bit values have a special meaning), then the function is marked as <code>unsafe</code>. We can see this in the example above when setting the <code>load</code> and <code>compa</code> sub-fields using the <code>bits()</code> function.</p>
-<h3 id="reading"><a class="header" href="#reading">Reading</a></h3>
-<p>The <code>read()</code> function returns an object which gives read-only access to the various sub-fields within this register, as defined by the manufacturer's SVD file for this chip. You can find all the functions available on special <code>R</code> return type for this particular register, in this particular peripheral, on this particular chip, in the <a href="https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.R.html">tm4c123x documentation</a>.</p>
+<p>Hemos accedido al periférico <code>PWM0</code> exactamente de la misma forma que antes accedimos al periférico <code>SYST</code>, excepto que hemos llamado a <code>tm4c123x::Peripherals::take()</code>. Como esta <em>crate</em> fue auto-generada usando <a href="https://crates.io/crates/svd2rust">svd2rust</a>, las funciones de acceso para nuestros campos de registro toman una <em>closure</em>, en lugar de un argumento numérico. Aunque esto parece un montón de código, el compilador de Rust puede utilizarlo para realizar un montón de comprobaciones por nosotros, ¡pero luego genera código máquina que es bastante parecido al ensamblador escrito a mano! Cuando el código autogenerado no es capaz de determinar que todos los posibles argumentos de una función accesoria en particular son válidos (por ejemplo, si el SVD define el registro como de 32 bits, pero no dice si algunos de esos valores de 32 bits tienen un significado especial), entonces la función se marca como <code>unsafe</code>. Podemos ver esto en el ejemplo anterior cuando se establecen los subcampos <code>load</code> y <code>compa</code> usando la función <code>bits()</code>.</p>
+<h3 id="lectura"><a class="header" href="#lectura">Lectura</a></h3>
+<p>La función <code>read()</code> devuelve un objeto que da acceso de sólo lectura a los distintos subcampos dentro de este registro, tal y como se define en el archivo SVD del fabricante para este chip. Puede encontrar todas las funciones disponibles en el tipo de retorno especial <code>R</code> para este registro en particular, en este periférico en particular, en este chip en particular, en la <a href="https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.R.html">documentación tm4c123x</a>.</p>
 <pre><code class="language-rust ignore">if pwm.ctl.read().globalsync0().is_set() {
     // Do a thing
-}
-</code></pre>
-<h3 id="writing"><a class="header" href="#writing">Writing</a></h3>
-<p>The <code>write()</code> function takes a closure with a single argument. Typically we call this <code>w</code>. This argument then gives read-write access to the various sub-fields within this register, as defined by the manufacturer's SVD file for this chip. Again, you can find all the functions available on the 'w' for this particular register, in this particular peripheral, on this particular chip, in the <a href="https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.W.html">tm4c123x documentation</a>. Note that all of the sub-fields that we do not set will be set to a default value for us - any existing content in the register will be lost.</p>
-<pre><code class="language-rust ignore">pwm.ctl.write(|w| w.globalsync0().clear_bit());
-</code></pre>
-<h3 id="modifying"><a class="header" href="#modifying">Modifying</a></h3>
-<p>If we wish to change only one particular sub-field in this register and leave the other sub-fields unchanged, we can use the <code>modify</code> function. This function takes a closure with two arguments - one for reading and one for writing. Typically we call these <code>r</code> and <code>w</code> respectively. The <code>r</code> argument can be used to inspect the current contents of the register, and the <code>w</code> argument can be used to modify the register contents.</p>
-<pre><code class="language-rust ignore">pwm.ctl.modify(|r, w| w.globalsync0().clear_bit());
-</code></pre>
-<p>The <code>modify</code> function really shows the power of closures here. In C, we'd have to read into some temporary value, modify the correct bits and then write the value back. This means there's considerable scope for error:</p>
+}</code></pre>
+<h3 id="escritura"><a class="header" href="#escritura">Escritura</a></h3>
+<p>La función <code>write()</code> toma una <em>closure</em> con un único argumento. Típicamente lo llamamos <code>w</code>. Este argumento da acceso de lectura-escritura a varios subcampos dentro de este registro, como se define en el archivo SVD del fabricante para este chip. De nuevo, puedes encontrar todas las funciones disponibles en <code>w</code> para este registro en particular, en este periférico en particular, en este chip en particular, en la <a href="https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.W.html">documentación tm4c123x</a>. Tenga en cuenta que todos los subcampos que no establezcamos se establecerán a un valor por defecto para nosotros - cualquier contenido existente en el registro se perderá.</p>
+<pre><code class="language-rust ignore">pwm.ctl.write(|w| w.globalsync0().clear_bit());</code></pre>
+<h3 id="modificación"><a class="header" href="#modificación">Modificación</a></h3>
+<p>Si deseamos cambiar sólo un subcampo concreto de este registro y dejar los demás subcampos sin cambios, podemos utilizar la función <code>modify</code>. Esta función toma un cierre con dos argumentos - uno para lectura y otro para escritura. Normalmente los llamamos <code>r</code> y <code>w</code> respectivamente. El argumento <code>r</code> se puede utilizar para inspeccionar el contenido actual del registro, y el argumento <code>w</code> se puede utilizar para modificar el contenido del registro.</p>
+<pre><code class="language-rust ignore">pwm.ctl.modify(|r, w| w.globalsync0().clear_bit());</code></pre>
+<p>La función <code>modify</code> muestra realmente el poder de las <em>closures</em>. En C, tendríamos que leer un valor temporal, modificar los bits correctos y volver a escribir el valor. Esto significa que hay un margen de error considerable:</p>
 <pre><code class="language-C">uint32_t temp = pwm0.ctl.read();
 temp |= PWM0_CTL_GLOBALSYNC0;
 pwm0.ctl.write(temp);
 uint32_t temp2 = pwm0.enable.read();
 temp2 |= PWM0_ENABLE_PWM4EN;
-pwm0.enable.write(temp); // Uh oh! Wrong variable!
+pwm0.enable.write(temp); // Oh oh! Variable equivocada!
 </code></pre>
-<h2 id="using-a-hal-crate"><a class="header" href="#using-a-hal-crate">Using a HAL crate</a></h2>
-<p>The HAL crate for a chip typically works by implementing a custom Trait for the raw structures exposed by the PAC. Often this trait will define a function called <code>constrain()</code> for single peripherals or <code>split()</code> for things like GPIO ports with multiple pins. This function will consume the underlying raw peripheral structure and return a new object with a higher-level API. This API may also do things like have the Serial port <code>new</code> function require a borrow on some <code>Clock</code> structure, which can only be generated by calling the function which configures the PLLs and sets up all the clock frequencies. In this way, it is statically impossible to create a Serial port object without first having configured the clock rates, or for the Serial port object to mis-convert the baud rate into clock ticks. Some crates even define special traits for the states each GPIO pin can be in, requiring the user to put a pin into the correct state (say, by selecting the appropriate Alternate Function Mode) before passing the pin into Peripheral. All with no run-time cost!</p>
-<p>Let's see an example:</p>
+<h2 id="usando-una-crate-hal"><a class="header" href="#usando-una-crate-hal">Usando una <em>crate</em> HAL</a></h2>
+<p>La <em>crate</em> HAL para un chip funciona típicamente implementando un <em>Trait</em> personalizado para las estructuras crudas expuestas por la PAC. A menudo este <em>trait</em> definirá una función llamada <code>constrain()</code> para periféricos simples o <code>split()</code> para cosas como puertos GPIO con múltiples pines. Esta función consumirá la estructura subyacente del periférico y devolverá un nuevo objeto con una API de alto nivel. Esta API también puede hacer cosas como que la función <code>new</code> del puerto serie requiera un préstamo en alguna estructura <code>Clock</code>, que sólo puede ser generada llamando a la función que configura los PLLs y establece todas las frecuencias de reloj. De esta forma, es estáticamente imposible crear un objeto puerto serie sin haber configurado antes las frecuencias de reloj, o que el objeto puerto serie convierta erróneamente la velocidad de transmisión en ticks de reloj. Algunas crates incluso definen rasgos especiales para los estados en los que puede estar cada pin GPIO, requiriendo que el usuario ponga un pin en el estado correcto (digamos, seleccionando el Modo de Función Alternativo apropiado) antes de pasar el pin a Periférico. Todo ello sin costo alguno en tiempo de ejecución.</p>
+<p>Veamos un ejemplo:</p>
 <pre><code class="language-rust ignore">#![no_std]
 #![no_main]
 
@@ -296,8 +293,7 @@ fn main() -&gt; ! {
     loop {
         writeln!(uart, &quot;Hello, World!\r\n&quot;).unwrap();
     }
-}
-</code></pre>
+}</code></pre>
 
                     </main>
 
@@ -331,21 +327,22 @@ fn main() -&gt; ! {
 
 
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
 
 
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 
 
+    </div>
     </body>
 </html>

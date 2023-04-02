@@ -3,12 +3,11 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Collections - The Embedded Rust Book</title>
+        <title>Colecciones - El Libro de Rust Embebido</title>
 
 
         <!-- Custom HTML head -->
         
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -33,14 +32,15 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -56,7 +56,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -68,12 +68,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -81,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Tooling</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Installation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verify Installation</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html"><strong aria-hidden="true">2.3.</strong> Memory-mapped Registers</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Panicking</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Exceptions</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupts</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> IO</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Peripherals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> A first attempt in Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> The Borrow Checker</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Static Guarantees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Typestate Programming</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Peripherals as State Machines</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Design Contracts</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Zero Cost Abstractions</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portability</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrency</a></li><li class="chapter-item expanded "><a href="../collections/index.html" class="active"><strong aria-hidden="true">7.</strong> Collections</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Checklist</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Naming</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Predictability</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Tips for embedded C developers</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> A little C with your Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> A little Rust with your C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Unsorted topics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizations: The speed size tradeoff</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Performing Math Functionality</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../appendix/glossary.html">Appendix A: Glossary</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro/index.html"><strong aria-hidden="true">1.</strong> Introducción</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/hardware.html"><strong aria-hidden="true">1.1.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../intro/no-std.html"><strong aria-hidden="true">1.2.</strong> no_std</a></li><li class="chapter-item expanded "><a href="../intro/tooling.html"><strong aria-hidden="true">1.3.</strong> Herramientas</a></li><li class="chapter-item expanded "><a href="../intro/install.html"><strong aria-hidden="true">1.4.</strong> Instalación</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/install/linux.html"><strong aria-hidden="true">1.4.1.</strong> Linux</a></li><li class="chapter-item expanded "><a href="../intro/install/macos.html"><strong aria-hidden="true">1.4.2.</strong> MacOS</a></li><li class="chapter-item expanded "><a href="../intro/install/windows.html"><strong aria-hidden="true">1.4.3.</strong> Windows</a></li><li class="chapter-item expanded "><a href="../intro/install/verify.html"><strong aria-hidden="true">1.4.4.</strong> Verificar Instalación</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../start/index.html"><strong aria-hidden="true">2.</strong> Cómo empezar</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/qemu.html"><strong aria-hidden="true">2.1.</strong> QEMU</a></li><li class="chapter-item expanded "><a href="../start/hardware.html"><strong aria-hidden="true">2.2.</strong> Hardware</a></li><li class="chapter-item expanded "><a href="../start/registers.html"><strong aria-hidden="true">2.3.</strong> Registros mapeados en memoria</a></li><li class="chapter-item expanded "><a href="../start/semihosting.html"><strong aria-hidden="true">2.4.</strong> Semihosting</a></li><li class="chapter-item expanded "><a href="../start/panicking.html"><strong aria-hidden="true">2.5.</strong> Pánico</a></li><li class="chapter-item expanded "><a href="../start/exceptions.html"><strong aria-hidden="true">2.6.</strong> Excepciones</a></li><li class="chapter-item expanded "><a href="../start/interrupts.html"><strong aria-hidden="true">2.7.</strong> Interrupciones</a></li><li class="chapter-item expanded "><a href="../start/io.html"><strong aria-hidden="true">2.8.</strong> E/S</a></li></ol></li><li class="chapter-item expanded "><a href="../peripherals/index.html"><strong aria-hidden="true">3.</strong> Periféricos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../peripherals/a-first-attempt.html"><strong aria-hidden="true">3.1.</strong> Un primer intento en Rust</a></li><li class="chapter-item expanded "><a href="../peripherals/borrowck.html"><strong aria-hidden="true">3.2.</strong> El comprobador de préstamos</a></li><li class="chapter-item expanded "><a href="../peripherals/singletons.html"><strong aria-hidden="true">3.3.</strong> Singletons</a></li></ol></li><li class="chapter-item expanded "><a href="../static-guarantees/index.html"><strong aria-hidden="true">4.</strong> Garantías estáticas</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../static-guarantees/typestate-programming.html"><strong aria-hidden="true">4.1.</strong> Programación por Typestate</a></li><li class="chapter-item expanded "><a href="../static-guarantees/state-machines.html"><strong aria-hidden="true">4.2.</strong> Periféricos como máquinas de estado</a></li><li class="chapter-item expanded "><a href="../static-guarantees/design-contracts.html"><strong aria-hidden="true">4.3.</strong> Contratos de diseño</a></li><li class="chapter-item expanded "><a href="../static-guarantees/zero-cost-abstractions.html"><strong aria-hidden="true">4.4.</strong> Abstracciones de costo cero</a></li></ol></li><li class="chapter-item expanded "><a href="../portability/index.html"><strong aria-hidden="true">5.</strong> Portabilidad</a></li><li class="chapter-item expanded "><a href="../concurrency/index.html"><strong aria-hidden="true">6.</strong> Concurrencia</a></li><li class="chapter-item expanded "><a href="../collections/index.html" class="active"><strong aria-hidden="true">7.</strong> Colecciones</a></li><li class="chapter-item expanded "><a href="../design-patterns/index.html"><strong aria-hidden="true">8.</strong> Design Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/index.html"><strong aria-hidden="true">8.1.</strong> HALs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../design-patterns/hal/checklist.html"><strong aria-hidden="true">8.1.1.</strong> Lista de chequeo</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/naming.html"><strong aria-hidden="true">8.1.2.</strong> Nomenclatura</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/interoperability.html"><strong aria-hidden="true">8.1.3.</strong> Interoperabilidad</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/predictability.html"><strong aria-hidden="true">8.1.4.</strong> Previsibilidad</a></li><li class="chapter-item expanded "><a href="../design-patterns/hal/gpio.html"><strong aria-hidden="true">8.1.5.</strong> GPIO</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../c-tips/index.html"><strong aria-hidden="true">9.</strong> Consejos para desarrolladores de C embebido</a></li><li class="chapter-item expanded "><a href="../interoperability/index.html"><strong aria-hidden="true">10.</strong> Interoperabilidad</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interoperability/c-with-rust.html"><strong aria-hidden="true">10.1.</strong> Un poco de C con tu Rust</a></li><li class="chapter-item expanded "><a href="../interoperability/rust-with-c.html"><strong aria-hidden="true">10.2.</strong> Un poco de Rust con tu C</a></li></ol></li><li class="chapter-item expanded "><a href="../unsorted/index.html"><strong aria-hidden="true">11.</strong> Temas sin clasificar</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../unsorted/speed-vs-size.html"><strong aria-hidden="true">11.1.</strong> Optimizaciones: El equilibrio entre velocidad y tamaño</a></li><li class="chapter-item expanded "><a href="../unsorted/math.html"><strong aria-hidden="true">11.2.</strong> Realización de funciones matemáticas</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../appendix/glossary.html">Apéndice A: Glosario</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -99,7 +101,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -110,13 +112,13 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">The Embedded Rust Book</h1>
+                    <h1 class="menu-title">El Libro de Rust Embebido</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/rust-embedded/book" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/idio/rust-embedded-book" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
@@ -135,7 +137,7 @@
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -145,40 +147,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="collections"><a class="header" href="#collections">Collections</a></h1>
-<p>Eventually you'll want to use dynamic data structures (AKA collections) in your
-program. <code>std</code> provides a set of common collections: <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a>, <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a>,
-<a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a>, etc. All the collections implemented in <code>std</code> use a global dynamic
-memory allocator (AKA the heap).</p>
-<p>As <code>core</code> is, by definition, free of memory allocations these implementations
-are not available there, but they can be found in the <code>alloc</code> crate
-that's shipped with the compiler.</p>
-<p>If you need collections, a heap allocated implementation is not your only
-option. You can also use <em>fixed capacity</em> collections; one such implementation
-can be found in the <a href="https://crates.io/crates/heapless"><code>heapless</code></a> crate.</p>
-<p>In this section, we'll explore and compare these two implementations.</p>
-<h2 id="using-alloc"><a class="header" href="#using-alloc">Using <code>alloc</code></a></h2>
-<p>The <code>alloc</code> crate is shipped with the standard Rust distribution. To import the
-crate you can directly <code>use</code> it <em>without</em> declaring it as a dependency in your
-<code>Cargo.toml</code> file.</p>
+                        <h1 id="colecciones"><a class="header" href="#colecciones">Colecciones</a></h1>
+<p>Eventualmente querrás usar estructuras de datos dinámicas (también conocidas como colecciones) en tu programa. <code>std</code> proporciona un conjunto de colecciones comunes: <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a>, <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a>, <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a>, etc. Todas las colecciones implementadas en <code>std</code> utilizan un asignador global de memoria dinámica (también conocido como heap).</p>
+<p>Como <code>core</code> está, por definición, libre de asignaciones de memoria, estas implementaciones no están disponibles allí, pero se pueden encontrar en la <em>crate</em> <code>alloc</code> que viene con el compilador.</p>
+<p>Si necesitas colecciones, una implementación asignada a heap no es tu única opción. También puedes usar colecciones de <em>capacidad fija</em>; una de estas implementaciones se encuentra en la <em>crate</em> <a href="https://crates.io/crates/heapless"><code>heapless</code></a>.</p>
+<p>En esta sección, exploraremos y compararemos estas dos implementaciones.</p>
+<h2 id="usando-alloc"><a class="header" href="#usando-alloc">Usando <code>alloc</code></a></h2>
+<p>La <em>crate</em> <code>alloc</code> viene con la distribución estándar de Rust. Para importar la <em>crate</em> puedes <code>usarla</code> directamente <em>sin</em> declararla como dependencia en tu archivo <code>Cargo.toml</code>.</p>
 <pre><code class="language-rust ignore">#![feature(alloc)]
 
 extern crate alloc;
 
-use alloc::vec::Vec;
-</code></pre>
-<p>To be able to use any collection you'll first need use the <code>global_allocator</code>
-attribute to declare the global allocator your program will use. It's required
-that the allocator you select implements the <a href="https://doc.rust-lang.org/core/alloc/trait.GlobalAlloc.html"><code>GlobalAlloc</code></a> trait.</p>
-<p>For completeness and to keep this section as self-contained as possible we'll
-implement a simple bump pointer allocator and use that as the global allocator.
-However, we <em>strongly</em> suggest you use a battle tested allocator from crates.io
-in your program instead of this allocator.</p>
+use alloc::vec::Vec;</code></pre>
+<p>Para poder utilizar cualquier colección primero tendrás que utilizar el atributo <code>global_allocator</code> para declarar el asignador global que utilizará tu programa. Es necesario que el asignador que selecciones implemente el <em>trait</em> <a href="https://doc.rust-lang.org/core/alloc/trait.GlobalAlloc.html"><code>GlobalAlloc</code></a>.</p>
+<p>Para completar y mantener esta sección lo más autocontenida posible, implementaremos un simple asignador de punteros y lo usaremos como asignador global. Sin embargo, te sugerimos encarecidamente que utilices un asignador probado en batalla que esté en crates.io en tu programa en lugar de este asignador.</p>
 <pre><code class="language-rust ignore">// Bump pointer allocator implementation
 
-extern crate cortex_m;
-
-use core::alloc::GlobalAlloc;
+use core::alloc::{GlobalAlloc, Layout};
+use core::cell::UnsafeCell;
 use core::ptr;
 
 use cortex_m::interrupt;
@@ -226,11 +212,8 @@ unsafe impl GlobalAlloc for BumpPointerAlloc {
 static HEAP: BumpPointerAlloc = BumpPointerAlloc {
     head: UnsafeCell::new(0x2000_0100),
     end: 0x2000_0200,
-};
-</code></pre>
-<p>Apart from selecting a global allocator the user will also have to define how
-Out Of Memory (OOM) errors are handled using the <em>unstable</em>
-<code>alloc_error_handler</code> attribute.</p>
+};</code></pre>
+<p>Además de seleccionar un asignador global, el usuario también tendrá que definir cómo se gestionan los errores de falta de memoria (OOM) usando el atributo <em>unstable</em> <code>alloc_error_handler</code>.</p>
 <pre><code class="language-rust ignore">#![feature(alloc_error_handler)]
 
 use cortex_m::asm;
@@ -240,9 +223,8 @@ fn on_oom(_layout: Layout) -&gt; ! {
     asm::bkpt();
 
     loop {}
-}
-</code></pre>
-<p>Once all that is in place, the user can finally use the collections in <code>alloc</code>.</p>
+}</code></pre>
+<p>Una vez que todo esto está en su lugar, el usuario puede finalmente utilizar las colecciones en <code>alloc</code>.</p>
 <pre><code class="language-rust ignore">#[entry]
 fn main() -&gt; ! {
     let mut xs = Vec::new();
@@ -253,15 +235,11 @@ fn main() -&gt; ! {
     loop {
         // ..
     }
-}
-</code></pre>
-<p>If you have used the collections in the <code>std</code> crate then these will be familiar
-as they are exact same implementation.</p>
-<h2 id="using-heapless"><a class="header" href="#using-heapless">Using <code>heapless</code></a></h2>
-<p><code>heapless</code> requires no setup as its collections don't depend on a global memory
-allocator. Just <code>use</code> its collections and proceed to instantiate them:</p>
-<pre><code class="language-rust ignore">extern crate heapless; // v0.4.x
-
+}</code></pre>
+<p>Si has usado las colecciones en la <em>crate</em> <code>std</code> entonces estas te serán familiares ya que son exactamente la misma implementación.</p>
+<h2 id="usando-heapless"><a class="header" href="#usando-heapless">Usando <code>heapless</code></a></h2>
+<p><code>heapless</code> no requiere configuración ya que sus colecciones no dependen de un asignador de memoria global. Simplemente <code>use</code> sus colecciones y procede a instanciarlas:</p>
+<pre><code class="language-rust ignore">// heapless version: v0.4.x
 use heapless::Vec;
 use heapless::consts::*;
 
@@ -271,84 +249,29 @@ fn main() -&gt; ! {
 
     xs.push(42).unwrap();
     assert_eq!(xs.pop(), Some(42));
-}
-</code></pre>
-<p>You'll note two differences between these collections and the ones in <code>alloc</code>.</p>
-<p>First, you have to declare upfront the capacity of the collection. <code>heapless</code>
-collections never reallocate and have fixed capacities; this capacity is part of
-the type signature of the collection. In this case we have declared that <code>xs</code>
-has a capacity of 8 elements that is the vector can, at most, hold 8 elements.
-This is indicated by the <code>U8</code> (see <a href="https://crates.io/crates/typenum"><code>typenum</code></a>) in the type signature.</p>
-<p>Second, the <code>push</code> method, and many other methods, return a <code>Result</code>. Since the
-<code>heapless</code> collections have fixed capacity all operations that insert elements
-into the collection can potentially fail. The API reflects this problem by
-returning a <code>Result</code> indicating whether the operation succeeded or not. In
-contrast, <code>alloc</code> collections will reallocate themselves on the heap to increase
-their capacity.</p>
-<p>As of version v0.4.x all <code>heapless</code> collections store all their elements inline.
-This means that an operation like <code>let x = heapless::Vec::new();</code> will allocate
-the collection on the stack, but it's also possible to allocate the collection
-on a <code>static</code> variable, or even on the heap (<code>Box&lt;Vec&lt;_, _&gt;&gt;</code>).</p>
-<h2 id="trade-offs"><a class="header" href="#trade-offs">Trade-offs</a></h2>
-<p>Keep these in mind when choosing between heap allocated, relocatable collections
-and fixed capacity collections.</p>
-<h3 id="out-of-memory-and-error-handling"><a class="header" href="#out-of-memory-and-error-handling">Out Of Memory and error handling</a></h3>
-<p>With heap allocations Out Of Memory is always a possibility and can occur in
-any place where a collection may need to grow: for example, all
-<code>alloc::Vec.push</code> invocations can potentially generate an OOM condition. Thus
-some operations can <em>implicitly</em> fail. Some <code>alloc</code> collections expose
-<code>try_reserve</code> methods that let you check for potential OOM conditions when
-growing the collection but you need be proactive about using them.</p>
-<p>If you exclusively use <code>heapless</code> collections and you don't use a memory
-allocator for anything else then an OOM condition is impossible. Instead, you'll
-have to deal with collections running out of capacity on a case by case basis.
-That is you'll have deal with <em>all</em> the <code>Result</code>s returned by methods like
-<code>Vec.push</code>.</p>
-<p>OOM failures can be harder to debug than say <code>unwrap</code>-ing on all <code>Result</code>s
-returned by <code>heapless::Vec.push</code> because the observed location of failure may
-<em>not</em> match with the location of the cause of the problem. For example, even
-<code>vec.reserve(1)</code> can trigger an OOM if the allocator is nearly exhausted because
-some other collection was leaking memory (memory leaks are possible in safe
-Rust).</p>
-<h3 id="memory-usage"><a class="header" href="#memory-usage">Memory usage</a></h3>
-<p>Reasoning about memory usage of heap allocated collections is hard because the
-capacity of long lived collections can change at runtime. Some operations may
-implicitly reallocate the collection increasing its memory usage, and some
-collections expose methods like <code>shrink_to_fit</code> that can potentially reduce the
-memory used by the collection -- ultimately, it's up to the allocator to decide
-whether to actually shrink the memory allocation or not. Additionally, the
-allocator may have to deal with memory fragmentation which can increase the
-<em>apparent</em> memory usage.</p>
-<p>On the other hand if you exclusively use fixed capacity collections, store
-most of them in <code>static</code> variables and set a maximum size for the call stack
-then the linker will detect if you try to use more memory than what's physically
-available.</p>
-<p>Furthermore, fixed capacity collections allocated on the stack will be reported
-by <a href="https://doc.rust-lang.org/beta/unstable-book/compiler-flags/emit-stack-sizes.html"><code>-Z emit-stack-sizes</code></a> flag which means that tools that analyze stack usage
-(like <a href="https://crates.io/crates/stack-sizes"><code>stack-sizes</code></a>) will include them in their analysis.</p>
-<p>However, fixed capacity collections can <em>not</em> be shrunk which can result in
-lower load factors (the ratio between the size of the collection and its
-capacity) than what relocatable collections can achieve.</p>
-<h3 id="worst-case-execution-time-wcet"><a class="header" href="#worst-case-execution-time-wcet">Worst Case Execution Time (WCET)</a></h3>
-<p>If you are building time sensitive applications or hard real time applications
-then you care, maybe a lot, about the worst case execution time of the different
-parts of your program.</p>
-<p>The <code>alloc</code> collections can reallocate so the WCET of operations that may grow
-the collection will also include the time it takes to reallocate the collection,
-which itself depends on the <em>runtime</em> capacity of the collection. This makes it
-hard to determine the WCET of, for example, the <code>alloc::Vec.push</code> operation as
-it depends on both the allocator being used and its runtime capacity.</p>
-<p>On the other hand fixed capacity collections never reallocate so all operations
-have a predictable execution time. For example, <code>heapless::Vec.push</code> executes in
-constant time.</p>
-<h3 id="ease-of-use"><a class="header" href="#ease-of-use">Ease of use</a></h3>
-<p><code>alloc</code> requires setting up a global allocator whereas <code>heapless</code> does not.
-However, <code>heapless</code> requires you to pick the capacity of each collection that
-you instantiate.</p>
-<p>The <code>alloc</code> API will be familiar to virtually every Rust developer. The
-<code>heapless</code> API tries to closely mimic the <code>alloc</code> API but it will never be
-exactly the same due to its explicit error handling -- some developers may feel
-the explicit error handling is excessive or too cumbersome.</p>
+    loop {}
+}</code></pre>
+<p>Notarás dos diferencias entre estas colecciones y las de <code>alloc</code>.</p>
+<p>Primero, tienes que declarar por adelantado la capacidad de la colección. Las colecciones <code>heapless</code> nunca se reasignan y tienen capacidades fijas; esta capacidad forma parte de la firma de tipo de la colección. En este caso hemos declarado que <code>xs</code> tiene una capacidad de 8 elementos, es decir, que el vector puede contener, como máximo, 8 elementos. Esto se indica mediante la <code>U8</code> (véase <a href="https://crates.io/crates/typenum"><code>typenum</code></a>) en la firma de tipo.</p>
+<p>En segundo lugar, el método <code>push</code>, y muchos otros métodos, devuelven un <code>Result</code>. Dado que las colecciones <code>heapless</code> tienen una capacidad fija, todas las operaciones que insertan elementos en la colección pueden fallar potencialmente. La API refleja este problema devolviendo un <code>Result</code> que indica si la operación ha tenido éxito o no. Por el contrario, las colecciones <code>alloc</code> se reasignan a sí mismas en el heap para aumentar su capacidad.</p>
+<p>A partir de la versión v0.4.x todas las colecciones <code>heapless</code> almacenan todos sus elementos en línea. Esto significa que una operación como <code>let x = heapless::Vec::new();</code> asignará la colección en la pila, pero también es posible asignar la colección en una variable <code>static</code>, o incluso en el montón (<code>Box&lt;Vec&lt;_, _&gt;&gt;</code>).</p>
+<h2 id="ventajas-y-desventajas"><a class="header" href="#ventajas-y-desventajas">Ventajas y desventajas</a></h2>
+<p>Ten en cuenta lo siguiente a la hora de elegir entre colecciones reubicables asignadas al heap y colecciones de capacidad fija.</p>
+<h3 id="out-of-memory-y-gestión-de-errores"><a class="header" href="#out-of-memory-y-gestión-de-errores">Out Of Memory y gestión de errores</a></h3>
+<p>Con las asignaciones de heap, el Out Of Memory es siempre una posibilidad y puede ocurrir en cualquier lugar donde una colección pueda necesitar crecer: por ejemplo, todas las invocaciones <code>alloc::Vec.push</code> pueden potencialmente generar una condición OOM. Por tanto, algunas operaciones pueden fallar <em>implícitamente</em>. Algunas colecciones <code>alloc</code> exponen métodos <code>try_reserve</code> que te permiten comprobar posibles condiciones OOM al hacer crecer la colección, pero debes ser proactivo a la hora de utilizarlos.</p>
+<p>Si usas exclusivamente colecciones <code>heapless</code> y no usas un asignador de memoria para nada más, entonces una condición OOM es imposible. En su lugar, tendrás que lidiar con las colecciones que se queden sin capacidad caso por caso. Es decir, tendrás que lidiar con <em>todos</em> los <code>Result</code> devueltos por métodos como <code>Vec.push</code>.</p>
+<p>Los fallos OOM pueden ser más difíciles de depurar que, por ejemplo, <code>unwrap</code> todos los <code>Result</code> devueltos por <code>heapless::Vec.push</code> porque la localización observada del fallo puede <em>no</em> coincidir con la localización de la causa del problema. Por ejemplo, incluso <code>vec.reserve(1)</code> puede desencadenar un OOM si el asignador está casi agotado porque alguna otra colección estaba perdiendo memoria (las fugas de memoria son posibles en Rust seguro).</p>
+<h3 id="uso-de-memoria"><a class="header" href="#uso-de-memoria">Uso de memoria</a></h3>
+<p>Razonar sobre el uso de memoria de las colecciones asignadas al heap es difícil porque la capacidad de las colecciones de larga duración puede cambiar en tiempo de ejecución. Algunas operaciones pueden implícitamente reasignar la colección incrementando su uso de memoria, y algunas colecciones exponen métodos como <code>shrink_to_fit</code> que pueden potencialmente reducir la memoria usada por la colección -- en última instancia, depende del asignador decidir si realmente reduce la asignación de memoria o no. Además, el asignador puede tener que lidiar con la fragmentación de la memoria, lo que puede aumentar el uso de memoria <em>aparente</em>.</p>
+<p>Por otro lado, si utilizas exclusivamente colecciones de capacidad fija, almacenas la mayoría de ellas en variables <code>static</code> y estableces un tamaño máximo para la pila de llamadas, el enlazador detectará si intentas utilizar más memoria de la que está físicamente disponible.</p>
+<p>Además, las colecciones de capacidad fija asignadas en la pila serán reportadas por la bandera <a href="https://doc.rust-lang.org/beta/unstable-book/compiler-flags/emit-stack-sizes.html"><code>-Z emit-stack-sizes</code></a> lo que significa que las herramientas que analizan el uso de la pila (como <a href="https://crates.io/crates/stack-sizes"><code>stack-sizes</code></a>) las incluirán en su análisis.</p>
+<p>Sin embargo, las colecciones de capacidad fija <em>no</em> pueden reducirse, lo que puede dar lugar a factores de carga (la relación entre el tamaño de la colección y su capacidad) inferiores a los que pueden conseguir las colecciones reubicables.</p>
+<h3 id="tiempo-de-ejecución-en-el-peor-de-los-casos-wcet"><a class="header" href="#tiempo-de-ejecución-en-el-peor-de-los-casos-wcet">Tiempo de ejecución en el peor de los casos (WCET)</a></h3>
+<p>Si estás construyendo aplicaciones sensibles al tiempo o aplicaciones de tiempo real duro, entonces te preocupas, quizás mucho, por el tiempo de ejecución en el peor de los casos de las diferentes partes de tu programa. Las colecciones <code>alloc</code> pueden reasignarse, por lo que el WCET de las operaciones que pueden hacer crecer la colección también incluirá el tiempo que se tarda en reasignar la colección, que a su vez depende de la capacidad <em>runtime</em> de la colección. Esto dificulta la determinación del WCET de, por ejemplo, la operación <code>alloc::Vec.push</code>, ya que depende tanto del asignador utilizado como de su capacidad en tiempo de ejecución.</p>
+<p>Por otro lado, las colecciones de capacidad fija nunca se reasignan, por lo que todas las operaciones tienen un tiempo de ejecución predecible. Por ejemplo, <code>heapless::Vec.push</code> se ejecuta en tiempo constante.</p>
+<h3 id="facilidad-de-uso"><a class="header" href="#facilidad-de-uso">Facilidad de uso</a></h3>
+<p><code>alloc</code> requiere configurar un asignador global mientras que <code>heapless</code> no. Sin embargo, <code>heapless</code> requiere que elijas la capacidad de cada colección que instales.</p>
+<p>La API <code>alloc</code> será familiar para prácticamente todos los desarrolladores de Rust. La API <code>heapless</code> intenta imitar de cerca la API <code>alloc</code> pero nunca será exactamente igual debido a su gestión explícita de errores -- algunos desarrolladores pueden sentir que la gestión explícita de errores es excesiva o demasiado engorrosa.</p>
 
                     </main>
 
@@ -382,21 +305,22 @@ the explicit error handling is excessive or too cumbersome.</p>
 
 
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
 
 
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 
 
+    </div>
     </body>
 </html>
